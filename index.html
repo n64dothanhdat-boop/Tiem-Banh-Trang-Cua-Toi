@@ -67,7 +67,6 @@
 @media(min-width:700px){.content{padding:10px}.top{position:sticky}.nav button{min-height:44px}.ingredient-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.bowl-stage{grid-template-columns:1fr;justify-items:center}.bowl{width:min(220px,78vw)}.bowl .inside{font-size:28px;padding:16px}.bowl .ready{font-size:11px}.big-actions{grid-template-columns:1fr}.grid2{grid-template-columns:1fr 1fr}}
 @media(max-width:380px){.bowl{width:min(200px,82vw)}}
-.app > .content:first-of-type{position:sticky;top:calc(env(safe-area-inset-top) + 122px);z-index:19;background:var(--bg);padding:10px 10px 6px}
 </style>
 </style>
 </head>
@@ -555,6 +554,28 @@ const modal=document.createElement('div');modal.id='modal';modal.className='moda
       document.getElementById('app').innerHTML='<div class="app" style="padding:24px;text-align:center"><section class="card"><h2>🥣 Lỗi tải game</h2><p>Bấm nút để chơi lại từ đầu.</p><button class="btn green" style="width:100%" onclick="localStorage.removeItem(\''+KEY+'\');location.reload()">🔄 Chơi lại</button></section></div>';
     }
   }
+})();
+  /* === Auto sticky nav === */
+(function(){
+  function upd(){
+    var topEl=document.querySelector('.top');
+    var wrap=document.querySelector('.app > .content');
+    if(!topEl||!wrap)return;
+    var h=Math.ceil(topEl.getBoundingClientRect().height);
+    wrap.style.position='sticky';
+    wrap.style.top=h+'px';
+    wrap.style.zIndex='19';
+    wrap.style.background='var(--bg)';
+    wrap.style.padding='8px 10px 6px';
+    wrap.style.marginTop='0';
+  }
+  upd();
+  var t=setInterval(upd,250);
+  window.addEventListener('resize',upd);
+  window.addEventListener('orientationchange',upd);
+  // Dừng interval khi render lại (tránh leak)
+  var oldRender=window.render;
+  window.render=function(){var r=oldRender.apply(this,arguments);setTimeout(upd,0);return r;};
 })();
 </script>
 </body>
