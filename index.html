@@ -67,6 +67,8 @@
 @media(min-width:700px){.content{padding:10px}.top{position:sticky}.nav button{min-height:44px}.ingredient-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.bowl-stage{grid-template-columns:1fr;justify-items:center}.bowl{width:min(220px,78vw)}.bowl .inside{font-size:28px;padding:16px}.bowl .ready{font-size:11px}.big-actions{grid-template-columns:1fr}.grid2{grid-template-columns:1fr 1fr}}
 @media(max-width:380px){.bowl{width:min(200px,82vw)}}
+.app > .content:first-of-type{position:sticky;top:calc(env(safe-area-inset-top) + 92px);z-index:19;background:var(--bg);padding-bottom:6px}
+</style>
 </style>
 </head>
 <body>
