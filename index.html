@@ -1,1015 +1,751 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tiệm Bánh Tráng Tycoon</title>
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Bánh Tráng">
-    <meta name="theme-color" content="#FF6B35">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tiệm Bánh Tráng</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#C41E3A">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C41E3A;
+  --dark-red: #9B1B30;
+  --pink: #FF6B9D;
+  --yellow: #FFD166;
+  --green: #06D6A0;
+  --cream: #FFF8F0;
+  --brown: #5D4037;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+body { background: #F8EDE3; min-height: 100vh; overflow-x: hidden; }
 
-    <link id="icon-apple-touch" rel="apple-touch-icon" sizes="180x180" href="">
-    <link id="icon-favicon" rel="icon" type="image/png" sizes="512x512" href="">
-    <link id="icon-manifest" rel="manifest" href="">
-    <script>
-        (function () {
-            function roundRectPath(ctx, x, y, w, h, r) {
-                ctx.beginPath();
-                ctx.moveTo(x + r, y);
-                ctx.arcTo(x + w, y, x + w, y + h, r);
-                ctx.arcTo(x + w, y + h, x, y + h, r);
-                ctx.arcTo(x, y + h, x, y, r);
-                ctx.arcTo(x, y, x + w, y, r);
-                ctx.closePath();
-            }
-            function drawLogo(size) {
-                const canvas = document.createElement('canvas');
-                canvas.width = size; canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                const s = size / 200;
-                roundRectPath(ctx, 4*s, 4*s, 192*s, 192*s, 40*s);
-                ctx.fillStyle = '#FF6B35'; ctx.fill();
-                ctx.lineWidth = 8*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
-                ctx.beginPath(); ctx.arc(100*s, 95*s, 55*s, 0, Math.PI*2);
-                ctx.fillStyle = '#FFF8E7'; ctx.fill();
-                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
-                ctx.fillStyle = '#E63946'; ctx.beginPath(); ctx.arc(85*s, 85*s, 10*s, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#2A9D8F'; ctx.beginPath(); ctx.arc(115*s, 90*s, 8*s, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#F4A261'; ctx.beginPath(); ctx.arc(100*s, 110*s, 9*s, 0, Math.PI*2); ctx.fill();
-                ctx.beginPath(); ctx.arc(152*s, 148*s, 28*s, 0, Math.PI*2);
-                ctx.fillStyle = '#E2F170'; ctx.fill();
-                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
-                ctx.fillStyle = '#1E1E24';
-                ctx.font = `900 ${28*s}px Arial`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText('$', 152*s, 150*s);
-                return canvas.toDataURL('image/png');
-            }
-            try {
-                const icon180 = drawLogo(180);
-                const icon512 = drawLogo(512);
-                document.getElementById('icon-apple-touch').href = icon180;
-                document.getElementById('icon-favicon').href = icon512;
-                const manifest = {
-                    name: 'Tiệm Bánh Tráng Tycoon',
-                    short_name: 'Bánh Tráng',
-                    start_url: '.',
-                    display: 'standalone',
-                    background_color: '#FFF8F0',
-                    theme_color: '#FF6B35',
-                    icons: [
-                        { src: icon180, sizes: '180x180', type: 'image/png' },
-                        { src: icon512, sizes: '512x512', type: 'image/png' }
-                    ]
-                };
-                const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-                document.getElementById('icon-manifest').href = URL.createObjectURL(blob);
-            } catch (e) {}
-        })();
-    </script>
+/* ===== TOP BAR ===== */
+.topbar {
+  background: linear-gradient(180deg, #8B1A2B, #C41E3A);
+  color: white; padding: 8px 12px 6px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 8px; }
+.day-badge { background: rgba(0,0,0,0.25); padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; }
+.cash { font-size: 1.25rem; font-weight: 900; color: #FFD166; }
+.stars { font-size: 0.9rem; }
 
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --pink: #FF6B9D; --orange: #FF6B35; --yellow: #FFD166; --green: #06D6A0;
-            --purple: #7B2CBF; --dark: #1E1E24; --light: #FFF8F0; --gray: #E5E7EB;
-            --shadow: 3px 3px 0 #1E1E24; --shadow-hover: 5px 5px 0 #1E1E24; --radius: 10px;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Lexend', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body {
-            background: #FFF8F0;
-            background-image: radial-gradient(#1E1E24 1px, transparent 1px);
-            background-size: 18px 18px;
-            color: var(--dark); min-height: 100vh; display: flex; flex-direction: column;
-            padding: 10px; font-size: 0.85rem; padding-bottom: 90px;
-        }
-        #app { max-width: 1180px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 10px; }
-        .nb-card { background: var(--light); border: 2px solid var(--dark); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
-        .nb-btn {
-            background: var(--orange); border: 2px solid var(--dark); border-radius: 8px;
-            box-shadow: 2px 2px 0 var(--dark); padding: 6px 12px; font-weight: 800; font-size: 0.8rem;
-            cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-            text-transform: uppercase;
-        }
-        .nb-btn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: var(--shadow-hover); }
-        .nb-btn:active:not(:disabled) { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--dark); }
-        .nb-btn:disabled { background: var(--gray); color: #888; cursor: not-allowed; }
-        .nb-btn-pink { background: var(--pink); }
-        .nb-btn-yellow { background: var(--yellow); }
-        .nb-btn-green { background: var(--green); }
-        .nb-btn-purple { background: var(--purple); color: white; }
-        .nb-input { border: 2px solid var(--dark); border-radius: 6px; padding: 8px 10px; font-weight: 600; font-size: 0.85rem; outline: none; box-shadow: 2px 2px 0 var(--dark); background: #fff; width: 100%; }
-        .nb-badge { background: var(--yellow); border: 1.5px solid var(--dark); padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 800; display: inline-block; }
+/* ===== PREP SCREEN ===== */
+#screen-prep { display: block; padding-bottom: 100px; }
+.shop-banner {
+  background: linear-gradient(180deg, #E63946, #C41E3A);
+  margin: 10px; border-radius: 16px; padding: 16px;
+  color: white; position: relative; overflow: hidden;
+  box-shadow: 0 6px 0 #9B1B30;
+}
+.shop-banner h1 { font-size: 1.6rem; font-weight: 900; text-align: center; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+.shop-banner .sub { text-align: center; font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
+.xp-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; justify-content: center; }
+.xp-bar { width: 140px; height: 12px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; }
+.xp-fill { height: 100%; background: #FFD166; width: 0%; transition: width 0.4s; }
+.banner-btns { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.banner-btns button {
+  background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);
+  color: white; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.78rem;
+}
 
-        header { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; background: var(--orange); padding: 10px; }
-        .header-stat { display: flex; align-items: center; gap: 8px; background: white; padding: 6px 10px; border: 2px solid var(--dark); border-radius: 8px; box-shadow: 2px 2px 0 var(--dark); }
-        .stat-label { font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase; }
-        .stat-value { font-size: 0.9rem; font-weight: 900; }
-        .editable-name { cursor: pointer; text-decoration: underline dotted var(--dark) 2px; }
-        .xp-bar-container { width: 100%; height: 9px; background: var(--gray); border: 1.5px solid var(--dark); border-radius: 5px; margin-top: 3px; overflow: hidden; }
-        .xp-bar-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.3s; }
+.tabs {
+  display: flex; gap: 6px; padding: 0 10px; overflow-x: auto; margin: 12px 0 8px;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; background: white; border: 2px solid #E0D5C8;
+  padding: 8px 14px; border-radius: 20px; font-weight: 800; font-size: 0.82rem;
+  color: #5D4037; cursor: pointer;
+}
+.tab.active { background: #C41E3A; color: white; border-color: #C41E3A; }
 
-        .sticky-note-card { background: #FFF3BF; border: 2px solid var(--dark); border-radius: 10px; box-shadow: var(--shadow); padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
-        .sticky-note-card textarea { flex: 1; background: transparent; border: none; outline: none; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 0.85rem; color: #333; resize: none; height: 40px; }
+.panel { display: none; padding: 0 12px 20px; }
+.panel.active { display: block; }
 
-        nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-        nav::-webkit-scrollbar { display: none; }
-        .tab-btn { flex: 1; min-width: 95px; padding: 8px 10px; font-size: 0.82rem; background: white; white-space: nowrap; }
-        .tab-btn.active { background: var(--yellow); transform: translate(-1px,-1px); box-shadow: var(--shadow-hover); }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; animation: fadeIn 0.2s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.card {
+  background: white; border-radius: 16px; padding: 14px;
+  box-shadow: 0 4px 0 #E0D5C8; margin-bottom: 12px;
+}
+.card h3 { font-size: 1rem; color: #5D4037; margin-bottom: 10px; }
 
-        .market-layout { display: grid; grid-template-columns: 155px 1fr; gap: 12px; }
-        @media (max-width: 768px) { .market-layout { grid-template-columns: 1fr; } }
-        .category-menu { display: flex; flex-direction: column; gap: 6px; }
-        .cat-btn { text-align: left; background: white; border: 2px solid var(--dark); padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; box-shadow: 2px 2px 0 var(--dark); }
-        .cat-btn.active, .cat-btn:hover { background: var(--orange); color: white; }
-        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }
-        .item-card { background: white; border: 2px solid var(--dark); border-radius: 8px; padding: 10px; box-shadow: 2px 2px 0 var(--dark); display: flex; flex-direction: column; gap: 6px; position: relative; }
-        .item-card.locked { background: #f3f4f6; color: #9ca3af; border-color: #9ca3af; }
-        .lock-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.75); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #ef4444; border-radius: 6px; }
+.mission-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px dashed #E0D5C8;
+}
+.mission-item:last-child { border-bottom: none; }
+.mission-left { font-size: 0.88rem; color: #5D4037; }
+.mission-right { font-weight: 800; color: #C41E3A; font-size: 0.9rem; }
 
-        .prep-layout { display: grid; grid-template-columns: 1fr 270px; gap: 12px; }
-        @media (max-width: 900px) { .prep-layout { grid-template-columns: 1fr; } }
-        .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 10px; }
-        .slot-card { background: white; border: 2px dashed var(--dark); border-radius: 8px; padding: 10px; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; }
-        .slot-card.filled { border-style: solid; background: #fff7ed; border-color: var(--orange); }
-        .slot-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #666; }
-        .inventory-list, .ready-list { max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .inventory-item, .ready-item { background: white; border: 2px solid var(--dark); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 2px 2px 0 var(--dark); }
+.inv-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.inv-item {
+  background: #FFF8F0; border: 2px solid #E0D5C8; border-radius: 12px;
+  padding: 10px 6px; text-align: center; position: relative;
+}
+.inv-item .icon { font-size: 1.8rem; }
+.inv-item .name { font-size: 0.72rem; font-weight: 700; color: #5D4037; margin-top: 4px; }
+.inv-item .qty {
+  position: absolute; top: -6px; right: -6px;
+  background: #C41E3A; color: white; font-size: 0.7rem; font-weight: 800;
+  width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.inv-item.locked { opacity: 0.45; }
 
-        .street-area { text-align: center; }
-        .customer-card { background: white; border: 2px solid var(--dark); border-radius: 12px; padding: 16px; box-shadow: 4px 4px 0 var(--dark); margin: 12px auto; max-width: 420px; }
-        .ready-stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 12px; }
+.buy-row { display: flex; gap: 6px; margin-top: 6px; justify-content: center; }
+.buy-row button {
+  background: #06D6A0; border: none; color: white; font-weight: 800;
+  width: 28px; height: 28px; border-radius: 8px; font-size: 1rem;
+}
 
-        .bottom-action {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--dark); padding: 12px 16px;
-            display: flex; justify-content: center; z-index: 500;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
-        }
-        .bottom-action button { width: 100%; max-width: 480px; padding: 14px; font-size: 1.05rem; border-radius: 12px; font-weight: 900; }
+.open-btn {
+  position: fixed; bottom: 16px; left: 16px; right: 16px;
+  background: linear-gradient(180deg, #E63946, #C41E3A);
+  color: white; border: none; border-radius: 16px;
+  padding: 16px; font-size: 1.15rem; font-weight: 900;
+  box-shadow: 0 6px 0 #9B1B30; z-index: 50;
+}
+.open-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #9B1B30; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-        .modal-overlay.active { display: flex; }
-        .modal-body { background: var(--light); border: 3px solid var(--dark); border-radius: 12px; box-shadow: 5px 5px 0 var(--dark); max-width: 450px; width: 100%; padding: 20px; display: flex; flex-direction: column; gap: 12px; animation: popIn 0.25s cubic-bezier(0.175,0.885,0.32,1.275); }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        #toast-container { position: fixed; bottom: 90px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 2000; }
-        .toast { background: var(--dark); color: white; border: 2px solid white; padding: 10px 15px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; animation: slideIn 0.3s; }
-        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+/* ===== SELLING SCREEN ===== */
+#screen-sell { display: none; padding-bottom: 20px; }
+.sell-header {
+  background: linear-gradient(180deg, #8B1A2B, #C41E3A);
+  color: white; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
+}
+.customer-area {
+  background: #C41E3A; margin: 0; padding: 12px 10px 16px;
+  border-bottom-left-radius: 24px; border-bottom-right-radius: 24px;
+}
+.shop-name-box {
+  background: #FFD166; color: #5D4037; text-align: center;
+  padding: 8px 16px; border-radius: 12px; font-weight: 900; font-size: 1.1rem;
+  margin: 0 auto 12px; width: fit-content; border: 3px solid #5D4037;
+  box-shadow: 0 3px 0 #5D4037;
+}
+.seats { display: flex; gap: 8px; justify-content: center; }
+.seat {
+  width: 90px; background: rgba(255,255,255,0.15); border-radius: 12px;
+  padding: 8px 4px; text-align: center; border: 2px dashed rgba(255,255,255,0.3);
+}
+.seat.occupied { background: white; border: 2px solid #FFD166; }
+.seat .avatar { font-size: 2rem; }
+.seat .name { font-size: 0.7rem; font-weight: 700; color: #5D4037; }
 
-        .startup-language-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
-        .startup-lang-btn { background: white; border: 2px solid var(--dark); border-radius: 10px; box-shadow: 3px 3px 0 var(--dark); padding: 14px; cursor: pointer; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 1.5rem; }
-        .startup-lang-btn.selected { background: var(--yellow); outline: 3px solid var(--purple); }
-        .reviews-container { display: flex; flex-direction: column; gap: 10px; }
-        .review-card { background: white; border: 2px solid var(--dark); border-radius: 8px; padding: 10px 12px; box-shadow: 2px 2px 0 var(--dark); }
-        .stars { color: #FFB703; }
-    </style>
+.order-bubble {
+  background: white; margin: 12px; border-radius: 16px; padding: 12px 14px;
+  box-shadow: 0 4px 0 #E0D5C8; position: relative;
+}
+.order-bubble .icon { font-size: 1.6rem; float: left; margin-right: 10px; }
+.order-text { font-size: 0.92rem; color: #5D4037; line-height: 1.4; }
+.order-text strong { color: #C41E3A; }
+.progress-bar {
+  height: 8px; background: #E0D5C8; border-radius: 10px; margin-top: 10px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: #06D6A0; width: 0%; transition: width 0.3s; }
+
+.kitchen {
+  background: #FFF8F0; margin: 12px; border-radius: 16px; padding: 12px;
+  border: 2px solid #E0D5C8;
+}
+.base-row, .topping-row {
+  display: flex; gap: 8px; overflow-x: auto; padding: 6px 0; scrollbar-width: none;
+}
+.base-row::-webkit-scrollbar, .topping-row::-webkit-scrollbar { display: none; }
+.ing-btn {
+  flex-shrink: 0; width: 70px; background: white; border: 2px solid #E0D5C8;
+  border-radius: 12px; padding: 8px 4px; text-align: center; position: relative;
+  cursor: pointer;
+}
+.ing-btn.selected { border-color: #C41E3A; background: #FFE5E9; box-shadow: 0 0 0 2px #C41E3A; }
+.ing-btn .icon { font-size: 1.6rem; }
+.ing-btn .label { font-size: 0.65rem; font-weight: 700; color: #5D4037; margin-top: 2px; }
+.ing-btn .stock {
+  position: absolute; top: -6px; right: -6px;
+  background: #C41E3A; color: white; font-size: 0.65rem; font-weight: 800;
+  min-width: 18px; height: 18px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  padding: 0 4px;
+}
+.ing-btn.locked { opacity: 0.4; pointer-events: none; }
+
+.board {
+  background: #E8D5B7; border: 3px solid #C4A77D; border-radius: 12px;
+  height: 110px; margin: 12px 0; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 6px; position: relative;
+}
+.board.empty { color: #A1887F; font-weight: 700; font-size: 0.9rem; }
+.board.has-item .banh { font-size: 2.8rem; }
+.board .cook-bar {
+  position: absolute; bottom: 8px; left: 20%; right: 20%;
+  height: 10px; background: #D7CCC8; border-radius: 10px; overflow: hidden;
+}
+.board .cook-fill { height: 100%; background: linear-gradient(90deg, #06D6A0, #FFD166); width: 0%; }
+
+.action-row { display: flex; gap: 10px; margin-top: 8px; }
+.btn-deliver {
+  flex: 1; background: #06D6A0; color: white; border: none; border-radius: 14px;
+  padding: 14px; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 0 #048A6E;
+}
+.btn-deliver:active { transform: translateY(2px); box-shadow: 0 2px 0 #048A6E; }
+.btn-trash {
+  width: 56px; background: #5D4037; color: white; border: none; border-radius: 14px;
+  font-size: 1.4rem; box-shadow: 0 4px 0 #3E2723;
+}
+
+.back-home {
+  position: fixed; bottom: 16px; left: 16px; right: 16px;
+  background: #5D4037; color: white; border: none; border-radius: 14px;
+  padding: 12px; font-weight: 800; font-size: 0.95rem; z-index: 50;
+  display: none;
+}
+
+/* ===== TOAST & MODAL ===== */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+  background: #5D4037; color: white; padding: 10px 20px; border-radius: 30px;
+  font-weight: 700; font-size: 0.9rem; z-index: 999; opacity: 0;
+  transition: opacity 0.3s; pointer-events: none;
+}
+.toast.show { opacity: 1; }
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px;
+}
+.modal.show { display: flex; }
+.modal-box {
+  background: white; border-radius: 20px; padding: 24px; max-width: 340px; width: 100%;
+  text-align: center; box-shadow: 0 10px 0 #C41E3A;
+}
+.modal-box h2 { color: #C41E3A; margin-bottom: 12px; }
+.modal-box button {
+  background: #C41E3A; color: white; border: none; border-radius: 12px;
+  padding: 12px 24px; font-weight: 800; font-size: 1rem; margin-top: 12px; width: 100%;
+}
+</style>
 </head>
 <body>
-    <div id="app">
-        <!-- HEADER -->
-        <header class="nb-card">
-            <div class="header-stat">
-                <span style="font-size:1.3rem;cursor:pointer;" onclick="triggerLogoEgg()">🫓</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Tiệm</div>
-                    <div class="stat-value"><span id="display-shop-name" class="editable-name" onclick="editShopName()">Bánh Tráng Vỉa Hè</span></div>
-                </div>
-            </div>
-            <div class="header-stat">
-                <span>👑</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Boss | <span id="display-level" style="color:var(--purple);font-weight:900;">Lv.1</span></div>
-                    <div class="stat-value"><span id="display-manager-name" class="editable-name" onclick="editManagerName()">Boss GenZ</span></div>
-                    <div class="xp-bar-container"><div id="xp-bar" class="xp-bar-fill"></div></div>
-                </div>
-            </div>
-            <div class="header-stat">
-                <span>💰</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Tiền</div>
-                    <div class="stat-value" id="display-cash" style="color:#059669;">$2,500</div>
-                </div>
-            </div>
-            <div class="header-stat">
-                <span>📅</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Ngày</div>
-                    <div class="stat-value" id="display-day">Ngày 1</div>
-                </div>
-            </div>
-            <div class="header-stat">
-                <span>⏰</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Giờ</div>
-                    <div class="stat-value" id="display-clock" style="color:#d97706;">06:00 AM</div>
-                </div>
-            </div>
-            <div class="header-stat">
-                <span>👥</span>
-                <div style="flex:1;">
-                    <div class="stat-label">Khách hôm nay</div>
-                    <div class="stat-value" id="display-today-clients">0 / 5</div>
-                </div>
-            </div>
-        </header>
 
-        <!-- STICKY NOTE -->
-        <div class="sticky-note-card" id="sticky-note">
-            <span style="font-size:1.4rem;">📌</span>
-            <div style="display:flex;flex-direction:column;flex:1;">
-                <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:#854d0e;">Ghi chú hôm nay</div>
-                <textarea id="daily-note-input" placeholder="Mua thêm tôm khô, trứng cút..." onchange="saveDailyNote()"></textarea>
-            </div>
-            <button class="nb-btn nb-btn-green" style="padding:5px 9px;font-size:0.72rem;" onclick="saveDailyNote(true)">💾</button>
-        </div>
+<!-- ========== PREP SCREEN ========== -->
+<div id="screen-prep">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="day-badge">📅 Ngày <span id="prep-day">1</span></div>
+    </div>
+    <div class="cash">💰 <span id="prep-cash">40.000</span></div>
+    <div class="stars">⭐ <span id="prep-rep">4.0</span></div>
+  </div>
 
-        <!-- NAV -->
-        <nav id="main-nav">
-            <button class="nb-btn tab-btn active" onclick="switchTab('market')">🛒 Chợ</button>
-            <button class="nb-btn tab-btn" onclick="switchTab('prep')">🫓 Chuẩn bị</button>
-            <button class="nb-btn tab-btn" onclick="switchTab('ready')">📦 Kho bánh</button>
-            <button class="nb-btn tab-btn" onclick="switchTab('reviews')">💬 Đánh giá</button>
-            <button class="nb-btn tab-btn" onclick="switchTab('settings')">⚙️ Hệ thống</button>
-        </nav>
+  <div class="shop-banner">
+    <h1 id="shop-name">Tiệm Bánh Tráng</h1>
+    <div class="sub">XE ĐẨY VỈA HÈ</div>
+    <div class="xp-row">
+      <span style="font-size:0.8rem;">Cấp <span id="shop-level">1</span></span>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+      <span style="font-size:0.75rem;" id="xp-text">0/150</span>
+    </div>
+    <div class="banner-btns">
+      <button onclick="editName()">✏️ Đổi tên</button>
+      <button>🏆 Xếp hạng</button>
+      <button>🎁 Chọc quán</button>
+    </div>
+  </div>
 
-        <!-- TAB MARKET -->
-        <div id="tab-market" class="tab-panel active">
-            <div class="market-layout">
-                <div class="category-menu nb-card">
-                    <h3 style="margin-bottom:8px;font-size:0.78rem;text-transform:uppercase;color:#555;">Danh mục</h3>
-                    <button class="cat-btn active" onclick="filterMarket('Base')">🫓 Bánh Tráng</button>
-                    <button class="cat-btn" onclick="filterMarket('Topping')">🍤 Topping</button>
-                    <button class="cat-btn" onclick="filterMarket('Sauce')">🌶️ Sốt</button>
-                    <button class="cat-btn" onclick="filterMarket('Extra')">✨ Đặc biệt</button>
-                </div>
-                <div class="nb-card" style="background:#fff7ed;">
-                    <h2 id="market-title" style="font-size:1.05rem;margin-bottom:10px;">🫓 Bánh Tráng</h2>
-                    <div id="market-items-grid" class="items-grid"></div>
-                </div>
-            </div>
-        </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchPrepTab('kho')">🧺 Kho</div>
+    <div class="tab" onclick="switchPrepTab('gia')">🏷 Giá bán</div>
+    <div class="tab" onclick="switchPrepTab('nang')">⬆ Nâng cấp</div>
+    <div class="tab" onclick="switchPrepTab('nv')">📋 Nhiệm vụ</div>
+    <div class="tab" onclick="switchPrepTab('dg')">⭐ Đánh giá</div>
+  </div>
 
-        <!-- TAB PREP -->
-        <div id="tab-prep" class="tab-panel">
-            <div class="prep-layout">
-                <div class="nb-card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                        <h2 style="font-size:1.05rem;">🫓 Đang làm (tự do topping)</h2>
-                        <button class="nb-btn nb-btn-pink" onclick="clearCurrentPrep()">🧹 Xóa</button>
-                    </div>
-                    <div id="prep-slots" class="slots-grid"></div>
-                    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-                        <div style="flex:1;background:white;border:2px solid var(--dark);padding:10px;border-radius:8px;">
-                            <div>⚡ Điểm: <strong id="prep-score" style="color:var(--purple);">0</strong></div>
-                            <div>💵 Vốn: <strong id="prep-cost" style="color:#059669;">$0</strong></div>
-                        </div>
-                        <button class="nb-btn nb-btn-green" style="flex:1;padding:12px;" onclick="savePreparedBanh()">✅ Lưu vào kho</button>
-                    </div>
-                </div>
-                <div class="nb-card">
-                    <h3 style="font-size:0.92rem;margin-bottom:8px;">🎒 Nguyên liệu (<span id="inv-count">0</span>)</h3>
-                    <div id="inventory-list" class="inventory-list"></div>
-                </div>
-            </div>
-        </div>
+  <!-- KHO -->
+  <div id="panel-kho" class="panel active">
+    <div class="card">
+      <h3>🛒 Mua nguyên liệu</h3>
+      <div class="inv-grid" id="inv-grid"></div>
+    </div>
+  </div>
 
-        <!-- TAB READY -->
-        <div id="tab-ready" class="tab-panel">
-            <div class="nb-card">
-                <h2 style="font-size:1.05rem;margin-bottom:8px;">📦 Kho bánh đã làm (<span id="ready-count">0</span>)</h2>
-                <p style="font-size:0.78rem;color:#555;margin-bottom:12px;">Những ổ này sẽ mang ra vỉa hè bán.</p>
-                <div id="ready-list" class="ready-list"></div>
-            </div>
-        </div>
+  <!-- GIÁ BÁN -->
+  <div id="panel-gia" class="panel">
+    <div class="card">
+      <h3>🏷 Giá bán gợi ý</h3>
+      <p style="font-size:0.85rem;color:#5D4037;line-height:1.5;">
+        Bánh Tráng Nướng: 25-35k<br>
+        Bánh Tráng Trộn: 30-40k<br>
+        Full topping + cay: 40-55k
+      </p>
+    </div>
+  </div>
 
-        <!-- TAB STREET -->
-        <div id="tab-street" class="tab-panel">
-            <div class="nb-card street-area">
-                <h2 style="font-size:1.15rem;margin-bottom:4px;">🛣️ Đang bán vỉa hè</h2>
-                <p style="font-size:0.82rem;color:#555;" id="street-status">Chờ khách đến...</p>
-                <div style="font-size:0.8rem;margin:6px 0;">Chỉ tiêu: <span id="street-quota">0 / 5</span></div>
-                
-                <div id="current-customer" class="customer-card" style="display:none;">
-                    <div style="font-size:2.2rem;" id="cust-avatar">🧑</div>
-                    <div style="font-weight:900;font-size:1.05rem;margin:6px 0;" id="cust-name">Khách</div>
-                    <p style="font-style:italic;background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #e2e8f0;" id="cust-desc">...</p>
-                    <div style="margin-top:8px;font-size:0.85rem;">
-                        <div>🎯 Cần điểm: <strong id="cust-score" style="color:var(--purple);"></strong></div>
-                        <div>💰 Ngân sách: <strong id="cust-budget" style="color:#059669;"></strong></div>
-                    </div>
-                </div>
+  <!-- NÂNG CẤP -->
+  <div id="panel-nang" class="panel">
+    <div class="card">
+      <h3>⬆ Nâng cấp tiệm</h3>
+      <p style="font-size:0.85rem;color:#5D4037;">Cấp 2 mở khóa: Bánh Tráng Me, Phô mai, Sa tế</p>
+      <p style="font-size:0.85rem;color:#5D4037;margin-top:6px;">Cấp 3 mở khóa: Bánh Tráng Muối Tôm cao cấp, Ớt cấp 3</p>
+    </div>
+  </div>
 
-                <h3 style="margin:16px 0 8px;font-size:0.92rem;">Chọn bánh đã làm để bán:</h3>
-                <div id="street-ready-grid" class="ready-stock-grid"></div>
-            </div>
-        </div>
+  <!-- NHIỆM VỤ -->
+  <div id="panel-nv" class="panel">
+    <div class="card">
+      <h3>📋 Nhiệm vụ hôm nay</h3>
+      <div class="mission-item">
+        <div class="mission-left">3 khách chấm 5 sao<br><small>Thưởng 20k +30 XP</small></div>
+        <div class="mission-right" id="m1">0/3</div>
+      </div>
+      <div class="mission-item">
+        <div class="mission-left">Bán 8 bánh<br><small>Thưởng 20k +30 XP</small></div>
+        <div class="mission-right" id="m2">0/8</div>
+      </div>
+      <div class="mission-item">
+        <div class="mission-left">Làm 6 bánh có topping<br><small>Thưởng 20k +30 XP</small></div>
+        <div class="mission-right" id="m3">0/6</div>
+      </div>
+    </div>
+  </div>
 
-        <!-- TAB REVIEWS -->
-        <div id="tab-reviews" class="tab-panel">
-            <div class="nb-card" style="text-align:center;background:var(--yellow);margin-bottom:12px;">
-                <h2 style="font-size:1.05rem;">🌟 Uy tín tiệm</h2>
-                <div id="display-reputation" style="font-size:2.3rem;font-weight:900;">100%</div>
-            </div>
-            <div class="nb-card">
-                <h3 style="margin-bottom:10px;">💬 Phản hồi gần đây</h3>
-                <div id="reviews-list" class="reviews-container"></div>
-            </div>
-        </div>
+  <!-- ĐÁNH GIÁ -->
+  <div id="panel-dg" class="panel">
+    <div class="card">
+      <h3>⭐ Đánh giá gần đây</h3>
+      <div id="reviews-box" style="font-size:0.85rem;color:#5D4037;"></div>
+    </div>
+  </div>
 
-        <!-- TAB SETTINGS -->
-        <div id="tab-settings" class="tab-panel">
-            <div class="nb-card" style="max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
-                <h2 style="font-size:1.05rem;">🌐 Ngôn ngữ</h2>
-                <select id="lang-select" class="nb-input" onchange="changeLanguage(this.value)">
-                    <option value="vi">🇻🇳 Tiếng Việt</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
-                <hr style="border:1px solid var(--dark);">
-                <h2 style="font-size:1.05rem;">💾 Sao lưu tiến trình</h2>
-                <p style="font-size:0.75rem;color:#555;">Khi mở file mới hãy xuất mã rồi nạp lại.</p>
-                <div style="display:flex;gap:8px;">
-                    <button class="nb-btn nb-btn-yellow" style="flex:1;" onclick="openBackupModal()">📤 Xuất mã</button>
-                    <button class="nb-btn nb-btn-green" style="flex:1;" onclick="openBackupModal()">📥 Nạp mã</button>
-                </div>
-                <hr style="border:1px solid var(--dark);">
-                <button class="nb-btn nb-btn-pink" onclick="resetGameConfirm()">💥 Xóa dữ liệu & chơi lại</button>
-            </div>
-        </div>
+  <button class="open-btn" onclick="openShop()">🛵 Mở cửa ngày <span id="open-day">1</span></button>
+</div>
+
+<!-- ========== SELLING SCREEN ========== -->
+<div id="screen-sell">
+  <div class="sell-header">
+    <div>
+      <div style="font-weight:800;">Ngày <span id="sell-day">1</span></div>
+      <div style="font-size:0.8rem;" id="sell-time">11:04</div>
+    </div>
+    <div class="cash">💰 <span id="sell-cash">40.000</span></div>
+    <div class="stars">⭐ <span id="sell-rep">4.0</span></div>
+  </div>
+
+  <div class="customer-area">
+    <div class="shop-name-box" id="sell-shop-name">Tiệm Bánh Tráng</div>
+    <div class="seats" id="seats">
+      <div class="seat" id="seat0"><div class="avatar">🪑</div><div class="name">Bàn trống</div></div>
+      <div class="seat" id="seat1"><div class="avatar">🪑</div><div class="name">Bàn trống</div></div>
+      <div class="seat" id="seat2"><div class="avatar">🪑</div><div class="name">Bàn trống</div></div>
+    </div>
+  </div>
+
+  <div class="order-bubble" id="order-bubble" style="display:none;">
+    <div class="icon">🫓</div>
+    <div class="order-text" id="order-text"></div>
+    <div class="progress-bar"><div class="progress-fill" id="order-progress"></div></div>
+  </div>
+
+  <div class="kitchen">
+    <!-- Bases -->
+    <div style="font-size:0.78rem;font-weight:800;color:#5D4037;margin-bottom:4px;">Chọn bánh tráng</div>
+    <div class="base-row" id="base-row"></div>
+
+    <!-- Board -->
+    <div class="board empty" id="board">
+      <div>Chưa có bánh.<br>Chạm bánh tráng để lấy.</div>
     </div>
 
-    <!-- NÚT CỐ ĐỊNH DƯỚI -->
-    <div class="bottom-action">
-        <button id="main-action-btn" class="nb-btn nb-btn-green" onclick="toggleStreetMode()">🛵 Ra ngoài bán bánh</button>
+    <!-- Toppings -->
+    <div style="font-size:0.78rem;font-weight:800;color:#5D4037;margin-bottom:4px;">Topping & Sốt</div>
+    <div class="topping-row" id="topping-row"></div>
+
+    <div class="action-row">
+      <button class="btn-deliver" onclick="deliver()">🍽 Giao món</button>
+      <button class="btn-trash" onclick="trash()">🗑</button>
     </div>
+  </div>
 
-    <!-- MODALS -->
-    <div id="modal-startup-language" class="modal-overlay active">
-        <div class="modal-body" style="text-align:center;">
-            <div style="font-size:2.8rem;">🌐</div>
-            <h2 style="color:var(--purple);">Chọn ngôn ngữ</h2>
-            <div class="startup-language-grid">
-                <button class="startup-lang-btn selected" id="startup-lang-vi" onclick="selectStartupLanguage('vi')">🇻🇳<span style="font-size:0.8rem;">Tiếng Việt</span></button>
-                <button class="startup-lang-btn" id="startup-lang-en" onclick="selectStartupLanguage('en')">🇺🇸<span style="font-size:0.8rem;">English</span></button>
-            </div>
-            <button class="nb-btn nb-btn-green" style="width:100%;margin-top:16px;padding:12px;" onclick="confirmStartupLanguage()">✅ Tiếp tục</button>
-        </div>
-    </div>
+  <button class="back-home" id="back-home" onclick="closeShop()">🏠 Về nhà nghỉ</button>
+</div>
 
-    <div id="modal-onboarding" class="modal-overlay">
-        <div class="modal-body" style="text-align:center;">
-            <div style="font-size:2.8rem;">🫓🔥</div>
-            <h2 style="color:var(--purple);">Chào Boss GenZ!</h2>
-            <p style="font-size:0.85rem;color:#444;">Bạn có $2,500 vốn. Làm bánh ở nhà rồi mang ra vỉa hè bán!</p>
-            <div style="text-align:left;margin:12px 0;">
-                <label style="font-weight:800;font-size:0.8rem;">Tên tiệm</label>
-                <input type="text" id="onboard-shop-name" class="nb-input" value="Bánh Tráng Vỉa Hè" maxlength="25">
-                <label style="font-weight:800;font-size:0.8rem;margin-top:8px;display:block;">Tên boss</label>
-                <input type="text" id="onboard-manager-name" class="nb-input" value="Boss GenZ" maxlength="20">
-            </div>
-            <button class="nb-btn nb-btn-green" style="width:100%;padding:12px;" onclick="submitOnboarding()">🔥 Bắt đầu</button>
-        </div>
-    </div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-    <div id="modal-end-day" class="modal-overlay">
-        <div class="modal-body">
-            <h2 style="color:var(--purple);text-align:center;" id="eod-title">🌆 HẾT CA!</h2>
-            <div style="background:white;border:2px solid var(--dark);padding:12px;border-radius:8px;display:flex;flex-direction:column;gap:6px;">
-                <div style="display:flex;justify-content:space-between;"><span>💵 Doanh thu:</span><strong id="eod-revenue" style="color:#059669;">+$0</strong></div>
-                <div style="display:flex;justify-content:space-between;"><span>🛒 Chi phí:</span><strong id="eod-expenses" style="color:#dc2626;">-$0</strong></div>
-                <hr>
-                <div style="display:flex;justify-content:space-between;font-size:1.05rem;"><span>📈 Lợi nhuận:</span><strong id="eod-net">$0</strong></div>
-                <div style="display:flex;justify-content:space-between;"><span>🫓 Khách phục vụ:</span><strong id="eod-builds">0 / 0</strong></div>
-            </div>
-            <p style="font-size:0.8rem;text-align:center;color:#059669;font-weight:bold;">✅ Đã tự động lưu!</p>
-            <button class="nb-btn nb-btn-green" style="width:100%;padding:12px;" onclick="startNextDay()">☀️ Ngày mới (06:00 AM)</button>
-        </div>
-    </div>
+<!-- END DAY MODAL -->
+<div class="modal" id="modal-end">
+  <div class="modal-box">
+    <h2>🌆 Hết ngày!</h2>
+    <div id="end-stats" style="text-align:left;font-size:0.95rem;line-height:1.7;"></div>
+    <button onclick="nextDay()">☀️ Ngày mới</button>
+  </div>
+</div>
 
-    <div id="modal-backup" class="modal-overlay">
-        <div class="modal-body">
-            <h2 style="text-align:center;">💾 Sao lưu / Khôi phục</h2>
-            <textarea id="backup-textarea" class="nb-input" style="height:110px;font-size:0.65rem;font-family:monospace;" placeholder="Mã save..."></textarea>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="nb-btn nb-btn-yellow" style="flex:1 1 100%;" onclick="exportSaveCode()">📤 Xuất mã</button>
-                <button class="nb-btn nb-btn-green" style="flex:1;" onclick="copyBackupCode()">📋 Copy</button>
-                <button class="nb-btn nb-btn-purple" style="flex:1;" onclick="importSaveCode()">📥 Nạp</button>
-            </div>
-            <button class="nb-btn nb-btn-pink" style="width:100%;" onclick="closeModal('modal-backup')">Đóng</button>
-        </div>
-    </div>
+<script>
+const CATALOG = {
+  base: [
+    { id: 'trang', name: 'Bánh Trắng', icon: '🫓', price: 5, stock: 20, unlock: 1 },
+    { id: 'nuong', name: 'Bánh Nướng', icon: '🔥', price: 8, stock: 15, unlock: 1 },
+    { id: 'tron', name: 'Bánh Trộn', icon: '🌀', price: 10, stock: 10, unlock: 2 },
+    { id: 'muoi', name: 'Muối Tôm', icon: '🦐', price: 12, stock: 8, unlock: 3 },
+    { id: 'me', name: 'Bánh Me', icon: '🍋', price: 14, stock: 6, unlock: 4 }
+  ],
+  topping: [
+    { id: 'tom', name: 'Tôm khô', icon: '🦐', price: 6, stock: 15, unlock: 1 },
+    { id: 'trung', name: 'Trứng cút', icon: '🥚', price: 5, stock: 15, unlock: 1 },
+    { id: 'xucxich', name: 'Xúc xích', icon: '🌭', price: 5, stock: 12, unlock: 1 },
+    { id: 'bo', name: 'Bò khô', icon: '🥩', price: 8, stock: 10, unlock: 2 },
+    { id: 'phomai', name: 'Phô mai', icon: '🧀', price: 7, stock: 8, unlock: 2 },
+    { id: 'chabong', name: 'Chà bông', icon: '🥓', price: 6, stock: 10, unlock: 2 },
+    { id: 'rau', name: 'Rau răm', icon: '🌿', price: 3, stock: 20, unlock: 1 },
+    { id: 'ot1', name: 'Ớt cấp 1', icon: '🌶️', price: 2, stock: 20, unlock: 1 },
+    { id: 'ot2', name: 'Ớt cấp 2', icon: '🌶️🌶️', price: 3, stock: 15, unlock: 2 },
+    { id: 'ot3', name: 'Ớt cấp 3', icon: '🌶️🌶️🌶️', price: 4, stock: 10, unlock: 3 },
+    { id: 'me', name: 'Sốt me', icon: '🍯', price: 4, stock: 12, unlock: 1 },
+    { id: 'tuong', name: 'Tương ớt', icon: '🔴', price: 3, stock: 15, unlock: 1 }
+  ]
+};
 
-    <div id="toast-container"></div>
+const ORDERS = [
+  { text: 'Em ơi cho anh 1 bánh tráng <strong>nướng</strong> thêm <strong>trứng cút</strong>, cấp 1 nhé!', need: { base: 'nuong', topping: ['trung'], spice: 1 }, score: 400, budget: 35 },
+  { text: 'Cho em 1 bánh tráng <strong>trộn</strong> full topping + <strong>ớt cấp 2</strong>!', need: { base: 'tron', topping: ['tom','trung'], spice: 2 }, score: 700, budget: 50 },
+  { text: 'Anh cần bánh <strong>muối tôm</strong> + bò khô, cay vừa thôi.', need: { base: 'muoi', topping: ['bo'], spice: 1 }, score: 650, budget: 45 },
+  { text: '1 bánh tráng <strong>nướng phô mai</strong> kéo sợi + sa tế cấp 2!', need: { base: 'nuong', topping: ['phomai','ot2'], spice: 2 }, score: 800, budget: 55 },
+  { text: 'Bánh tráng <strong>trắng</strong> + tôm khô + rau, không cay.', need: { base: 'trang', topping: ['tom','rau'], spice: 0 }, score: 350, budget: 30 },
+  { text: 'Full topping bánh <strong>me</strong> + ớt cấp 3 luôn!', need: { base: 'me', topping: ['tom','trung','ot3'], spice: 3 }, score: 1100, budget: 70 }
+];
 
-    <script>
-        const SAVE_KEY = 'banh_trang_combined_v1';
+let state = {
+  day: 1, cash: 40000, rep: 4.0, level: 1, xp: 0,
+  sold: 0, fiveStar: 0, topped: 0,
+  stock: {},
+  currentOrder: null,
+  currentBase: null,
+  currentToppings: [],
+  cookProgress: 0,
+  time: 11 * 60 + 4, // minutes from 00:00
+  customers: [null, null, null],
+  activeSeat: -1
+};
 
-        const CATALOG = [
-            { id: 'bt_trang', name: 'Bánh Tráng Trắng', brand: 'Truyền thống', category: 'Base', price: 8, score: 120, level: 1 },
-            { id: 'bt_nuong', name: 'Bánh Tráng Nướng', brand: 'Giòn rụm', category: 'Base', price: 15, score: 280, level: 1 },
-            { id: 'bt_tron', name: 'Bánh Tráng Trộn', brand: 'Sài Gòn', category: 'Base', price: 22, score: 420, level: 2 },
-            { id: 'bt_muoi', name: 'Bánh Tráng Muối Tôm', brand: 'Cay nồng', category: 'Base', price: 28, score: 550, level: 3 },
-            { id: 'bt_me', name: 'Bánh Tráng Me', brand: 'Chua ngọt', category: 'Base', price: 35, score: 700, level: 4 },
+// init stock
+[...CATALOG.base, ...CATALOG.topping].forEach(i => state.stock[i.id] = i.stock);
 
-            { id: 'tom_kho', name: 'Tôm Khô', brand: 'Hảo hạng', category: 'Topping', price: 12, score: 180, level: 1 },
-            { id: 'trung_cut', name: 'Trứng Cút', brand: 'Luộc sẵn', category: 'Topping', price: 10, score: 150, level: 1 },
-            { id: 'xuc_xich', name: 'Xúc Xích', brand: 'Cay nhẹ', category: 'Topping', price: 9, score: 140, level: 1 },
-            { id: 'bo_kho', name: 'Bò Khô', brand: 'Khô bò', category: 'Topping', price: 18, score: 260, level: 2 },
-            { id: 'muc_kho', name: 'Mực Khô', brand: 'Biển', category: 'Topping', price: 20, score: 300, level: 2 },
-            { id: 'pho_mai', name: 'Phô Mai', brand: 'Kéo sợi', category: 'Topping', price: 15, score: 220, level: 3 },
-            { id: 'cha_bong', name: 'Chà Bông', brand: 'Heo', category: 'Topping', price: 14, score: 200, level: 3 },
-            { id: 'rau', name: 'Rau Răm + Hành', brand: 'Tươi', category: 'Topping', price: 5, score: 80, level: 1 },
+function fmt(n) { return n.toLocaleString('vi-VN'); }
 
-            { id: 'tuong_ot', name: 'Tương Ớt', brand: 'Cay chuẩn', category: 'Sauce', price: 6, score: 90, level: 1 },
-            { id: 'me_ngot', name: 'Sốt Me', brand: 'Chua ngọt', category: 'Sauce', price: 8, score: 120, level: 1 },
-            { id: 'bo_toi', name: 'Bơ Tỏi', brand: 'Thơm lừng', category: 'Sauce', price: 12, score: 180, level: 2 },
-            { id: 'mayo', name: 'Mayonnaise', brand: 'Béo ngậy', category: 'Sauce', price: 10, score: 150, level: 2 },
-            { id: 'sa_te', name: 'Sa Tế', brand: 'Cực cay', category: 'Sauce', price: 14, score: 210, level: 3 },
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
 
-            { id: 'ot1', name: 'Ớt Cấp 1', brand: 'Nhẹ', category: 'Extra', price: 3, score: 40, level: 1 },
-            { id: 'ot2', name: 'Ớt Cấp 2', brand: 'Vừa', category: 'Extra', price: 5, score: 70, level: 2 },
-            { id: 'ot3', name: 'Ớt Cấp 3', brand: 'Mạnh', category: 'Extra', price: 8, score: 110, level: 3 },
-            { id: 'hanh_phi', name: 'Hành Phi', brand: 'Giòn', category: 'Extra', price: 4, score: 50, level: 1 },
-            { id: 'dau_phong', name: 'Đậu Phộng', brand: 'Rang', category: 'Extra', price: 6, score: 80, level: 1 }
-        ];
+function switchPrepTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+  if (id === 'kho') renderInv();
+  if (id === 'nv') renderMissions();
+  if (id === 'dg') renderReviews();
+}
 
-        const CATEGORIES = ['Base', 'Topping', 'Sauce', 'Extra'];
-        const LEVEL_THRESHOLDS = { 1: 0, 2: 600, 3: 1800, 4: 4500, 5: 10000 };
+function renderInv() {
+  const grid = document.getElementById('inv-grid');
+  grid.innerHTML = '';
+  const all = [...CATALOG.base, ...CATALOG.topping];
+  all.forEach(item => {
+    const locked = item.unlock > state.level;
+    const qty = state.stock[item.id] || 0;
+    const div = document.createElement('div');
+    div.className = 'inv-item' + (locked ? ' locked' : '');
+    div.innerHTML = `
+      <div class="icon">${item.icon}</div>
+      <div class="name">${item.name}</div>
+      ${!locked ? `<div class="qty">${qty}</div>
+      <div class="buy-row">
+        <button onclick="buy('${item.id}',1)">+</button>
+        <button onclick="buy('${item.id}',5)">+5</button>
+      </div>` : '<div style="font-size:0.7rem;margin-top:4px;">🔒 Lv.' + item.unlock + '</div>'}
+    `;
+    grid.appendChild(div);
+  });
+}
 
-        const CLIENTS = {
-            vi: [
-                { role: 'Học sinh', reqLevel: 1, baseScore: 380, baseBudget: 42, desc: 'Cho em 1 bánh tráng nướng thêm trứng cút với ớt nhẹ!' },
-                { role: 'Sinh viên', reqLevel: 1, baseScore: 520, baseBudget: 58, desc: 'Bánh tráng trộn đầy đủ topping, cay vừa thôi.' },
-                { role: 'Shipper', reqLevel: 1, baseScore: 460, baseBudget: 52, desc: 'Nhanh 1 bánh tráng muối tôm + bò khô!' },
-                { role: 'GenZ', reqLevel: 2, baseScore: 880, baseBudget: 95, desc: 'Bánh tráng nướng phô mai kéo sợi + sa tế luôn!' },
-                { role: 'Mẹ bỉm', reqLevel: 2, baseScore: 680, baseBudget: 75, desc: 'Bánh tráng trộn cho 2 mẹ con, đừng cay quá.' },
-                { role: 'Streamer', reqLevel: 3, baseScore: 1350, baseBudget: 145, desc: 'Full topping + ớt cấp 3, mình livestream!' },
-                { role: 'Sếp', reqLevel: 3, baseScore: 1050, baseBudget: 125, desc: 'Bánh cao cấp, sạch sẽ, trình bày đẹp.' },
-                { role: 'Rich kid', reqLevel: 4, baseScore: 1950, baseBudget: 250, desc: 'Làm hết món đỉnh nhất, tiền không vấn đề.' }
-            ],
-            en: [
-                { role: 'Student', reqLevel: 1, baseScore: 380, baseBudget: 42, desc: 'Grilled rice paper + quail eggs, mild spice!' },
-                { role: 'College', reqLevel: 1, baseScore: 520, baseBudget: 58, desc: 'Mixed rice paper full toppings, medium spicy.' },
-                { role: 'Rider', reqLevel: 1, baseScore: 460, baseBudget: 52, desc: 'Quick salted shrimp + beef jerky!' },
-                { role: 'GenZ', reqLevel: 2, baseScore: 880, baseBudget: 95, desc: 'Cheese pull grilled + satay!' },
-                { role: 'Mom', reqLevel: 2, baseScore: 680, baseBudget: 75, desc: 'Mixed for two, not too spicy.' },
-                { role: 'Streamer', reqLevel: 3, baseScore: 1350, baseBudget: 145, desc: 'Full toppings + level 3 chili!' },
-                { role: 'Boss', reqLevel: 3, baseScore: 1050, baseBudget: 125, desc: 'Premium clean presentation.' },
-                { role: 'Rich kid', reqLevel: 4, baseScore: 1950, baseBudget: 250, desc: 'Best of the best, money no problem.' }
-            ]
-        };
+function buy(id, amount) {
+  const item = [...CATALOG.base, ...CATALOG.topping].find(i => i.id === id);
+  if (!item || item.unlock > state.level) return;
+  const cost = item.price * 1000 * amount;
+  if (state.cash < cost) return showToast('Không đủ tiền!');
+  state.cash -= cost;
+  state.stock[id] = (state.stock[id] || 0) + amount;
+  updatePrepUI();
+  renderInv();
+  showToast(`+${amount} ${item.name}`);
+}
 
-        const PRAISES = {
-            vi: ['10/10! Giòn rụm, topping đầy!', 'W! Cay đúng đỉnh!', 'Tiệm này chính chủ energy!', 'Slay! 100 điểm!'],
-            en: ['10/10! Crispy & loaded!', 'W build!', 'Main character energy!', 'Slayed!']
-        };
-        const COMPLAINTS = {
-            vi: ['Cooked... ít topping quá :(', 'L! Sai vị rồi!', 'Thất vọng...', 'Chôn đi tiệm ơi.'],
-            en: ['Cooked... sparse :(', 'L build!', 'Disappointed...', 'Bury it.']
-        };
+function renderMissions() {
+  document.getElementById('m1').innerText = state.fiveStar + '/3';
+  document.getElementById('m2').innerText = state.sold + '/8';
+  document.getElementById('m3').innerText = state.topped + '/6';
+}
 
-        const DEFAULT_STATE = {
-            language: 'vi', languageConfirmed: false,
-            shopName: 'Bánh Tráng Vỉa Hè', managerName: 'Boss GenZ',
-            isFirstTime: true, cash: 2500, level: 1, xp: 0, day: 1,
-            timeSeconds: 21600, dailyQuota: 6,
-            inventory: [], prepared: [],
-            currentPrep: { Base: null, Topping: null, Sauce: null, Extra: null },
-            reviews: [], reputation: 100,
-            todayServed: 0, todaySpawned: 0,
-            dailyNote: '', dailyStats: { revenue: 0, expenses: 0 },
-            isStreetMode: false, currentCustomer: null,
-            foundLogoEgg: false
-        };
+function renderReviews() {
+  const box = document.getElementById('reviews-box');
+  box.innerHTML = state.sold === 0 ? 'Chưa có đánh giá nào.' : 'Khách khen bánh ngon! Tiếp tục phát huy nhé.';
+}
 
-        let gameState = {};
-        let currentMarketCat = 'Base';
-        let timerInterval = null;
-        let pendingLang = 'vi';
+function updatePrepUI() {
+  document.getElementById('prep-day').innerText = state.day;
+  document.getElementById('open-day').innerText = state.day;
+  document.getElementById('prep-cash').innerText = fmt(state.cash);
+  document.getElementById('prep-rep').innerText = state.rep.toFixed(1);
+  document.getElementById('shop-level').innerText = state.level;
+  const need = state.level * 150;
+  document.getElementById('xp-text').innerText = state.xp + '/' + need;
+  document.getElementById('xp-fill').style.width = Math.min(100, (state.xp / need) * 100) + '%';
+}
 
-        function getRandomQuota() { return Math.floor(Math.random() * 5) + 5; }
+function editName() {
+  const n = prompt('Tên tiệm:', document.getElementById('shop-name').innerText);
+  if (n && n.trim()) {
+    document.getElementById('shop-name').innerText = n.trim();
+    document.getElementById('sell-shop-name').innerText = n.trim();
+  }
+}
 
-        function initGame() {
-            loadGame();
-            document.getElementById('lang-select').value = gameState.language || 'vi';
-            if (gameState.isFirstTime) {
-                if (gameState.languageConfirmed) {
-                    closeModal('modal-startup-language');
-                    openModal('modal-onboarding');
-                } else {
-                    openModal('modal-startup-language');
-                    updateStartupUI();
-                }
-            } else closeModal('modal-startup-language');
-            checkLevelUp();
-            startClock();
-            renderAll();
-            updateBottomButton();
-        }
+// ===== OPEN / CLOSE SHOP =====
+function openShop() {
+  document.getElementById('screen-prep').style.display = 'none';
+  document.getElementById('screen-sell').style.display = 'block';
+  document.getElementById('back-home').style.display = 'block';
+  document.querySelector('.open-btn').style.display = 'none';
+  updateSellUI();
+  renderKitchen();
+  spawnCustomer();
+  startTimer();
+}
 
-        function saveGame() { localStorage.setItem(SAVE_KEY, JSON.stringify(gameState)); }
-        function loadGame() {
-            try {
-                const s = localStorage.getItem(SAVE_KEY);
-                if (s) {
-                    gameState = { ...DEFAULT_STATE, ...JSON.parse(s) };
-                    CATEGORIES.forEach(c => { if (!gameState.currentPrep[c]) gameState.currentPrep[c] = null; });
-                    if (!gameState.dailyQuota) gameState.dailyQuota = getRandomQuota();
-                } else {
-                    gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-                    gameState.dailyQuota = getRandomQuota();
-                }
-            } catch (e) { gameState = JSON.parse(JSON.stringify(DEFAULT_STATE)); }
-        }
+function closeShop() {
+  document.getElementById('screen-sell').style.display = 'none';
+  document.getElementById('screen-prep').style.display = 'block';
+  document.getElementById('back-home').style.display = 'none';
+  document.querySelector('.open-btn').style.display = 'block';
+  state.currentOrder = null;
+  state.currentBase = null;
+  state.currentToppings = [];
+  clearInterval(window.sellTimer);
+  updatePrepUI();
+  renderMissions();
+}
 
-        function selectStartupLanguage(lang) { pendingLang = lang; updateStartupUI(); }
-        function updateStartupUI() {
-            document.getElementById('startup-lang-vi').classList.toggle('selected', pendingLang === 'vi');
-            document.getElementById('startup-lang-en').classList.toggle('selected', pendingLang === 'en');
-        }
-        function confirmStartupLanguage() {
-            gameState.language = pendingLang;
-            gameState.languageConfirmed = true;
-            saveGame();
-            closeModal('modal-startup-language');
-            openModal('modal-onboarding');
-        }
-        function submitOnboarding() {
-            const shop = document.getElementById('onboard-shop-name').value.trim();
-            const boss = document.getElementById('onboard-manager-name').value.trim();
-            if (shop) gameState.shopName = shop;
-            if (boss) gameState.managerName = boss;
-            gameState.isFirstTime = false;
-            closeModal('modal-onboarding');
-            saveGame();
-            renderAll();
-            showToast('🚀 Bắt đầu làm bánh thôi!');
-        }
-        function changeLanguage(lang) { gameState.language = lang; saveGame(); }
+function updateSellUI() {
+  document.getElementById('sell-day').innerText = state.day;
+  document.getElementById('sell-cash').innerText = fmt(state.cash);
+  document.getElementById('sell-rep').innerText = state.rep.toFixed(1);
+  const h = Math.floor(state.time / 60);
+  const m = state.time % 60;
+  document.getElementById('sell-time').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+}
 
-        function startClock() {
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                if (gameState.isStreetMode) {
-                    gameState.timeSeconds += 55;
-                    if (gameState.timeSeconds >= 61200) {
-                        gameState.timeSeconds = 61200;
-                        updateClockDisplay();
-                        triggerEndOfDay(false);
-                    } else {
-                        updateClockDisplay();
-                        if (!gameState.currentCustomer && gameState.todaySpawned < gameState.dailyQuota && gameState.prepared.length > 0) {
-                            spawnCustomer();
-                        }
-                    }
-                }
-            }, 1000);
-        }
-        function updateClockDisplay() {
-            const hrs = Math.floor(gameState.timeSeconds / 3600);
-            const mins = Math.floor((gameState.timeSeconds % 3600) / 60);
-            const ampm = hrs >= 12 ? 'PM' : 'AM';
-            document.getElementById('display-clock').innerText = `${(hrs%12||12).toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')} ${ampm}`;
-        }
+function startTimer() {
+  clearInterval(window.sellTimer);
+  window.sellTimer = setInterval(() => {
+    state.time += 1;
+    if (state.time >= 17 * 60) { // 17:00
+      endDay();
+      return;
+    }
+    updateSellUI();
+  }, 2000); // 2s real = 1 phút game
+}
 
-        function renderAll() {
-            renderHeader();
-            renderMarket();
-            renderPrep();
-            renderReady();
-            renderReviews();
-            if (gameState.isStreetMode) renderStreet();
-        }
-        function renderHeader() {
-            document.getElementById('display-shop-name').innerText = gameState.shopName;
-            document.getElementById('display-manager-name').innerText = gameState.managerName;
-            document.getElementById('display-cash').innerText = `$${gameState.cash.toLocaleString()}`;
-            document.getElementById('display-day').innerText = `Ngày ${gameState.day}`;
-            document.getElementById('display-today-clients').innerText = `${gameState.todayServed} / ${gameState.dailyQuota}`;
-            document.getElementById('display-reputation').innerText = `${gameState.reputation}%`;
-            document.getElementById('display-level').innerText = `Lv.${gameState.level}`;
-            const cur = LEVEL_THRESHOLDS[gameState.level];
-            const next = gameState.level < 5 ? LEVEL_THRESHOLDS[gameState.level+1] : LEVEL_THRESHOLDS[5];
-            const pct = gameState.level < 5 ? ((gameState.xp - cur) / (next - cur)) * 100 : 100;
-            document.getElementById('xp-bar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
-            updateClockDisplay();
-            document.getElementById('daily-note-input').value = gameState.dailyNote || '';
-        }
+// ===== CUSTOMER =====
+function spawnCustomer() {
+  if (state.currentOrder) return;
+  const empty = state.customers.findIndex(c => !c);
+  if (empty === -1) return;
+  const order = ORDERS[Math.floor(Math.random() * ORDERS.length)];
+  // filter by level
+  const unlocked = ORDERS.filter(o => {
+    const b = CATALOG.base.find(x => x.id === o.need.base);
+    return b && b.unlock <= state.level;
+  });
+  const chosen = unlocked[Math.floor(Math.random() * unlocked.length)] || order;
+  state.customers[empty] = { ...chosen, patience: 100 };
+  state.activeSeat = empty;
+  state.currentOrder = chosen;
+  renderSeats();
+  showOrder();
+}
 
-        function switchTab(id) {
-            if (gameState.isStreetMode) return;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
-            document.getElementById(`tab-${id}`).classList.add('active');
-        }
+function renderSeats() {
+  for (let i = 0; i < 3; i++) {
+    const seat = document.getElementById('seat' + i);
+    const c = state.customers[i];
+    if (c) {
+      seat.className = 'seat occupied';
+      seat.innerHTML = `<div class="avatar">😊</div><div class="name">Khách ${i+1}</div>`;
+    } else {
+      seat.className = 'seat';
+      seat.innerHTML = `<div class="avatar">🪑</div><div class="name">Bàn trống</div>`;
+    }
+  }
+}
 
-        function filterMarket(cat) {
-            currentMarketCat = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(cat) || (cat==='Base' && b.innerText.includes('Bánh'))));
-            const titles = { Base: '🫓 Bánh Tráng', Topping: '🍤 Topping', Sauce: '🌶️ Sốt', Extra: '✨ Đặc biệt' };
-            document.getElementById('market-title').innerText = titles[cat];
-            renderMarket();
-        }
-        function renderMarket() {
-            const grid = document.getElementById('market-items-grid');
-            grid.innerHTML = '';
-            CATALOG.filter(i => i.category === currentMarketCat).forEach(item => {
-                const locked = item.level > gameState.level;
-                const card = document.createElement('div');
-                card.className = `item-card ${locked ? 'locked' : ''}`;
-                card.innerHTML = `
-                    <div style="display:flex;justify-content:space-between;">
-                        <span style="font-weight:800;font-size:0.78rem;">${item.name}</span>
-                        <span class="nb-badge">⚡${item.score}</span>
-                    </div>
-                    <div style="font-size:0.68rem;color:#666;">${item.brand}</div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <span style="font-weight:900;color:${locked?'#9ca3af':'#059669'}">$${item.price}</span>
-                        <button class="nb-btn nb-btn-green" style="padding:4px 8px;font-size:0.72rem;" ${locked?'disabled':`onclick="buyItem('${item.id}')"`}>${locked?'Khóa':'Mua'}</button>
-                    </div>
-                    ${locked ? `<div class="lock-overlay">🔒 Lv.${item.level}</div>` : ''}
-                `;
-                grid.appendChild(card);
-            });
-        }
-        function buyItem(id) {
-            const item = CATALOG.find(i => i.id === id);
-            if (!item || item.level > gameState.level) return showToast('🔒 Chưa đủ level');
-            if (gameState.cash < item.price) return showToast('💸 Không đủ tiền');
-            gameState.cash -= item.price;
-            gameState.dailyStats.expenses += item.price;
-            gameState.inventory.push({ ...item, instanceId: Date.now() + Math.random() });
-            renderHeader(); renderPrep(); saveGame();
-            showToast(`✅ Mua ${item.name}`);
-        }
+function showOrder() {
+  const bubble = document.getElementById('order-bubble');
+  bubble.style.display = 'block';
+  document.getElementById('order-text').innerHTML = state.currentOrder.text;
+  document.getElementById('order-progress').style.width = '100%';
+}
 
-        function renderPrep() {
-            const slots = document.getElementById('prep-slots');
-            slots.innerHTML = '';
-            let score = 0, cost = 0;
-            CATEGORIES.forEach(cat => {
-                const item = gameState.currentPrep[cat];
-                if (item) { score += item.score; cost += item.price; }
-                const div = document.createElement('div');
-                div.className = `slot-card ${item ? 'filled' : ''}`;
-                div.innerHTML = `
-                    <div class="slot-title">${cat}</div>
-                    ${item ? `<div style="font-weight:800;font-size:0.78rem;margin-top:4px;">${item.name}</div>
-                              <button class="nb-btn nb-btn-pink" style="padding:2px 6px;font-size:0.68rem;margin-top:5px;" onclick="unmountPrep('${cat}')">Gỡ</button>`
-                           : `<div style="font-size:0.72rem;color:#999;margin-top:6px;">(Trống)</div>`}
-                `;
-                slots.appendChild(div);
-            });
-            document.getElementById('prep-score').innerText = score;
-            document.getElementById('prep-cost').innerText = `$${cost}`;
+// ===== KITCHEN =====
+function renderKitchen() {
+  // bases
+  const baseRow = document.getElementById('base-row');
+  baseRow.innerHTML = '';
+  CATALOG.base.forEach(b => {
+    const locked = b.unlock > state.level;
+    const qty = state.stock[b.id] || 0;
+    const div = document.createElement('div');
+    div.className = 'ing-btn' + (locked ? ' locked' : '') + (state.currentBase === b.id ? ' selected' : '');
+    div.innerHTML = `<div class="icon">${b.icon}</div><div class="label">${b.name}</div>${!locked ? `<div class="stock">${qty}</div>` : ''}`;
+    if (!locked) div.onclick = () => selectBase(b.id);
+    baseRow.appendChild(div);
+  });
 
-            const inv = document.getElementById('inventory-list');
-            inv.innerHTML = '';
-            document.getElementById('inv-count').innerText = gameState.inventory.length;
-            if (!gameState.inventory.length) {
-                inv.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">Kho trống – mua ở chợ</div>`;
-            } else {
-                gameState.inventory.forEach(item => {
-                    const el = document.createElement('div');
-                    el.className = 'inventory-item';
-                    el.innerHTML = `
-                        <div>
-                            <div style="font-weight:800;font-size:0.78rem;">${item.name}</div>
-                            <div style="font-size:0.68rem;color:#666;">${item.category} · ⚡${item.score}</div>
-                        </div>
-                        <button class="nb-btn nb-btn-yellow" style="padding:4px 8px;font-size:0.72rem;" onclick="mountPrep('${item.instanceId}')">Thêm</button>
-                    `;
-                    inv.appendChild(el);
-                });
-            }
-        }
-        function mountPrep(instanceId) {
-            const idx = gameState.inventory.findIndex(i => i.instanceId == instanceId);
-            if (idx === -1) return;
-            const item = gameState.inventory[idx];
-            if (gameState.currentPrep[item.category]) gameState.inventory.push(gameState.currentPrep[item.category]);
-            gameState.currentPrep[item.category] = item;
-            gameState.inventory.splice(idx, 1);
-            renderPrep();
-        }
-        function unmountPrep(cat) {
-            if (!gameState.currentPrep[cat]) return;
-            gameState.inventory.push(gameState.currentPrep[cat]);
-            gameState.currentPrep[cat] = null;
-            renderPrep();
-        }
-        function clearCurrentPrep() {
-            CATEGORIES.forEach(c => {
-                if (gameState.currentPrep[c]) {
-                    gameState.inventory.push(gameState.currentPrep[c]);
-                    gameState.currentPrep[c] = null;
-                }
-            });
-            renderPrep();
-        }
-        function savePreparedBanh() {
-            if (!gameState.currentPrep.Base) return showToast('❌ Cần ít nhất 1 lớp bánh tráng!');
-            let score = 0, cost = 0;
-            const parts = [];
-            CATEGORIES.forEach(c => {
-                if (gameState.currentPrep[c]) {
-                    score += gameState.currentPrep[c].score;
-                    cost += gameState.currentPrep[c].price;
-                    parts.push(gameState.currentPrep[c].name);
-                }
-            });
-            gameState.prepared.push({ id: Date.now() + Math.random(), name: parts.join(' + '), score, cost });
-            CATEGORIES.forEach(c => gameState.currentPrep[c] = null);
-            renderPrep(); renderReady(); saveGame();
-            showToast('✅ Đã lưu bánh vào kho!');
-        }
+  // toppings
+  const topRow = document.getElementById('topping-row');
+  topRow.innerHTML = '';
+  CATALOG.topping.forEach(t => {
+    const locked = t.unlock > state.level;
+    const qty = state.stock[t.id] || 0;
+    const selected = state.currentToppings.includes(t.id);
+    const div = document.createElement('div');
+    div.className = 'ing-btn' + (locked ? ' locked' : '') + (selected ? ' selected' : '');
+    div.innerHTML = `<div class="icon">${t.icon}</div><div class="label">${t.name}</div>${!locked ? `<div class="stock">${qty}</div>` : ''}`;
+    if (!locked) div.onclick = () => toggleTopping(t.id);
+    topRow.appendChild(div);
+  });
 
-        function renderReady() {
-            const list = document.getElementById('ready-list');
-            list.innerHTML = '';
-            document.getElementById('ready-count').innerText = gameState.prepared.length;
-            if (!gameState.prepared.length) {
-                list.innerHTML = `<div style="text-align:center;color:#777;padding:16px;">Chưa có bánh. Hãy làm ở tab Chuẩn bị!</div>`;
-                return;
-            }
-            gameState.prepared.forEach((b, idx) => {
-                const el = document.createElement('div');
-                el.className = 'ready-item';
-                el.innerHTML = `
-                    <div>
-                        <div style="font-weight:800;font-size:0.78rem;">${b.name}</div>
-                        <div style="font-size:0.68rem;color:#666;">⚡ ${b.score} · vốn $${b.cost}</div>
-                    </div>
-                    <button class="nb-btn nb-btn-pink" style="padding:4px 8px;font-size:0.68rem;" onclick="deletePrepared(${idx})">Xóa</button>
-                `;
-                list.appendChild(el);
-            });
-        }
-        function deletePrepared(idx) {
-            gameState.prepared.splice(idx, 1);
-            renderReady(); saveGame();
-        }
+  // board
+  const board = document.getElementById('board');
+  if (!state.currentBase) {
+    board.className = 'board empty';
+    board.innerHTML = '<div>Chưa có bánh.<br>Chạm bánh tráng để lấy.</div>';
+  } else {
+    const b = CATALOG.base.find(x => x.id === state.currentBase);
+    board.className = 'board has-item';
+    board.innerHTML = `<div class="banh">${b.icon}</div><div style="font-size:0.8rem;font-weight:700;">${b.name}</div>
+      <div class="cook-bar"><div class="cook-fill" id="cook-fill" style="width:${state.cookProgress}%"></div></div>`;
+  }
+}
 
-        function toggleStreetMode() {
-            if (!gameState.isStreetMode) {
-                if (gameState.prepared.length === 0) return showToast('❌ Chưa có bánh trong kho!');
-                gameState.isStreetMode = true;
-                document.getElementById('main-nav').style.display = 'none';
-                document.getElementById('sticky-note').style.display = 'none';
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById('tab-street').classList.add('active');
-                if (!gameState.currentCustomer) spawnCustomer();
-                updateBottomButton();
-                showToast('🛵 Đã ra vỉa hè!');
-            } else {
-                gameState.isStreetMode = false;
-                gameState.currentCustomer = null;
-                document.getElementById('main-nav').style.display = 'flex';
-                document.getElementById('sticky-note').style.display = 'flex';
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById('tab-prep').classList.add('active');
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                updateBottomButton();
-                showToast('🏠 Đã về nhà.');
-            }
-            renderAll();
-        }
-        function updateBottomButton() {
-            const btn = document.getElementById('main-action-btn');
-            if (gameState.isStreetMode) {
-                btn.innerHTML = '🏠 Về nhà nghỉ';
-                btn.className = 'nb-btn nb-btn-pink';
-            } else {
-                btn.innerHTML = '🛵 Ra ngoài bán bánh';
-                btn.className = 'nb-btn nb-btn-green';
-            }
-        }
+function selectBase(id) {
+  if ((state.stock[id] || 0) <= 0) return showToast('Hết hàng!');
+  state.currentBase = id;
+  state.cookProgress = 30;
+  renderKitchen();
+}
 
-        function spawnCustomer() {
-            if (gameState.todaySpawned >= gameState.dailyQuota) return;
-            gameState.todaySpawned++;
-            const list = CLIENTS[gameState.language] || CLIENTS.vi;
-            const available = list.filter(c => c.reqLevel <= gameState.level);
-            const type = available[Math.floor(Math.random() * available.length)];
-            const avatars = ['👦','👧','🧑','👩','🧔','🛵','💼','👑'];
-            gameState.currentCustomer = {
-                role: type.role, avatar: avatars[Math.floor(Math.random()*avatars.length)],
-                desc: type.desc,
-                targetScore: Math.floor(type.baseScore * (0.85 + Math.random()*0.3)),
-                budget: Math.floor(type.baseBudget * (1.0 + Math.random()*0.35))
-            };
-            renderStreet();
-        }
-        function renderStreet() {
-            document.getElementById('street-quota').innerText = `${gameState.todayServed} / ${gameState.dailyQuota}`;
-            const cust = gameState.currentCustomer;
-            const box = document.getElementById('current-customer');
-            const status = document.getElementById('street-status');
-            if (!cust) {
-                box.style.display = 'none';
-                status.innerText = gameState.todayServed >= gameState.dailyQuota ? 'Đã đủ chỉ tiêu hôm nay!' : 'Chờ khách đến...';
-            } else {
-                box.style.display = 'block';
-                status.innerText = 'Khách đang chờ bạn!';
-                document.getElementById('cust-avatar').innerText = cust.avatar;
-                document.getElementById('cust-name').innerText = cust.role;
-                document.getElementById('cust-desc').innerText = `"${cust.desc}"`;
-                document.getElementById('cust-score').innerText = `≥ ${cust.targetScore}`;
-                document.getElementById('cust-budget').innerText = `$${cust.budget}`;
-            }
-            const grid = document.getElementById('street-ready-grid');
-            grid.innerHTML = '';
-            if (!gameState.prepared.length) {
-                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#777;">Hết bánh! Về nhà làm thêm.</div>`;
-                return;
-            }
-            gameState.prepared.forEach((b, idx) => {
-                const card = document.createElement('div');
-                card.className = 'nb-card';
-                card.style.padding = '10px';
-                card.innerHTML = `
-                    <div style="font-weight:800;font-size:0.78rem;margin-bottom:4px;">${b.name}</div>
-                    <div style="font-size:0.72rem;color:#666;">⚡ ${b.score} · vốn $${b.cost}</div>
-                    <button class="nb-btn nb-btn-green" style="width:100%;margin-top:8px;padding:8px;" onclick="sellBanh(${idx})">Bán cho khách</button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-        function sellBanh(idx) {
-            const banh = gameState.prepared[idx];
-            const cust = gameState.currentCustomer;
-            if (!banh || !cust) return;
-            const metScore = banh.score >= cust.targetScore;
-            const metBudget = banh.cost <= cust.budget;
-            const lang = gameState.language || 'vi';
-            const praises = PRAISES[lang] || PRAISES.vi;
-            const complaints = COMPLAINTS[lang] || COMPLAINTS.vi;
-            let stars = 5, text = '';
-            if (metScore && metBudget) { stars = 5; text = praises[Math.floor(Math.random()*praises.length)]; }
-            else if (metScore && !metBudget) { stars = 3; text = '(Đắt!) ' + praises[0]; }
-            else if (!metScore && metBudget) { stars = 2; text = '(Ít topping!) ' + complaints[0]; }
-            else { stars = 1; text = complaints[Math.floor(Math.random()*complaints.length)]; }
+function toggleTopping(id) {
+  if ((state.stock[id] || 0) <= 0) return showToast('Hết hàng!');
+  if (!state.currentBase) return showToast('Chọn bánh tráng trước!');
+  const idx = state.currentToppings.indexOf(id);
+  if (idx >= 0) state.currentToppings.splice(idx, 1);
+  else state.currentToppings.push(id);
+  state.cookProgress = Math.min(100, state.cookProgress + 15);
+  renderKitchen();
+}
 
-            let payout = Math.floor(banh.cost * 1.45);
-            if (payout > cust.budget) payout = cust.budget;
-            if (stars === 1) payout = Math.floor(banh.cost * 0.8);
-            const tip = stars === 5 ? Math.floor(payout * 0.2) : 0;
-            const total = payout + tip;
+function trash() {
+  state.currentBase = null;
+  state.currentToppings = [];
+  state.cookProgress = 0;
+  renderKitchen();
+}
 
-            gameState.cash += total;
-            gameState.dailyStats.revenue += total;
-            gameState.todayServed++;
-            gameState.xp += stars * 95;
-            checkLevelUp();
-            if (stars >= 4) gameState.reputation = Math.min(100, gameState.reputation + 2);
-            else gameState.reputation = Math.max(15, gameState.reputation - 5);
+function deliver() {
+  if (!state.currentOrder || !state.currentBase) return showToast('Chưa làm xong!');
+  // check match
+  const need = state.currentOrder.need;
+  let stars = 5;
+  if (state.currentBase !== need.base) stars -= 2;
+  need.topping.forEach(t => {
+    if (!state.currentToppings.includes(t)) stars -= 1;
+  });
+  if (stars < 1) stars = 1;
 
-            gameState.reviews.unshift({ clientName: cust.role, stars, text, earned: total, tip });
-            if (gameState.reviews.length > 12) gameState.reviews.pop();
+  // consume stock
+  state.stock[state.currentBase]--;
+  state.currentToppings.forEach(t => state.stock[t]--);
 
-            gameState.prepared.splice(idx, 1);
-            gameState.currentCustomer = null;
-            renderHeader(); renderReady(); renderReviews(); saveGame();
-            showToast(`✅ +$${total} (${stars}⭐)`);
+  // pay
+  const pay = Math.floor(state.currentOrder.budget * (0.7 + stars * 0.08)) * 1000;
+  state.cash += pay;
+  state.sold++;
+  if (stars >= 5) state.fiveStar++;
+  if (state.currentToppings.length > 0) state.topped++;
+  state.xp += stars * 12;
+  if (stars >= 4) state.rep = Math.min(5, state.rep + 0.05);
+  else state.rep = Math.max(1, state.rep - 0.1);
 
-            if (gameState.todayServed >= gameState.dailyQuota) {
-                setTimeout(() => triggerEndOfDay(true), 1000);
-            } else {
-                setTimeout(() => { if (gameState.isStreetMode && gameState.prepared.length > 0) spawnCustomer(); }, 1100);
-            }
-        }
+  // level up
+  const needXp = state.level * 150;
+  if (state.xp >= needXp) {
+    state.level++;
+    state.xp = 0;
+    showToast('🎉 Lên cấp ' + state.level + '!');
+  }
 
-        function checkLevelUp() {
-            let newLv = 1;
-            for (let l = 5; l >= 1; l--) if (gameState.xp >= LEVEL_THRESHOLDS[l]) { newLv = l; break; }
-            if (newLv > gameState.level) {
-                gameState.level = newLv;
-                showToast(`🎉 Lên Level ${newLv}!`);
-                renderMarket();
-            }
-        }
+  showToast(`+${fmt(pay)} · ${stars}⭐`);
+  
+  // clear
+  state.customers[state.activeSeat] = null;
+  state.currentOrder = null;
+  state.currentBase = null;
+  state.currentToppings = [];
+  state.cookProgress = 0;
+  document.getElementById('order-bubble').style.display = 'none';
+  renderSeats();
+  renderKitchen();
+  updateSellUI();
 
-        function triggerEndOfDay(early) {
-            clearInterval(timerInterval);
-            saveGame();
-            document.getElementById('eod-title').innerText = early ? '🎉 HOÀN THÀNH CHỈ TIÊU!' : '🌆 HẾT CA!';
-            document.getElementById('eod-revenue').innerText = `+$${gameState.dailyStats.revenue.toLocaleString()}`;
-            document.getElementById('eod-expenses').innerText = `-$${gameState.dailyStats.expenses.toLocaleString()}`;
-            const net = gameState.dailyStats.revenue - gameState.dailyStats.expenses;
-            const netEl = document.getElementById('eod-net');
-            netEl.innerText = `${net>=0?'+':''}$${net.toLocaleString()}`;
-            netEl.style.color = net >= 0 ? '#059669' : '#dc2626';
-            document.getElementById('eod-builds').innerText = `${gameState.todayServed} / ${gameState.dailyQuota}`;
-            if (gameState.isStreetMode) toggleStreetMode();
-            openModal('modal-end-day');
-        }
-        function startNextDay() {
-            closeModal('modal-end-day');
-            gameState.day++;
-            gameState.timeSeconds = 21600;
-            gameState.dailyQuota = getRandomQuota();
-            gameState.todayServed = 0;
-            gameState.todaySpawned = 0;
-            gameState.currentCustomer = null;
-            gameState.dailyStats = { revenue: 0, expenses: 0 };
-            startClock();
-            renderAll();
-            saveGame();
-            showToast('☀️ Ngày mới bắt đầu!');
-        }
+  // next customer
+  setTimeout(spawnCustomer, 1500);
+}
 
-        function renderReviews() {
-            const list = document.getElementById('reviews-list');
-            list.innerHTML = '';
-            if (!gameState.reviews.length) {
-                list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">Chưa có đánh giá</div>`;
-                return;
-            }
-            gameState.reviews.forEach(r => {
-                const card = document.createElement('div');
-                card.className = 'review-card';
-                card.innerHTML = `
-                    <div style="display:flex;justify-content:space-between;">
-                        <strong>${r.clientName}</strong>
-                        <span class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span>
-                    </div>
-                    <p style="font-size:0.8rem;margin:6px 0;">"${r.text}"</p>
-                    <div style="font-size:0.72rem;color:#059669;font-weight:800;text-align:right;">+$${r.earned} ${r.tip?`(tip +$${r.tip})`:''}</div>
-                `;
-                list.appendChild(card);
-            });
-        }
+function endDay() {
+  clearInterval(window.sellTimer);
+  document.getElementById('end-stats').innerHTML = `
+    <div>💵 Doanh thu hôm nay: <strong>+${fmt(state.cash - 40000)}</strong></div>
+    <div>🫓 Đã bán: <strong>${state.sold}</strong> bánh</div>
+    <div>⭐ 5 sao: <strong>${state.fiveStar}</strong></div>
+    <div>📈 Uy tín: <strong>${state.rep.toFixed(1)}</strong></div>
+  `;
+  document.getElementById('modal-end').classList.add('show');
+}
 
-        function saveDailyNote(notify) {
-            gameState.dailyNote = document.getElementById('daily-note-input').value;
-            saveGame();
-            if (notify) showToast('📌 Đã lưu');
-        }
-        function editShopName() {
-            const v = prompt('Tên tiệm:', gameState.shopName);
-            if (v && v.trim()) { gameState.shopName = v.trim(); renderHeader(); saveGame(); }
-        }
-        function editManagerName() {
-            const v = prompt('Tên boss:', gameState.managerName);
-            if (v && v.trim()) { gameState.managerName = v.trim(); renderHeader(); saveGame(); }
-        }
-        function resetGameConfirm() {
-            if (confirm('⚠️ Xóa hết tiến trình?')) { localStorage.removeItem(SAVE_KEY); location.reload(); }
-        }
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function showToast(msg) {
-            const c = document.getElementById('toast-container');
-            const t = document.createElement('div');
-            t.className = 'toast'; t.innerText = msg;
-            c.appendChild(t);
-            setTimeout(() => t.remove(), 2500);
-        }
+function nextDay() {
+  document.getElementById('modal-end').classList.remove('show');
+  state.day++;
+  state.time = 11 * 60;
+  state.sold = 0; state.fiveStar = 0; state.topped = 0;
+  state.customers = [null, null, null];
+  state.currentOrder = null;
+  closeShop();
+  // trừ tiền mặt bằng + điện nước
+  state.cash -= 15000;
+  if (state.cash < 0) state.cash = 0;
+  showToast('Đã trừ 15k điện nước');
+  updatePrepUI();
+}
 
-        function openBackupModal() { document.getElementById('backup-textarea').value = ''; openModal('modal-backup'); }
-        function exportSaveCode() {
-            document.getElementById('backup-textarea').value = btoa(unescape(encodeURIComponent(JSON.stringify(gameState))));
-            showToast('✅ Đã tạo mã');
-        }
-        function copyBackupCode() {
-            document.getElementById('backup-textarea').select();
-            document.execCommand('copy');
-            showToast('✅ Đã copy');
-        }
-        function importSaveCode() {
-            const code = document.getElementById('backup-textarea').value.trim();
-            if (!code) return showToast('❌ Dán mã trước');
-            try {
-                const parsed = JSON.parse(decodeURIComponent(escape(atob(code))));
-                if (!confirm('Ghi đè tiến trình?')) return;
-                gameState = { ...DEFAULT_STATE, ...parsed };
-                saveGame();
-                showToast('✅ Khôi phục thành công');
-                setTimeout(() => location.reload(), 600);
-            } catch (e) { showToast('❌ Mã lỗi'); }
-        }
-
-        let eggC = 0, eggT = null;
-        function triggerLogoEgg() {
-            eggC++; clearTimeout(eggT); eggT = setTimeout(() => eggC = 0, 1400);
-            if (eggC < 7) return;
-            eggC = 0;
-            if (!gameState.foundLogoEgg) {
-                gameState.foundLogoEgg = true; gameState.cash += 150;
-                renderHeader(); saveGame();
-                showToast('🥚 EASTER EGG! +$150');
-            } else showToast('🥚 Đúng nhận sai cãi!');
-        }
-
-        window.onload = initGame;
-    </script>
+// init
+updatePrepUI();
+renderInv();
+renderMissions();
+</script>
 </body>
 </html>
