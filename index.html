@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tiệm Bánh Tráng Tycoon</title>
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bánh Tráng">
+    <meta name="theme-color" content="#FF6B35">
+
+    <link id="icon-apple-touch" rel="apple-touch-icon" sizes="180x180" href="">
+    <link id="icon-favicon" rel="icon" type="image/png" sizes="512x512" href="">
+    <link id="icon-manifest" rel="manifest" href="">
+    <script>
+        (function () {
+            function roundRectPath(ctx, x, y, w, h, r) {
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + h, r);
+                ctx.arcTo(x + w, y + h, x, y + h, r);
+                ctx.arcTo(x, y + h, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
+            }
+            function drawLogo(size) {
+                const canvas = document.createElement('canvas');
+                canvas.width = size; canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                const s = size / 200;
+                roundRectPath(ctx, 4*s, 4*s, 192*s, 192*s, 40*s);
+                ctx.fillStyle = '#FF6B35'; ctx.fill();
+                ctx.lineWidth = 8*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                // bánh tráng tròn
+                ctx.beginPath(); ctx.arc(100*s, 95*s, 55*s, 0, Math.PI*2);
+                ctx.fillStyle = '#FFF8E7'; ctx.fill();
+                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                // topping
+                ctx.fillStyle = '#E63946'; ctx.beginPath(); ctx.arc(85*s, 85*s, 10*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#2A9D8F'; ctx.beginPath(); ctx.arc(115*s, 90*s, 8*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#F4A261'; ctx.beginPath(); ctx.arc(100*s, 110*s, 9*s, 0, Math.PI*2); ctx.fill();
+                // huy hiệu $
+                ctx.beginPath(); ctx.arc(152*s, 148*s, 28*s, 0, Math.PI*2);
+                ctx.fillStyle = '#E2F170'; ctx.fill();
+                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                ctx.fillStyle = '#1E1E24';
+                ctx.font = `900 ${28*s}px Arial`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText('$', 152*s, 150*s);
+                return canvas.toDataURL('image/png');
+            }
+            try {
+                const icon180 = drawLogo(180);
+                const icon512 = drawLogo(512);
+                document.getElementById('icon-apple-touch').href = icon180;
+                document.getElementById('icon-favicon').href = icon512;
+                const manifest = {
+                    name: 'Tiệm Bánh Tráng Tycoon',
+                    short_name: 'Bánh Tráng',
+                    start_url: '.',
+                    display: 'standalone',
+                    background_color: '#FFF8F0',
+                    theme_color: '#FF6B35',
+                    icons: [
+                        { src: icon180, sizes: '180x180', type: 'image/png' },
+                        { src: icon512, sizes: '512x512', type: 'image/png' }
+                    ]
+                };
+                const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+                document.getElementById('icon-manifest').href = URL.createObjectURL(blob);
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pink: #FF6B9D;
+            --orange: #FF6B35;
+            --yellow: #FFD166;
+            --green: #06D6A0;
+            --purple: #7B2CBF;
+            --dark: #1E1E24;
+            --light: #FFF8F0;
+            --gray: #E5E7EB;
+            --border-width: 2px;
+            --shadow: 3px 3px 0px #1E1E24;
+            --shadow-hover: 5px 5px 0px #1E1E24;
+            --radius: 10px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Lexend', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #FFF8F0;
+            background-image: radial-gradient(#1E1E24 1px, transparent 1px);
+            background-size: 18px 18px;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            padding: 10px; font-size: 0.85rem; padding-bottom: 25px;
+        }
+        #app { max-width: 1180px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+        .nb-card {
+            background: var(--light);
+            border: var(--border-width) solid var(--dark);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 12px;
+        }
+        .nb-btn {
+            background: var(--orange);
+            border: var(--border-width) solid var(--dark);
+            border-radius: 8px;
+            box-shadow: 2px 2px 0px var(--dark);
+            padding: 6px 12px;
+            font-weight: 800; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.1s ease;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .nb-btn:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: var(--shadow-hover); }
+        .nb-btn:active:not(:disabled) { transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--dark); }
+        .nb-btn:disabled { background: var(--gray); color: #888; cursor: not-allowed; box-shadow: 2px 2px 0px #888; border-color: #888; }
+        .nb-btn-pink { background: var(--pink); }
+        .nb-btn-yellow { background: var(--yellow); }
+        .nb-btn-green { background: var(--green); }
+        .nb-btn-purple { background: var(--purple); color: white; }
+        .nb-btn-dark { background: var(--dark); color: white; }
+        .nb-input {
+            border: var(--border-width) solid var(--dark);
+            border-radius: 6px; padding: 8px 10px;
+            font-weight: 600; font-size: 0.85rem; outline: none;
+            box-shadow: 2px 2px 0px var(--dark); background: #fff; width: 100%;
+        }
+        .nb-badge {
+            background: var(--yellow);
+            border: 1.5px solid var(--dark);
+            padding: 3px 8px; border-radius: 12px;
+            font-size: 0.7rem; font-weight: 800; display: inline-block;
+        }
+        header {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px; background: var(--orange); padding: 10px;
+        }
+        .header-stat {
+            display: flex; align-items: center; gap: 8px;
+            background: white; padding: 6px 10px;
+            border: 2px solid var(--dark); border-radius: 8px;
+            box-shadow: 2px 2px 0px var(--dark);
+        }
+        .header-stat .icon { font-size: 1.2rem; }
+        .stat-label { font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase; }
+        .stat-value { font-size: 0.95rem; font-weight: 900; display: flex; align-items: center; gap: 4px; }
+        .editable-name { cursor: pointer; text-decoration: underline dotted var(--dark) 2px; }
+        .xp-bar-container { width: 100%; height: 10px; background: var(--gray); border: 1.5px solid var(--dark); border-radius: 5px; margin-top: 4px; overflow: hidden; }
+        .xp-bar-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.3s ease; }
+        .sticky-note-card {
+            background: #FFF3BF; border: 2px solid var(--dark); border-radius: 10px;
+            box-shadow: var(--shadow); padding: 10px 14px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sticky-note-card textarea {
+            flex: 1; background: transparent; border: none; outline: none;
+            font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 0.85rem;
+            color: #333; resize: none; height: 42px; line-height: 1.3;
+        }
+        nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        nav::-webkit-scrollbar { display: none; }
+        .tab-btn { flex: 1; min-width: 100px; padding: 8px 10px; font-size: 0.85rem; background: white; white-space: nowrap; }
+        .tab-btn.active { background: var(--yellow); transform: translate(-1px, -1px); box-shadow: var(--shadow-hover); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .market-layout { display: grid; grid-template-columns: 180px 1fr; gap: 12px; }
+        @media (max-width: 768px) { .market-layout { grid-template-columns: 1fr; } }
+        .category-menu { display: flex; flex-direction: column; gap: 6px; }
+        .cat-btn {
+            text-align: left; background: white; border: 2px solid var(--dark);
+            padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;
+            cursor: pointer; box-shadow: 2px 2px 0px var(--dark); transition: all 0.1s;
+        }
+        .cat-btn.active, .cat-btn:hover { background: var(--orange); color: white; transform: translateX(2px); }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+        .item-card {
+            background: white; border: 2px solid var(--dark); border-radius: 8px;
+            padding: 10px; box-shadow: 2px 2px 0px var(--dark);
+            display: flex; flex-direction: column; justify-content: space-between; gap: 8px; position: relative;
+        }
+        .item-card.locked { background: #f3f4f6; color: #9ca3af; border-color: #9ca3af; box-shadow: 2px 2px 0px #d1d5db; }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px; }
+        .item-title { font-size: 0.8rem; font-weight: 800; line-height: 1.2; }
+        .item-brand { font-size: 0.7rem; color: #666; font-weight: 600; margin-top: 2px; }
+        .item-score { background: var(--yellow); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--dark); font-weight: 800; font-size: 0.7rem; }
+        .locked .item-score { background: #e5e7eb; border-color: #9ca3af; color: #9ca3af; }
+        .lock-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.75); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem;
+            color: #ef4444; border-radius: 6px; z-index: 10;
+        }
+        .workbench-layout { display: grid; grid-template-columns: 1fr 280px; gap: 12px; }
+        @media (max-width: 900px) { .workbench-layout { grid-template-columns: 1fr; } }
+        .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .slot-card {
+            background: white; border: 2px dashed var(--dark); border-radius: 8px;
+            padding: 10px; min-height: 90px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .slot-card.filled { border-style: solid; background: #fff7ed; border-color: var(--orange); }
+        .slot-title { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #666; }
+        .slot-item-name { font-size: 0.8rem; font-weight: 800; margin-top: 4px; line-height: 1.2; }
+        .inventory-list { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+        .inventory-item {
+            background: white; border: 2px solid var(--dark); border-radius: 6px;
+            padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 2px 2px 0px var(--dark);
+        }
+        .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .order-card {
+            background: white; border: 2px solid var(--dark); border-radius: 10px;
+            padding: 12px; box-shadow: 3px 3px 0px var(--dark);
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .client-avatar {
+            width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--dark);
+            background: var(--yellow); display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .specs-req {
+            background: #F1F5F9; border: 1.5px solid var(--dark); border-radius: 6px;
+            padding: 8px; font-size: 0.75rem; display: flex; flex-direction: column; gap: 4px;
+        }
+        .reviews-container { display: flex; flex-direction: column; gap: 10px; max-width: 700px; margin: 0 auto; }
+        .review-card {
+            background: white; border: 2px solid var(--dark); border-radius: 8px;
+            padding: 10px 12px; box-shadow: 2px 2px 0px var(--dark);
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .stars { color: #FFB703; font-size: 1rem; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
+            z-index: 1000; padding: 15px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-body {
+            background: var(--light); border: 3px solid var(--dark); border-radius: 12px;
+            box-shadow: 5px 5px 0px var(--dark); max-width: 450px; width: 100%;
+            padding: 20px; display: flex; flex-direction: column; gap: 12px;
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 2000; }
+        .toast {
+            background: var(--dark); color: white; border: 2px solid white;
+            padding: 10px 15px; border-radius: 8px; box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+            font-weight: 700; font-size: 0.85rem; animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+        .startup-language-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+        .startup-lang-btn {
+            position: relative; background: white; border: 2px solid var(--dark); border-radius: 10px;
+            box-shadow: 3px 3px 0 var(--dark); padding: 13px 8px; cursor: pointer;
+            font-family: 'Lexend', sans-serif; font-weight: 800;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+            font-size: 1.65rem; min-height: 96px; transition: all .12s ease; touch-action: manipulation;
+        }
+        .startup-lang-btn span { font-size: .75rem; }
+        .startup-lang-btn:hover { transform: translate(-1px,-1px); background: var(--yellow); box-shadow: 5px 5px 0 var(--dark); }
+        .startup-lang-btn.selected { background: var(--yellow); outline: 3px solid var(--purple); outline-offset: 2px; }
+        .startup-lang-btn.selected::after {
+            content: '✓'; position: absolute; top: 6px; right: 8px;
+            width: 24px; height: 24px; border: 2px solid var(--dark); border-radius: 50%;
+            background: var(--green); display: flex; align-items: center; justify-content: center;
+            font-size: 0.82rem; color: var(--dark);
+        }
+        @media (max-width: 560px) {
+            .startup-language-grid { grid-template-columns: 1fr; }
+            .startup-lang-btn { flex-direction: row; justify-content: flex-start; padding: 11px 14px; min-height: 58px; font-size: 1.35rem; }
+            header { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .nb-btn { min-height: 44px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER -->
+        <header class="nb-card">
+            <div class="header-stat">
+                <span class="icon" onclick="triggerLogoEgg()" style="cursor:pointer;" title="🤫">🫓</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Cửa Hàng</div>
+                    <div class="stat-value"><span id="display-shop-name" class="editable-name" onclick="editShopName()">Bánh Tráng Vỉa Hè</span> ✏️</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">👑</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Chủ Tiệm | <span id="display-level" style="color:var(--purple);font-weight:900;">Lv.1</span></div>
+                    <div class="stat-value"><span id="display-manager-name" class="editable-name" onclick="editManagerName()">Boss GenZ</span> ✏️</div>
+                    <div class="xp-bar-container"><div id="xp-bar" class="xp-bar-fill"></div></div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">💰</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Tiền Mặt</div>
+                    <div class="stat-value" id="display-cash" style="color:#059669;">$2,500</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">📅</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Ngày</div>
+                    <div class="stat-value" id="display-day">Ngày 1</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">⏰</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Giờ Làm</div>
+                    <div class="stat-value" id="display-clock" style="color:#d97706;">06:00 AM</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">👥</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Khách Hôm Nay</div>
+                    <div class="stat-value" id="display-today-clients" style="color:var(--purple);">0 / 5</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- STICKY NOTE -->
+        <div class="sticky-note-card">
+            <span style="font-size:1.5rem;">📌</span>
+            <div style="display:flex;flex-direction:column;flex:1;">
+                <div style="font-size:0.7rem;font-weight:900;text-transform:uppercase;color:#854d0e;">Ghi chú hôm nay:</div>
+                <textarea id="daily-note-input" placeholder="Mua thêm tôm khô, trứng cút, chuẩn bị đơn VIP..." onchange="saveDailyNote()"></textarea>
+            </div>
+            <button class="nb-btn nb-btn-green" style="padding:6px 10px;font-size:0.75rem;" onclick="saveDailyNote(true)">💾 Lưu</button>
+        </div>
+
+        <!-- NAV -->
+        <nav>
+            <button class="nb-btn tab-btn active" onclick="switchTab('market')">🛒 Chợ Nguyên Liệu</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('workbench')">🫓 Bàn Làm Bánh</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('orders')">📋 Đơn Khách <span id="orders-badge" class="nb-badge">0</span></button>
+            <button class="nb-btn tab-btn" onclick="switchTab('reviews')">💬 Đánh Giá</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('settings')">⚙️ Hệ Thống</button>
+        </nav>
+
+        <!-- TAB MARKET -->
+        <div id="tab-market" class="tab-panel active">
+            <div class="market-layout">
+                <div class="category-menu nb-card">
+                    <h3 style="margin-bottom:8px;font-size:0.8rem;text-transform:uppercase;color:#555;">Danh Mục</h3>
+                    <button class="cat-btn active" onclick="filterMarket('Base')">🫓 Bánh Tráng</button>
+                    <button class="cat-btn" onclick="filterMarket('Topping')">🍤 Topping</button>
+                    <button class="cat-btn" onclick="filterMarket('Sauce')">🌶️ Sốt & Gia vị</button>
+                    <button class="cat-btn" onclick="filterMarket('Extra')">✨ Đặc biệt</button>
+                </div>
+                <div class="nb-card" style="background:#fff7ed;">
+                    <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+                        <h2 id="market-title" style="font-size:1.1rem;">🫓 Bánh Tráng</h2>
+                        <span style="font-size:0.75rem;color:#666;">*Lên level mở khóa đồ ngon hơn</span>
+                    </div>
+                    <div id="market-items-grid" class="items-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB WORKBENCH -->
+        <div id="tab-workbench" class="tab-panel">
+            <div class="workbench-layout">
+                <div class="nb-card" style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <h2 style="font-size:1.1rem;">🫓 Đang Làm Bánh</h2>
+                        <button class="nb-btn nb-btn-pink" onclick="clearWorkbench()">🧹 Dọn Bàn</button>
+                    </div>
+                    <div id="workbench-slots" class="slots-grid"></div>
+                </div>
+                <div class="nb-card" style="display:flex;flex-direction:column;gap:12px;">
+                    <h3 style="font-size:0.95rem;">📊 Điểm Món Ăn</h3>
+                    <div style="background:white;border:2px solid var(--dark);padding:10px;border-radius:8px;display:flex;flex-direction:column;gap:6px;">
+                        <div>⚡ Điểm Ngon: <strong id="wb-total-score" style="font-size:1.1rem;color:var(--purple);">0</strong> pts</div>
+                        <div>💵 Giá vốn: <strong id="wb-total-cost" style="font-size:1rem;color:#059669;">$0</strong></div>
+                    </div>
+                    <h3 style="font-size:0.95rem;">🎒 Kho Nguyên Liệu (<span id="inv-count">0</span>)</h3>
+                    <div id="inventory-list" class="inventory-list"></div>
+                    <div style="margin-top:auto;padding-top:10px;">
+                        <button class="nb-btn nb-btn-green" style="width:100%;font-size:0.9rem;padding:10px;" onclick="deliverBuildModal()">🚀 Giao Cho Khách</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB ORDERS -->
+        <div id="tab-orders" class="tab-panel">
+            <div class="nb-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <h2 style="font-size:1.1rem;">📋 Khách Đang Đợi</h2>
+                    <span class="nb-badge" style="background:var(--pink);color:white;font-size:0.8rem;">Chỉ tiêu: <span id="orders-target-count">0 / 5</span></span>
+                </div>
+                <div id="orders-grid" class="orders-grid"></div>
+            </div>
+        </div>
+
+        <!-- TAB REVIEWS -->
+        <div id="tab-reviews" class="tab-panel">
+            <div class="nb-card" style="margin-bottom:12px;text-align:center;background:var(--yellow);padding:12px;">
+                <h2 style="font-size:1.1rem;">🌟 Uy Tín Tiệm</h2>
+                <div id="display-reputation" style="font-size:2.5rem;font-weight:900;">100%</div>
+                <p style="font-weight:700;font-size:0.8rem;">Uy tín cao → khách VIP nhiều hơn!</p>
+            </div>
+            <div class="nb-card">
+                <h3 style="margin-bottom:10px;font-size:0.95rem;">💬 Phản Hồi Gần Đây</h3>
+                <div id="reviews-list" class="reviews-container"></div>
+            </div>
+        </div>
+
+        <!-- TAB SETTINGS -->
+        <div id="tab-settings" class="tab-panel">
+            <div class="nb-card" style="max-width:550px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
+                <h2 style="font-size:1.1rem;">🌐 Ngôn Ngữ</h2>
+                <select id="lang-select" class="nb-input" onchange="changeLanguage(this.value)">
+                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                    <option value="en">🇺🇸 English</option>
+                </select>
+                <hr style="border:1px solid var(--dark);margin:5px 0;">
+                <h2 style="font-size:1.1rem;">💾 Sao Lưu Tiến Trình</h2>
+                <p style="font-size:0.75rem;color:#555;line-height:1.4;">Khi mở file mới, save cũ không tự chuyển. Hãy xuất mã rồi nạp lại.</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="nb-btn nb-btn-yellow" style="flex:1;" onclick="openBackupModal()">📤 Xuất Mã Save</button>
+                    <button class="nb-btn nb-btn-green" style="flex:1;" onclick="openBackupModal()">📥 Nạp Mã Save</button>
+                </div>
+                <hr style="border:1px solid var(--dark);margin:5px 0;">
+                <button class="nb-btn nb-btn-pink" onclick="resetGameConfirm()">💥 Xóa Dữ Liệu & Chơi Lại</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STARTUP LANGUAGE -->
+    <div id="modal-startup-language" class="modal-overlay active">
+        <div class="modal-body" style="text-align:center;max-width:430px;">
+            <div style="font-size:3rem;">🌐✨</div>
+            <h2 style="color:var(--purple);font-size:1.45rem;">Chọn ngôn ngữ</h2>
+            <p style="font-size:0.85rem;color:#444;">Chọn ngôn ngữ trước khi mở tiệm.</p>
+            <div class="startup-language-grid">
+                <button id="startup-lang-vi" class="startup-lang-btn" onclick="selectStartupLanguage('vi')">🇻🇳<span>Tiếng Việt</span></button>
+                <button id="startup-lang-en" class="startup-lang-btn" onclick="selectStartupLanguage('en')">🇺🇸<span>English</span></button>
+            </div>
+            <div id="startup-language-selected" style="margin-top:10px;font-size:0.78rem;color:#444;font-weight:800;min-height:18px;"></div>
+            <button id="startup-language-confirm" class="nb-btn nb-btn-green" style="width:100%;margin-top:14px;min-height:48px;" onclick="confirmStartupLanguage()">✅ Chấp nhận & Tiếp tục</button>
+        </div>
+    </div>
+
+    <!-- ONBOARDING -->
+    <div id="modal-onboarding" class="modal-overlay">
+        <div class="modal-body" style="text-align:center;">
+            <div style="font-size:3rem;">🫓🔥</div>
+            <h2 style="color:var(--purple);font-size:1.5rem;">Chào Boss GenZ!</h2>
+            <p style="font-size:0.85rem;color:#444;">Bạn được cấp $2,500 vốn. Đặt tên tiệm và bắt đầu bán bánh tráng nào!</p>
+            <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin:10px 0;">
+                <div>
+                    <label style="font-weight:800;font-size:0.8rem;">🏪 Tên Tiệm:</label>
+                    <input type="text" id="onboard-shop-name" class="nb-input" value="Bánh Tráng Vỉa Hè" maxlength="25">
+                </div>
+                <div>
+                    <label style="font-weight:800;font-size:0.8rem;">😎 Tên Boss:</label>
+                    <input type="text" id="onboard-manager-name" class="nb-input" value="Boss GenZ" maxlength="20">
+                </div>
+            </div>
+            <button class="nb-btn nb-btn-green" style="width:100%;padding:10px;font-size:1rem;" onclick="submitOnboarding()">🔥 MỞ TIỆM NGAY!</button>
+        </div>
+    </div>
+
+    <!-- END OF DAY -->
+    <div id="modal-end-day" class="modal-overlay">
+        <div class="modal-body">
+            <h2 style="color:var(--purple);text-align:center;font-size:1.4rem;" id="eod-title">🌆 HẾT CA!</h2>
+            <p style="text-align:center;font-weight:700;font-size:0.85rem;">Tổng kết doanh thu hôm nay</p>
+            <div style="background:white;border:2px solid var(--dark);padding:12px;border-radius:8px;display:flex;flex-direction:column;gap:6px;font-size:0.9rem;">
+                <div style="display:flex;justify-content:space-between;"><span>💵 Tiền kiếm được:</span><strong id="eod-revenue" style="color:#059669;">+$0</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>🛒 Chi mua hàng:</span><strong id="eod-expenses" style="color:#dc2626;">-$0</strong></div>
+                <hr style="border:1px solid #ccc;">
+                <div style="display:flex;justify-content:space-between;font-size:1.05rem;"><span>📈 Lợi nhuận:</span><strong id="eod-net">$0</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>🫓 Khách đã phục vụ:</span><strong id="eod-builds">0 / 0</strong></div>
+            </div>
+            <p style="font-size:0.8rem;text-align:center;color:#059669;font-weight:bold;">✅ Đã tự động lưu tiến trình!</p>
+            <button class="nb-btn nb-btn-green" style="width:100%;padding:10px;font-size:0.95rem;" onclick="startNextDay()">☀️ Bắt Đầu Ngày Mới (06:00 AM)</button>
+        </div>
+    </div>
+
+    <!-- DELIVER -->
+    <div id="modal-deliver" class="modal-overlay">
+        <div class="modal-body">
+            <h2 style="font-size:1.2rem;">🚀 Giao Bánh Cho Khách</h2>
+            <p style="font-size:0.85rem;">Chọn khách để bàn giao món này:</p>
+            <div id="deliver-orders-list" style="display:flex;flex-direction:column;gap:8px;max-height:250px;overflow-y:auto;"></div>
+            <button class="nb-btn nb-btn-pink" style="margin-top:10px;" onclick="closeModal('modal-deliver')">Hủy</button>
+        </div>
+    </div>
+
+    <!-- BACKUP -->
+    <div id="modal-backup" class="modal-overlay">
+        <div class="modal-body">
+            <h2 style="font-size:1.1rem;text-align:center;">💾 Sao Lưu / Khôi Phục</h2>
+            <p style="font-size:0.75rem;color:#555;line-height:1.4;margin-top:6px;">Bấm Xuất mã → copy đoạn mã → dán vào file mới để giữ tiến trình.</p>
+            <textarea id="backup-textarea" class="nb-input" style="width:100%;height:110px;font-size:0.65rem;font-family:monospace;margin-top:8px;resize:vertical;" placeholder="Mã save sẽ hiện ở đây..."></textarea>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+                <button class="nb-btn nb-btn-yellow" style="flex:1 1 100%;" onclick="exportSaveCode()">📤 Xuất Mã</button>
+                <button class="nb-btn nb-btn-green" style="flex:1;" onclick="copyBackupCode()">📋 Sao Chép</button>
+                <button class="nb-btn nb-btn-purple" style="flex:1;" onclick="importSaveCode()">📥 Nạp Mã</button>
+            </div>
+            <button class="nb-btn nb-btn-pink" style="width:100%;padding:10px;margin-top:10px;" onclick="closeModal('modal-backup')">Đóng</button>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        const SAVE_KEY = 'banh_trang_tycoon_v1';
+
+        // Catalog nguyên liệu
+        const CATALOG = [
+            // Base
+            { id: 'bt_trang', name: 'Bánh Tráng Trắng', brand: 'Truyền thống', category: 'Base', price: 8, score: 120, level: 1 },
+            { id: 'bt_nuong', name: 'Bánh Tráng Nướng', brand: 'Giòn rụm', category: 'Base', price: 15, score: 280, level: 1 },
+            { id: 'bt_tron', name: 'Bánh Tráng Trộn', brand: 'Đặc sản Sài Gòn', category: 'Base', price: 22, score: 420, level: 2 },
+            { id: 'bt_muoi', name: 'Bánh Tráng Muối Tôm', brand: 'Cay nồng', category: 'Base', price: 28, score: 550, level: 3 },
+            { id: 'bt_me', name: 'Bánh Tráng Me', brand: 'Chua ngọt', category: 'Base', price: 35, score: 700, level: 4 },
+            // Topping
+            { id: 'tom_kho', name: 'Tôm Khô', brand: 'Hảo hạng', category: 'Topping', price: 12, score: 180, level: 1 },
+            { id: 'trung_cut', name: 'Trứng Cút', brand: 'Luộc sẵn', category: 'Topping', price: 10, score: 150, level: 1 },
+            { id: 'xuc_xich', name: 'Xúc Xích', brand: 'Cay nhẹ', category: 'Topping', price: 9, score: 140, level: 1 },
+            { id: 'bo_kho', name: 'Bò Khô', brand: 'Khô bò', category: 'Topping', price: 18, score: 260, level: 2 },
+            { id: 'muc_kho', name: 'Mực Khô', brand: 'Biển', category: 'Topping', price: 20, score: 300, level: 2 },
+            { id: 'pho_mai', name: 'Phô Mai', brand: 'Kéo sợi', category: 'Topping', price: 15, score: 220, level: 3 },
+            { id: 'cha_bong', name: 'Chà Bông', brand: 'Heo', category: 'Topping', price: 14, score: 200, level: 3 },
+            { id: 'rau_ram', name: 'Rau Răm + Hành', brand: 'Tươi', category: 'Topping', price: 5, score: 80, level: 1 },
+            // Sauce
+            { id: 'tuong_ot', name: 'Tương Ớt', brand: 'Cay chuẩn', category: 'Sauce', price: 6, score: 90, level: 1 },
+            { id: 'me_ngot', name: 'Sốt Me', brand: 'Chua ngọt', category: 'Sauce', price: 8, score: 120, level: 1 },
+            { id: 'bo_toi', name: 'Bơ Tỏi', brand: 'Thơm lừng', category: 'Sauce', price: 12, score: 180, level: 2 },
+            { id: 'mayonaise', name: 'Mayonnaise', brand: 'Béo ngậy', category: 'Sauce', price: 10, score: 150, level: 2 },
+            { id: 'sa_te', name: 'Sa Tế', brand: 'Cực cay', category: 'Sauce', price: 14, score: 210, level: 3 },
+            // Extra
+            { id: 'cay_cap1', name: 'Ớt Cấp 1', brand: 'Nhẹ', category: 'Extra', price: 3, score: 40, level: 1 },
+            { id: 'cay_cap2', name: 'Ớt Cấp 2', brand: 'Vừa', category: 'Extra', price: 5, score: 70, level: 2 },
+            { id: 'cay_cap3', name: 'Ớt Cấp 3', brand: 'Cực mạnh', category: 'Extra', price: 8, score: 110, level: 3 },
+            { id: 'hanh_phi', name: 'Hành Phi', brand: 'Giòn', category: 'Extra', price: 4, score: 50, level: 1 },
+            { id: 'dau_phong', name: 'Đậu Phộng', brand: 'Rang', category: 'Extra', price: 6, score: 80, level: 1 }
+        ];
+
+        const CATEGORIES = ['Base', 'Topping', 'Sauce', 'Extra'];
+        const LEVEL_THRESHOLDS = { 1: 0, 2: 600, 3: 1800, 4: 4500, 5: 10000 };
+
+        const CLIENT_TYPES = {
+            vi: [
+                { role: 'Học sinh cấp 2', reqLevel: 1, baseScore: 400, baseBudget: 45, desc: 'Cho em 1 bánh tráng nướng thêm trứng cút với ớt nhẹ nha!' },
+                { role: 'Sinh viên', reqLevel: 1, baseScore: 550, baseBudget: 60, desc: 'Bánh tráng trộn đầy đủ topping, cay vừa thôi anh ơi.' },
+                { role: 'Công nhân', reqLevel: 1, baseScore: 480, baseBudget: 50, desc: 'Bánh tráng muối tôm + bò khô, ăn no là được.' },
+                { role: 'GenZ TikTok', reqLevel: 2, baseScore: 900, baseBudget: 95, desc: 'Làm em 1 bánh tráng nướng phô mai kéo sợi + sa tế luôn!' },
+                { role: 'Mẹ bỉm sữa', reqLevel: 2, baseScore: 700, baseBudget: 75, desc: 'Bánh tráng trộn cho 2 mẹ con, đừng cay quá nha.' },
+                { role: 'Shipper', reqLevel: 2, baseScore: 650, baseBudget: 70, desc: 'Nhanh nhanh 1 bánh tráng me + mực khô, đang đói quá!' },
+                { role: 'Streamer', reqLevel: 3, baseScore: 1400, baseBudget: 150, desc: 'Full topping + ớt cấp 3, mình livestream luôn!' },
+                { role: 'Sếp văn phòng', reqLevel: 3, baseScore: 1100, baseBudget: 130, desc: 'Bánh tráng cao cấp, sạch sẽ, trình bày đẹp nhé.' },
+                { role: 'Rich kid', reqLevel: 4, baseScore: 2000, baseBudget: 250, desc: 'Làm hết món đỉnh nhất tiệm, tiền không vấn đề.' },
+                { role: 'Food blogger', reqLevel: 5, baseScore: 2800, baseBudget: 350, desc: 'Review tiệm, cần món signature cực phẩm!' }
+            ],
+            en: [
+                { role: 'Student', reqLevel: 1, baseScore: 400, baseBudget: 45, desc: 'One grilled rice paper with quail eggs, mild spice please!' },
+                { role: 'College kid', reqLevel: 1, baseScore: 550, baseBudget: 60, desc: 'Mixed rice paper with full toppings, medium spicy.' },
+                { role: 'Worker', reqLevel: 1, baseScore: 480, baseBudget: 50, desc: 'Salted shrimp rice paper + beef jerky, filling is fine.' },
+                { role: 'TikTok GenZ', reqLevel: 2, baseScore: 900, baseBudget: 95, desc: 'Grilled cheese pull rice paper + satay sauce!' },
+                { role: 'Young mom', reqLevel: 2, baseScore: 700, baseBudget: 75, desc: 'Mixed rice paper for two, not too spicy.' },
+                { role: 'Delivery rider', reqLevel: 2, baseScore: 650, baseBudget: 70, desc: 'Quick tamarind rice paper + dried squid, starving!' },
+                { role: 'Streamer', reqLevel: 3, baseScore: 1400, baseBudget: 150, desc: 'Full toppings + level 3 chili, going live!' },
+                { role: 'Office boss', reqLevel: 3, baseScore: 1100, baseBudget: 130, desc: 'Premium clean rice paper, nice presentation.' },
+                { role: 'Rich kid', reqLevel: 4, baseScore: 2000, baseBudget: 250, desc: 'Best items in the shop, money no problem.' },
+                { role: 'Food blogger', reqLevel: 5, baseScore: 2800, baseBudget: 350, desc: 'Need your signature masterpiece for review!' }
+            ]
+        };
+
+        const PRAISES = {
+            vi: ['10/10! Bánh giòn rụm, topping đầy ụ!', 'W build! Cay đúng đỉnh, ăn là nghiền!', 'Tiệm này chính chủ energy!', 'Slay! Cho tiệm 100 điểm thanh lịch!', 'Carry team, bánh ngon quá trời!'],
+            en: ['10/10! Crispy and loaded!', 'W build! Perfect spice level!', 'Main character energy!', 'Slayed! 100/100!', 'Carries the whole squad!']
+        };
+        const COMPLAINTS = {
+            vi: ['Cooked... Bánh mềm nhũn, topping ít quá :(', 'L build! Cay quá hoặc nhạt quá!', 'Thất vọng, đắt mà phế!', 'Cấu hình này thì... chôn đi tiệm ơi.'],
+            en: ['Cooked... Soggy and sparse :(', 'L build! Wrong spice!', 'Disappointed, overpriced!', 'Bury this order bro...']
+        };
+
+        const DEFAULT_STATE = {
+            language: 'vi',
+            languageConfirmed: false,
+            shopName: 'Bánh Tráng Vỉa Hè',
+            managerName: 'Boss GenZ',
+            isFirstTime: true,
+            cash: 2500,
+            level: 1,
+            xp: 0,
+            day: 1,
+            timeSeconds: 21600,
+            dailyQuota: 6,
+            inventory: [],
+            workbench: { Base: null, Topping: null, Sauce: null, Extra: null },
+            orders: [],
+            reviews: [],
+            reputation: 100,
+            todayServedClients: 0,
+            todaySpawnedClients: 0,
+            dailyNote: '',
+            dailyStats: { revenue: 0, expenses: 0, builds: 0 },
+            foundLogoEgg: false
+        };
+
+        let gameState = {};
+        let currentMarketCat = 'Base';
+        let timerInterval = null;
+        let pendingStartupLanguage = 'vi';
+
+        function t(key) {
+            // minimal i18n helper (can expand later)
+            return key;
+        }
+
+        function getRandomDailyQuota() {
+            return Math.floor(Math.random() * 5) + 5;
+        }
+
+        function changeLanguage(lang) {
+            gameState.language = lang;
+            saveGame(true);
+            applySimpleTranslations();
+        }
+
+        function applySimpleTranslations() {
+            // keep simple for now – most UI is already Vietnamese default
+        }
+
+        function initGame() {
+            loadGame();
+            document.getElementById('lang-select').value = gameState.language || 'vi';
+            if (gameState.isFirstTime) {
+                if (gameState.languageConfirmed) {
+                    closeModal('modal-startup-language');
+                    openModal('modal-onboarding');
+                } else {
+                    closeModal('modal-onboarding');
+                    pendingStartupLanguage = gameState.language || 'vi';
+                    openModal('modal-startup-language');
+                    updateStartupLanguageUI();
+                }
+            } else {
+                closeModal('modal-startup-language');
+            }
+            checkLevelUp();
+            checkAndMaintainOrders();
+            startClock();
+            renderAll();
+        }
+
+        function openBackupModal() {
+            document.getElementById('backup-textarea').value = '';
+            openModal('modal-backup');
+        }
+
+        function exportSaveCode() {
+            try {
+                const code = btoa(unescape(encodeURIComponent(JSON.stringify(gameState))));
+                const box = document.getElementById('backup-textarea');
+                box.value = code;
+                box.focus();
+                box.setSelectionRange(0, code.length);
+                showToast('✅ Đã tạo mã save!');
+            } catch (e) { console.error(e); }
+        }
+
+        function copyBackupCode() {
+            const box = document.getElementById('backup-textarea');
+            const code = box.value.trim();
+            if (!code) return showToast('❌ Chưa có mã!');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => showToast('✅ Đã sao chép!')).catch(() => {
+                    box.select(); document.execCommand('copy'); showToast('✅ Đã sao chép!');
+                });
+            } else {
+                box.select(); document.execCommand('copy'); showToast('✅ Đã sao chép!');
+            }
+        }
+
+        function importSaveCode() {
+            const code = document.getElementById('backup-textarea').value.trim();
+            if (!code) return showToast('❌ Dán mã trước!');
+            try {
+                const parsed = JSON.parse(decodeURIComponent(escape(atob(code))));
+                if (!confirm('⚠️ Nạp mã sẽ ghi đè tiến trình hiện tại. Tiếp tục?')) return;
+                gameState = { ...DEFAULT_STATE, ...parsed };
+                saveGame(true);
+                showToast('✅ Khôi phục thành công!');
+                closeModal('modal-backup');
+                setTimeout(() => location.reload(), 600);
+            } catch (e) {
+                showToast('❌ Mã không hợp lệ!');
+            }
+        }
+
+        function saveGame(silent = true) {
+            try {
+                localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+                if (!silent) showToast('✅ Đã lưu!');
+            } catch (e) {}
+        }
+
+        function loadGame() {
+            try {
+                const saved = localStorage.getItem(SAVE_KEY);
+                if (saved) {
+                    gameState = { ...DEFAULT_STATE, ...JSON.parse(saved) };
+                    if (!gameState.level) gameState.level = 1;
+                    if (!gameState.xp) gameState.xp = 0;
+                    if (typeof gameState.languageConfirmed !== 'boolean') {
+                        gameState.languageConfirmed = !gameState.isFirstTime;
+                    }
+                    if (!gameState.dailyQuota) gameState.dailyQuota = getRandomDailyQuota();
+                    CATEGORIES.forEach(c => { if (!gameState.workbench[c]) gameState.workbench[c] = null; });
+                } else {
+                    gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+                    gameState.dailyQuota = getRandomDailyQuota();
+                }
+            } catch (e) {
+                gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            }
+        }
+
+        function addXP(amount) {
+            gameState.xp += amount;
+            checkLevelUp();
+            renderHeader();
+        }
+
+        function checkLevelUp() {
+            let newLevel = 1;
+            for (let lvl = 5; lvl >= 1; lvl--) {
+                if (gameState.xp >= LEVEL_THRESHOLDS[lvl]) { newLevel = lvl; break; }
+            }
+            if (newLevel > gameState.level) {
+                gameState.level = newLevel;
+                showToast(`🎉 Lên Level ${gameState.level}!`);
+                renderMarket();
+            }
+        }
+
+        function saveDailyNote(notify = false) {
+            const input = document.getElementById('daily-note-input');
+            if (input) {
+                gameState.dailyNote = input.value;
+                saveGame(true);
+                if (notify) showToast('📌 Đã lưu ghi chú!');
+            }
+        }
+
+        function renderDailyNote() {
+            const input = document.getElementById('daily-note-input');
+            if (input) input.value = gameState.dailyNote || '';
+        }
+
+        function selectStartupLanguage(lang) {
+            pendingStartupLanguage = lang;
+            gameState.language = lang;
+            updateStartupLanguageUI();
+        }
+
+        function updateStartupLanguageUI() {
+            ['vi', 'en'].forEach(code => {
+                const btn = document.getElementById('startup-lang-' + code);
+                if (btn) btn.classList.toggle('selected', code === pendingStartupLanguage);
+            });
+            const selected = document.getElementById('startup-language-selected');
+            if (selected) {
+                selected.textContent = pendingStartupLanguage === 'vi' ? 'Đã chọn: Tiếng Việt' : 'Selected: English';
+            }
+        }
+
+        function confirmStartupLanguage() {
+            gameState.language = pendingStartupLanguage || 'vi';
+            gameState.languageConfirmed = true;
+            saveGame(true);
+            closeModal('modal-startup-language');
+            openModal('modal-onboarding');
+        }
+
+        function submitOnboarding() {
+            const shop = document.getElementById('onboard-shop-name').value.trim();
+            const manager = document.getElementById('onboard-manager-name').value.trim();
+            if (shop) gameState.shopName = shop;
+            if (manager) gameState.managerName = manager;
+            gameState.isFirstTime = false;
+            closeModal('modal-onboarding');
+            saveGame();
+            renderHeader();
+            showToast('🚀 Mở tiệm thành công! $2,500 vốn khởi nghiệp!');
+        }
+
+        function startClock() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                gameState.timeSeconds += 66;
+                if (gameState.timeSeconds >= 61200) {
+                    gameState.timeSeconds = 61200;
+                    updateClockDisplay();
+                    triggerEndOfDay(false);
+                } else {
+                    updateClockDisplay();
+                    checkAndMaintainOrders();
+                }
+            }, 1000);
+        }
+
+        function updateClockDisplay() {
+            const hrs = Math.floor(gameState.timeSeconds / 3600);
+            const mins = Math.floor((gameState.timeSeconds % 3600) / 60);
+            const ampm = hrs >= 12 ? 'PM' : 'AM';
+            const formattedHrs = (hrs % 12 || 12).toString().padStart(2, '0');
+            const formattedMins = mins.toString().padStart(2, '0');
+            document.getElementById('display-clock').innerText = `${formattedHrs}:${formattedMins} ${ampm}`;
+        }
+
+        function checkAndMaintainOrders() {
+            while (gameState.orders.length < 3 && gameState.todaySpawnedClients < gameState.dailyQuota) {
+                spawnOrder();
+            }
+        }
+
+        function spawnOrder() {
+            if (gameState.todaySpawnedClients >= gameState.dailyQuota) return;
+            gameState.todaySpawnedClients += 1;
+            const clients = CLIENT_TYPES[gameState.language] || CLIENT_TYPES.vi;
+            const available = clients.filter(c => c.reqLevel <= gameState.level);
+            const type = available[Math.floor(Math.random() * available.length)];
+            const targetScore = Math.floor(type.baseScore * (0.85 + Math.random() * 0.25));
+            const budget = Math.floor(type.baseBudget * (1.0 + Math.random() * 0.3));
+            const avatars = ['👦', '👧', '🧑', '👩', '🧔', '👵', '🛵', '💼', '👑', '📸'];
+            gameState.orders.push({
+                id: Date.now() + Math.random(),
+                roleId: type.role,
+                avatar: avatars[Math.floor(Math.random() * avatars.length)],
+                desc: type.desc,
+                targetScore,
+                budget
+            });
+            renderOrders();
+            renderHeader();
+        }
+
+        function triggerEndOfDay(isEarly = false) {
+            clearInterval(timerInterval);
+            saveGame();
+            document.getElementById('eod-title').innerText = isEarly ? '🎉 HOÀN THÀNH CHỈ TIÊU!' : '🌆 HẾT CA LÀM VIỆC!';
+            document.getElementById('eod-revenue').innerText = `+$${gameState.dailyStats.revenue.toLocaleString()}`;
+            document.getElementById('eod-expenses').innerText = `-$${gameState.dailyStats.expenses.toLocaleString()}`;
+            const net = gameState.dailyStats.revenue - gameState.dailyStats.expenses;
+            const netEl = document.getElementById('eod-net');
+            netEl.innerText = `${net >= 0 ? '+' : ''}$${net.toLocaleString()}`;
+            netEl.style.color = net >= 0 ? '#059669' : '#dc2626';
+            document.getElementById('eod-builds').innerText = `${gameState.todayServedClients} / ${gameState.dailyQuota}`;
+            openModal('modal-end-day');
+        }
+
+        function startNextDay() {
+            closeModal('modal-end-day');
+            gameState.day += 1;
+            gameState.timeSeconds = 21600;
+            gameState.dailyQuota = getRandomDailyQuota();
+            gameState.todayServedClients = 0;
+            gameState.todaySpawnedClients = 0;
+            gameState.orders = [];
+            gameState.dailyStats = { revenue: 0, expenses: 0, builds: 0 };
+            checkAndMaintainOrders();
+            renderAll();
+            saveGame();
+            startClock();
+        }
+
+        function renderHeader() {
+            document.getElementById('display-shop-name').innerText = gameState.shopName;
+            document.getElementById('display-manager-name').innerText = gameState.managerName;
+            document.getElementById('display-cash').innerText = `$${gameState.cash.toLocaleString()}`;
+            document.getElementById('display-day').innerText = `Ngày ${gameState.day}`;
+            document.getElementById('display-reputation').innerText = `${gameState.reputation}%`;
+            document.getElementById('display-today-clients').innerText = `${gameState.todayServedClients} / ${gameState.dailyQuota}`;
+            document.getElementById('orders-target-count').innerText = `${gameState.todayServedClients} / ${gameState.dailyQuota}`;
+            document.getElementById('orders-badge').innerText = gameState.orders.length;
+            document.getElementById('display-level').innerText = `Lv.${gameState.level}`;
+            let current = LEVEL_THRESHOLDS[gameState.level];
+            let next = gameState.level < 5 ? LEVEL_THRESHOLDS[gameState.level + 1] : LEVEL_THRESHOLDS[5];
+            let percent = gameState.level < 5 ? ((gameState.xp - current) / (next - current)) * 100 : 100;
+            document.getElementById('xp-bar').style.width = `${Math.min(100, Math.max(0, percent))}%`;
+            updateClockDisplay();
+            renderDailyNote();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            event.target.closest('.tab-btn').classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        function filterMarket(cat) {
+            currentMarketCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.includes(cat) || (cat === 'Base' && btn.innerText.includes('Bánh')));
+            });
+            const titles = { Base: '🫓 Bánh Tráng', Topping: '🍤 Topping', Sauce: '🌶️ Sốt & Gia vị', Extra: '✨ Đặc biệt' };
+            document.getElementById('market-title').innerText = titles[cat] || cat;
+            renderMarket();
+        }
+
+        function renderMarket() {
+            const grid = document.getElementById('market-items-grid');
+            grid.innerHTML = '';
+            CATALOG.filter(i => i.category === currentMarketCat).forEach(item => {
+                const locked = item.level > gameState.level;
+                const card = document.createElement('div');
+                card.className = `item-card ${locked ? 'locked' : ''}`;
+                card.innerHTML = `
+                    <div>
+                        <div class="item-header">
+                            <span class="item-title">${item.name}</span>
+                            <span class="item-score">⚡ ${item.score}</span>
+                        </div>
+                        <div class="item-brand">${item.brand}</div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                        <span style="font-weight:900;color:${locked ? '#9ca3af' : '#059669'};font-size:0.95rem;">$${item.price}</span>
+                        <button class="nb-btn nb-btn-green" style="padding:4px 8px;font-size:0.75rem;"
+                            ${locked ? 'disabled' : `onclick="buyItem('${item.id}')"`}>
+                            ${locked ? 'Khóa' : 'Mua'}
+                        </button>
+                    </div>
+                    ${locked ? `<div class="lock-overlay">🔒 Lv.${item.level}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function buyItem(id) {
+            const item = CATALOG.find(i => i.id === id);
+            if (!item) return;
+            if (item.level > gameState.level) return showToast('🔒 Chưa đủ level!');
+            if (gameState.cash < item.price) return showToast('💸 Không đủ tiền!');
+            gameState.cash -= item.price;
+            gameState.dailyStats.expenses += item.price;
+            gameState.inventory.push({ ...item, instanceId: Date.now() + Math.random() });
+            renderHeader();
+            renderWorkbench();
+            saveGame();
+            showToast(`✅ Mua ${item.name} (-$${item.price})`);
+        }
+
+        function renderWorkbench() {
+            const slots = document.getElementById('workbench-slots');
+            slots.innerHTML = '';
+            let totalScore = 0, totalCost = 0;
+            CATEGORIES.forEach(cat => {
+                const item = gameState.workbench[cat];
+                if (item) { totalScore += item.score; totalCost += item.price; }
+                const slot = document.createElement('div');
+                slot.className = `slot-card ${item ? 'filled' : ''}`;
+                slot.innerHTML = `
+                    <div>
+                        <div class="slot-title">${cat}</div>
+                        ${item ? `<div class="slot-item-name">${item.name}</div>` : `<div style="font-size:0.75rem;color:#999;margin-top:5px;">(Trống)</div>`}
+                    </div>
+                    ${item ? `
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
+                            <span class="nb-badge">⚡ ${item.score}</span>
+                            <button class="nb-btn nb-btn-pink" style="padding:2px 6px;font-size:0.7rem;" onclick="unmountComponent('${cat}')">Gỡ</button>
+                        </div>` : ''}
+                `;
+                slots.appendChild(slot);
+            });
+            document.getElementById('wb-total-score').innerText = totalScore.toLocaleString();
+            document.getElementById('wb-total-cost').innerText = `$${totalCost.toLocaleString()}`;
+
+            const inv = document.getElementById('inventory-list');
+            inv.innerHTML = '';
+            document.getElementById('inv-count').innerText = gameState.inventory.length;
+            if (gameState.inventory.length === 0) {
+                inv.innerHTML = `<div style="text-align:center;color:#777;font-size:0.8rem;padding:15px;">Kho trống. Hãy mua ở chợ!</div>`;
+            } else {
+                gameState.inventory.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'inventory-item';
+                    el.innerHTML = `
+                        <div>
+                            <div style="font-weight:800;font-size:0.8rem;">${item.name}</div>
+                            <div style="font-size:0.7rem;color:#666;">${item.category} | ⚡ ${item.score}</div>
+                        </div>
+                        <button class="nb-btn nb-btn-yellow" style="padding:4px 8px;font-size:0.75rem;" onclick="mountComponent('${item.instanceId}')">Ráp</button>
+                    `;
+                    inv.appendChild(el);
+                });
+            }
+        }
+
+        function mountComponent(instanceId) {
+            const idx = gameState.inventory.findIndex(i => i.instanceId == instanceId);
+            if (idx === -1) return;
+            const item = gameState.inventory[idx];
+            if (gameState.workbench[item.category]) unmountComponent(item.category);
+            gameState.workbench[item.category] = item;
+            gameState.inventory.splice(idx, 1);
+            renderWorkbench();
+        }
+
+        function unmountComponent(cat) {
+            const item = gameState.workbench[cat];
+            if (!item) return;
+            gameState.inventory.push(item);
+            gameState.workbench[cat] = null;
+            renderWorkbench();
+        }
+
+        function clearWorkbench() {
+            CATEGORIES.forEach(cat => {
+                if (gameState.workbench[cat]) {
+                    gameState.inventory.push(gameState.workbench[cat]);
+                    gameState.workbench[cat] = null;
+                }
+            });
+            renderWorkbench();
+        }
+
+        function renderOrders() {
+            const grid = document.getElementById('orders-grid');
+            grid.innerHTML = '';
+            if (gameState.orders.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;font-weight:700;color:#777;">Chưa có khách... đợi xíu!</div>`;
+                return;
+            }
+            gameState.orders.forEach((order, idx) => {
+                const card = document.createElement('div');
+                card.className = 'order-card';
+                card.innerHTML = `
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <div class="client-avatar">${order.avatar}</div>
+                        <div>
+                            <div style="font-weight:900;font-size:0.9rem;">${order.roleId} #${idx + 1}</div>
+                            <div style="font-size:0.75rem;color:#666;">Đang đợi bánh...</div>
+                        </div>
+                    </div>
+                    <p style="font-size:0.8rem;font-style:italic;background:#f8fafc;padding:8px;border-radius:6px;border:1px solid #e2e8f0;line-height:1.4;">"${order.desc}"</p>
+                    <div class="specs-req">
+                        <div>🎯 Cần điểm ngon: <strong style="color:var(--purple);">≥ ${order.targetScore.toLocaleString()} pts</strong></div>
+                        <div>💰 Ngân sách: <strong style="color:#059669;">$${order.budget.toLocaleString()}</strong></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function deliverBuildModal() {
+            const missing = CATEGORIES.filter(c => !gameState.workbench[c]);
+            if (missing.length > 0) return showToast(`❌ Thiếu: ${missing.join(', ')}`);
+            if (gameState.orders.length === 0) return showToast('❌ Không có khách!');
+            const list = document.getElementById('deliver-orders-list');
+            list.innerHTML = '';
+            gameState.orders.forEach(o => {
+                const item = document.createElement('div');
+                item.className = 'inventory-item';
+                item.innerHTML = `
+                    <div>
+                        <strong style="font-size:0.85rem;">${o.roleId}</strong>
+                        <div style="font-size:0.7rem;color:#444;">Budget: $${o.budget} | Target: ${o.targetScore} pts</div>
+                    </div>
+                    <button class="nb-btn nb-btn-green" style="padding:4px 10px;" onclick="processDelivery('${o.id}')">Giao</button>
+                `;
+                list.appendChild(item);
+            });
+            openModal('modal-deliver');
+        }
+
+        function processDelivery(orderId) {
+            closeModal('modal-deliver');
+            const orderIdx = gameState.orders.findIndex(o => o.id == orderId);
+            if (orderIdx === -1) return;
+            const order = gameState.orders[orderIdx];
+            let buildScore = 0, buildCost = 0;
+            CATEGORIES.forEach(c => {
+                buildScore += gameState.workbench[c].score;
+                buildCost += gameState.workbench[c].price;
+            });
+            const metScore = buildScore >= order.targetScore;
+            const metBudget = buildCost <= order.budget;
+            const lang = gameState.language || 'vi';
+            const praises = PRAISES[lang] || PRAISES.vi;
+            const complaints = COMPLAINTS[lang] || COMPLAINTS.vi;
+            let stars = 5, reviewText = '';
+            if (metScore && metBudget) {
+                stars = 5; reviewText = praises[Math.floor(Math.random() * praises.length)];
+            } else if (metScore && !metBudget) {
+                stars = 3; reviewText = '(Over budget!) ' + praises[0];
+            } else if (!metScore && metBudget) {
+                stars = 2; reviewText = '(Low score!) ' + complaints[1];
+            } else {
+                stars = 1; reviewText = complaints[Math.floor(Math.random() * complaints.length)];
+            }
+            let payout = Math.floor(buildCost * 1.4);
+            if (payout > order.budget) payout = order.budget;
+            if (stars === 1) payout = Math.floor(buildCost * 0.85);
+            const tip = stars === 5 ? Math.floor(payout * 0.18) : 0;
+            const totalEarned = payout + tip;
+            gameState.cash += totalEarned;
+            gameState.dailyStats.revenue += totalEarned;
+            gameState.dailyStats.builds += 1;
+            gameState.todayServedClients += 1;
+            addXP(stars * 100);
+            if (stars >= 4) gameState.reputation = Math.min(100, gameState.reputation + 2);
+            else gameState.reputation = Math.max(10, gameState.reputation - 6);
+            gameState.reviews.unshift({
+                id: Date.now(), clientName: order.roleId, stars, text: reviewText, earned: totalEarned, tip
+            });
+            if (gameState.reviews.length > 12) gameState.reviews.pop();
+            CATEGORIES.forEach(c => gameState.workbench[c] = null);
+            gameState.orders.splice(orderIdx, 1);
+            checkAndMaintainOrders();
+            renderAll();
+            saveGame();
+            showToast(`✅ Giao thành công! +$${totalEarned.toLocaleString()} (${stars}⭐)`);
+            if (gameState.todayServedClients >= gameState.dailyQuota) {
+                setTimeout(() => triggerEndOfDay(true), 900);
+            }
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviews-list');
+            list.innerHTML = '';
+            if (gameState.reviews.length === 0) {
+                list.innerHTML = `<div style="text-align:center;color:#777;padding:15px;">Chưa có đánh giá nào. Hãy phục vụ khách đầu tiên!</div>`;
+                return;
+            }
+            gameState.reviews.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+                card.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <strong>${r.clientName}</strong>
+                        <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+                    </div>
+                    <p style="font-size:0.8rem;color:#333;line-height:1.4;">"${r.text}"</p>
+                    <div style="font-size:0.75rem;color:#059669;font-weight:800;align-self:flex-end;">
+                        +$${r.earned.toLocaleString()} ${r.tip > 0 ? `(Tip +$${r.tip})` : ''}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function renderAll() {
+            renderHeader();
+            renderMarket();
+            renderWorkbench();
+            renderOrders();
+            renderReviews();
+        }
+
+        function editShopName() {
+            const val = prompt('Tên tiệm:', gameState.shopName);
+            if (val && val.trim()) { gameState.shopName = val.trim(); renderHeader(); saveGame(); }
+        }
+        function editManagerName() {
+            const val = prompt('Tên boss:', gameState.managerName);
+            if (val && val.trim()) { gameState.managerName = val.trim(); renderHeader(); saveGame(); }
+        }
+        function resetGameConfirm() {
+            if (confirm('⚠️ XÓA TOÀN BỘ TIẾN TRÌNH?')) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
+            }
+        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function showToast(msg) {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast'; t.innerText = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 2600);
+        }
+
+        // Easter egg
+        let eggClick = 0, eggTimer = null;
+        function triggerLogoEgg() {
+            eggClick++;
+            clearTimeout(eggTimer);
+            eggTimer = setTimeout(() => eggClick = 0, 1400);
+            if (eggClick < 7) return;
+            eggClick = 0;
+            const memes = ['🔮 Đúng nhận sai cãi!', '🍜 Đói bụng chưa boss?', '😌 Sương sương thôi!', '🔥 This is fine.', '🧢 No cap!'];
+            const msg = memes[Math.floor(Math.random() * memes.length)];
+            if (!gameState.foundLogoEgg) {
+                gameState.foundLogoEgg = true;
+                gameState.cash += 150;
+                renderHeader();
+                saveGame(true);
+                showToast('🥚 EASTER EGG! ' + msg + ' (+$150)');
+            } else showToast('🥚 ' + msg);
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>
