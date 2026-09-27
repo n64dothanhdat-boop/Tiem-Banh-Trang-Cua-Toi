@@ -209,7 +209,7 @@ s=migrate(s);
 function fmt(n){n=Math.round(Number(n)||0);return n.toLocaleString('vi-VN')+'đ'}
 function t(k){return (I18N[s.language||'vi'][k]||k)}function nm(o){return o.name?.[s.language||'vi']||o.name?.vi||o[s.language||'vi']||o.vi||''}function save(){localStorage.setItem(KEY,JSON.stringify(s))}
 function fmtTime(){let h=Math.floor(s.minutes/60),m=s.minutes%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')}
-function level(){return Math.min(20,1+Math.floor(s.xp/100))}
+function level(){const xp=Number(s.xp)||0;return Math.min(20,Math.max(1,1+Math.floor(xp/100)))}
 function xpForLevel(lv){return (lv-1)*100}
 function xpProgress(){const lv=level();if(lv>=10)return 100;return s.xp%100}
 
