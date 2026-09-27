@@ -87,6 +87,7 @@
 <div id="app"></div>
 <script>
 const KEY='btt_mi_cay_style_v1';
+const DAY_MS=5*60*1000,DAY_START=360,DAY_END=1320,DAY_SPAN=DAY_END-DAY_START;
 const I18N={vi:{title:'Tiệm Bánh Tráng Trộn',sub:'Mở quán · nấu món · nâng cấp · đua top',money:'Tiền',day:'Ngày',clock:'Giờ',rep:'Uy tín',open:'MỞ QUÁN',close:'ĐÓNG QUÁN',order:'Đơn đang chờ',serve:'Giao món',mix:'TRỘN',stock:'Kho',market:'Nhập hàng',staff:'Nhân viên',rank:'BXH',settings:'Cài đặt',recipes:'Công thức',prepare:'Chuẩn bị',prepareMode:'Giai đoạn chuẩn bị',startSelling:'BẮT ĐẦU BÁN',sellModeTitle:'Bán hàng',sellingNow:'Đang bán hàng',finishEarly:'Về nhà sớm',finishConfirm:'Kết thúc phiên bán và về nhà sớm?',backHome:'Đã về nhà sớm',waitingCustomer:'Đang chờ khách gọi món...',sell:'Bán hàng',prepTitle:'Chuẩn bị hôm nay',prepDesc:'Kiểm tra kho, chọn công thức và chỉnh giá trước khi mở quán.',openTip:'Khi mọi thứ ổn, bấm MỞ QUÁN để bắt đầu đón khách.',readyParts:'Nguyên liệu sẵn sàng',setPrice:'Giá bán',prepReady:'Sẵn sàng mở quán',goSell:'Đến quầy bán',choose:'Chọn ngôn ngữ',save:'Lưu',load:'Nạp',reset:'Reset',buy:'Mua',hire:'Thuê',upgrade:'Nâng cấp',need:'Thiếu',ready:'Hoàn thành',price:'Giá bán',tip:'Tiền tip',review:'Đánh giá',daily:'Mục tiêu hôm nay',closeDay:'Đóng ca',nextDay:'Ngày mới',code:'Mã save',export:'Xuất mã',import:'Nạp mã',confirm:'Xác nhận',wrong:'Sai món',success:'Giao món thành công!',full:'Kho đầy',notEnough:'Không đủ tiền',customer:'Khách',spice:'Độ cay',howto:'Chạm nguyên liệu đúng yêu cầu rồi TRỘN.',auto:'Tự động lưu mỗi hành động.',closed:'Quán đang đóng.',lang:'Ngôn ngữ',name:'Tên quán',boss:'Tên chủ quán',reviewsTitle:'Nhận xét của khách',reply:'Trả lời khách',replyPlaceholder:'Viết phản hồi cho khách...',sendReply:'Gửi phản hồi',replySaved:'Đã trả lời khách!',noReviews:'Chưa có nhận xét nào.',start:'Bắt đầu',copy:'Sao chép',paste:'Dán mã',codeHint:'Copy mã này để lưu sang máy/file khác.',event:'Sự kiện',combo:'Combo',upgrades:'Nâng cấp',achievements:'Thành tựu',streak:'Chuỗi ngày',sound:'Âm thanh',soundOn:'Bật',soundOff:'Tắt',bulk:'Mua nhiều',maxStock:'Sức chứa kho',fastCook:'Nấu nhanh',patientCust:'Khách kiên nhẫn',neonSign:'Biển hiệu neon',luckyDay:'Ngày may mắn',rainDay:'Mưa to – ít khách',viralDay:'Review viral!',saleDay:'Sale nguyên liệu -30%',rushOrder:'Đơn gấp!',perfect:'Phục vụ hoàn hảo!',claim:'Nhận',claimed:'Đã nhận',dayBonus:'Thưởng ngày',newFeature:'Tính năng mới',tutWelcome:'Chào mừng đến tiệm!',tutWelcomeDesc:'Làm theo hướng dẫn để học cách mở quán và bán bánh tráng trộn.',tutGo:'Bắt đầu học',tutPrep:'Mở quán bán hàng',tutPrepDesc:'Bấm nút BẮT ĐẦU BÁN để mở quán và đón khách.',tutAdd:'Thêm nguyên liệu',tutAddDesc:'Chạm đúng nguyên liệu khách yêu cầu (ô đang sáng).',tutMix:'Trộn món',tutMixDesc:'Đã đủ nguyên liệu! Bấm TRỘN để hoàn thành món.',tutServe:'Giao món',tutServeDesc:'Món sẵn sàng — bấm GIAO MÓN để nhận tiền!',tutDone:'Xong rồi!',tutDoneDesc:'Bạn đã biết cách bán hàng. Cứ tiếp tục phục vụ khách, nâng cấp và mở khóa món mới nhé!',tutNext:'Tiếp tục',tutSkipBlocked:'Hãy làm theo hướng dẫn nhé!',tutTitle:'Hướng dẫn',heatMild:'Không cay',heatMed:'Cay vừa',heatHot:'Siêu cay',heatWant:'Khách muốn',heatMatch:'Đúng khẩu vị!',heatMiss:'Sai độ cay'},en:{title:'Mixed Rice Paper Shop',sub:'Open · cook · upgrade · climb the ranking',money:'Money',day:'Day',clock:'Time',rep:'Reputation',open:'OPEN SHOP',close:'CLOSE',order:'Orders',serve:'Serve',mix:'MIX',stock:'Stock',market:'Market',staff:'Staff',rank:'Ranking',settings:'Settings',recipes:'Recipes',prepare:'Prepare',prepareMode:'Preparation',startSelling:'START SELLING',sellModeTitle:'Selling',sellingNow:'Now serving customers',finishEarly:'Go Home Early',finishConfirm:'End the selling session and go home early?',backHome:'Back to preparation',waitingCustomer:'Waiting for the next customer...',sell:'Sell',prepTitle:"Today's preparation",prepDesc:'Check stock, choose recipes and set prices before opening.',openTip:'When everything is ready, tap OPEN SHOP to start serving customers.',readyParts:'Ready ingredients',setPrice:'Selling price',prepReady:'Ready to open',goSell:'Go to counter',choose:'Choose language',save:'Save',load:'Load',reset:'Reset',buy:'Buy',hire:'Hire',upgrade:'Upgrade',need:'Missing',ready:'Ready',price:'Price',tip:'Tip',review:'Review',daily:'Daily target',closeDay:'Close shift',nextDay:'Next day',code:'Save code',export:'Export',import:'Import',confirm:'Confirm',wrong:'Wrong dish',success:'Order served!',full:'Stock full',notEnough:'Not enough money',customer:'Customer',spice:'Spice level',howto:'Tap the correct ingredients, then MIX.',auto:'Auto-saves after actions.',closed:'Shop is closed.',lang:'Language',name:'Shop name',boss:'Owner name',reviewsTitle:'Customer Reviews',reply:'Reply to customer',replyPlaceholder:'Write a reply to the customer...',sendReply:'Send Reply',replySaved:'Reply saved!',noReviews:'No reviews yet.',start:'Start',copy:'Copy',paste:'Paste',codeHint:'Copy this code to transfer progress to another device/file.',event:'Event',combo:'Combo',upgrades:'Upgrades',achievements:'Achievements',streak:'Day streak',sound:'Sound',soundOn:'On',soundOff:'Off',bulk:'Bulk buy',maxStock:'Stock capacity',fastCook:'Faster cook',patientCust:'Patient customers',neonSign:'Neon sign',luckyDay:'Lucky day',rainDay:'Heavy rain – fewer customers',viralDay:'Viral review!',saleDay:'Ingredient sale -30%',rushOrder:'Rush order!',perfect:'Perfect serve!',claim:'Claim',claimed:'Claimed',dayBonus:'Day bonus',newFeature:'New feature',tutWelcome:'Welcome!',tutWelcomeDesc:'Follow the steps to learn how to open the shop and serve mixed rice paper.',tutGo:'Start tutorial',tutPrep:'Open the shop',tutPrepDesc:'Tap START SELLING to open and welcome customers.',tutAdd:'Add ingredients',tutAddDesc:'Tap the highlighted ingredients the customer asked for.',tutMix:'Mix the bowl',tutMixDesc:'All ingredients in! Tap MIX to finish the dish.',tutServe:'Serve the order',tutServeDesc:'Ready — tap SERVE to get paid!',tutDone:'All done!',tutDoneDesc:'You know the basics. Keep serving, upgrade, and unlock new recipes!',tutNext:'Continue',tutSkipBlocked:'Please follow the tutorial steps!',tutTitle:'Tutorial',heatMild:'Mild',heatMed:'Medium spicy',heatHot:'Extra spicy',heatWant:'Wants',heatMatch:'Perfect heat!',heatMiss:'Wrong heat'},zh:{title:'越南拌米纸小店',sub:'开店 · 制作 · 升级 · 冲榜',money:'金币',day:'天数',clock:'时间',rep:'声誉',open:'开店',close:'关店',order:'待处理订单',serve:'交付',mix:'搅拌',stock:'库存',market:'进货',staff:'员工',rank:'排行榜',settings:'设置',recipes:'食谱',prepare:'准备',prepareMode:'准备阶段',startSelling:'开始营业',sellModeTitle:'营业中',sellingNow:'正在接待顾客',finishEarly:'提前回家',finishConfirm:'确定结束营业并提前回家吗？',backHome:'已回到准备菜单',waitingCustomer:'等待下一位顾客...',sell:'营业',prepTitle:'今日准备',prepDesc:'开店前检查库存、选择食谱并设置价格。',openTip:'准备好后点击开店，开始接待顾客。',readyParts:'库存准备度',setPrice:'售价',prepReady:'可以开店',goSell:'去前台',choose:'选择语言',save:'保存',load:'读取',reset:'重置',buy:'购买',hire:'雇佣',upgrade:'升级',need:'缺少',ready:'完成',price:'价格',tip:'小费',review:'评价',daily:'今日目标',closeDay:'结束营业',nextDay:'新的一天',code:'存档代码',export:'导出代码',import:'导入代码',confirm:'确认',wrong:'配方错误',success:'订单完成！',full:'库存已满',notEnough:'金币不足',customer:'顾客',spice:'辣度',howto:'选择正确配料，然后搅拌。',auto:'每次操作自动保存。',closed:'店铺已关门。',lang:'语言',name:'店铺名称',boss:'老板名字',reviewsTitle:'顾客评价',reply:'回复顾客',replyPlaceholder:'写回复给顾客...',sendReply:'发送回复',replySaved:'已回复！',noReviews:'还没有评价。',start:'开始',copy:'复制',paste:'粘贴',codeHint:'复制此存档码可转移到其他设备。',event:'事件',combo:'连击',upgrades:'升级',achievements:'成就',streak:'连续天数',sound:'音效',soundOn:'开',soundOff:'关',bulk:'批量购买',maxStock:'库存容量',fastCook:'快速制作',patientCust:'顾客更有耐心',neonSign:'霓虹招牌',luckyDay:'幸运日',rainDay:'大雨 – 顾客少',viralDay:'评价爆火!',saleDay:'食材打折 -30%',rushOrder:'加急单!',perfect:'完美出餐!',claim:'领取',claimed:'已领取',dayBonus:'每日奖励',newFeature:'新功能',tutWelcome:'欢迎!',tutWelcomeDesc:'按步骤学习开店和制作拌米纸。',tutGo:'开始教程',tutPrep:'开始营业',tutPrepDesc:'点击开始营业接待顾客。',tutAdd:'添加配料',tutAddDesc:'点击高亮的正确配料。',tutMix:'搅拌',tutMixDesc:'配料齐全！点击搅拌完成。',tutServe:'上菜',tutServeDesc:'完成了 — 点击交付收钱！',tutDone:'完成!',tutDoneDesc:'基础已学会。继续服务、升级并解锁新菜谱！',tutNext:'继续',tutSkipBlocked:'请按教程操作!',tutTitle:'教程',heatMild:'不辣',heatMed:'微辣',heatHot:'特辣',heatWant:'想要',heatMatch:'辣度刚好!',heatMiss:'辣度不对'}};
 const ING={
 paper:{e:'🫓',vi:'Bánh tráng',en:'Rice paper',zh:'米纸',cost:2,art:'paper',lv:1},
@@ -198,7 +199,7 @@ function migrate(st){
     if(st.eventDay==null)st.eventDay=0;
     if(st.money==null)st.money=150;
     if(st.day==null)st.day=1;
-    if(st.minutes==null)st.minutes=360;
+    if(st.minutes==null||!Number.isFinite(st.minutes))st.minutes=typeof DAY_START==='number'?DAY_START:360;if(st.minutes>=(typeof DAY_END==='number'?DAY_END:1320))st.minutes=typeof DAY_START==='number'?DAY_START:360;st.dayStartedAt=null;
     if(st.rep==null)st.rep=5;
     if(st.xp==null)st.xp=0;
     if(st.name==null)st.name='Tiệm Bánh Tráng';
@@ -357,7 +358,58 @@ function newOrder(){
   if(s.recentOrders.length>3)s.recentOrders.shift();
   save();render();
 }
-function openShop(){if(tutActive()&&!tutAllow('open')){tutBlock();return}if(s.minutes>=DAY_END){toast('🌙 Hết giờ');return}if(tutActive()){['paper','salt','satay','herb'].forEach(k=>{s.stock[k]=Math.max(s.stock[k]||0,3)});s.recipes=Array.from(new Set([...(s.recipes||[]),'basic']))}s.open=true;if(!s.dayStartedAt)s.dayStartedAt=Date.now();if(tutActive()){s.event='none';s.goal=99}else if(s.eventDay!==s.day){s.event=pickEvent();s.eventDay=s.day}if(s.event==='viral')s.goal=Math.min(s.goal+2,12);if(s.event==='rain')s.goal=Math.max(3,s.goal-2);if(s.event==='lucky')s.rep=Math.min(5,s.rep+0.15);newOrder();sfx('ok');toast('🔥 '+t('open')+(s.event&&s.event!=='none'?' · '+eventIcon()+' '+eventLabel():''));if(tutActive()&&tutId()==='prep'){s.tutorial=2;/*add*/}save();render()}
+function openShop(){
+  try{
+    // stuck tutorial should not hard-block opening forever
+    if(tutActive()){
+      const id=tutId();
+      if(id==='add'||id==='mix'||id==='serve'){
+        /* mid-tutorial cooking: ignore open */
+        return;
+      }
+      // welcome / prep / done / unknown → allow open
+      if(id==='prep'||id==='welcome'||id==='done'||id==null){
+        /* ok */
+      }
+    }
+    if(!Number.isFinite(s.minutes) || s.minutes>=DAY_END){
+      s.minutes=DAY_START;
+      s.dayStartedAt=Date.now();
+    }
+    if(tutActive()){
+      ['paper','salt','satay','herb'].forEach(k=>{s.stock[k]=Math.max(s.stock[k]||0,5)});
+      if(!s.recipes.includes('basic'))s.recipes.push('basic');
+    }
+    s.open=true;
+    if(!s.dayStartedAt)s.dayStartedAt=Date.now();
+    if(tutActive()){
+      s.event='none';
+      s.goal=99;
+      if(tutId()==='welcome'||tutId()==='prep')s.tutorial=2;
+    }else if(s.eventDay!==s.day){
+      s.event=pickEvent();
+      s.eventDay=s.day;
+    }
+    if(s.event==='viral')s.goal=Math.min((s.goal||6)+2,12);
+    if(s.event==='rain')s.goal=Math.max(3,(s.goal||6)-2);
+    if(s.event==='lucky')s.rep=Math.min(5,(s.rep||5)+0.15);
+    s.active=null;s.selected=[];s.mixed=false;
+    newOrder();
+    try{sfx('ok')}catch(e){}
+    toast('🔥 '+t('open')+(s.event&&s.event!=='none'?' · '+eventIcon()+' '+eventLabel():''));
+    save();
+    render();
+  }catch(err){
+    console.error('openShop',err);
+    s.open=true;
+    s.minutes=Number.isFinite(s.minutes)?s.minutes:DAY_START;
+    s.dayStartedAt=Date.now();
+    try{newOrder()}catch(e){}
+    save();
+    render();
+    toast('🔥 '+t('open'));
+  }
+}
 function closeShop(){if(tutActive()){tutBlock();return}s.open=false;toast('🌙 '+t('close'));save();render()}
 function addIng(k){if(!s.active)return;if(tutActive()&&!tutAllow('add')){tutBlock();return}const r=REC.find(x=>x.id===s.active.recipe);if(!r.need.includes(k)||s.selected.includes(k)||s.stock[k]<=0)return;if(tutActive()&&tutId()==='add'){const next=r.need.find(x=>!s.selected.includes(x));if(next&&k!==next){tutBlock();return}}s.selected.push(k);if(tutActive()&&tutId()==='add'&&s.selected.length>=r.need.length){s.tutorial=3}save();render()}
 function doMix(){if(!s.active)return;if(tutActive()&&!tutAllow('mix')){tutBlock();return}const r=REC.find(x=>x.id===s.active.recipe);if(s.selected.length!==r.need.length)return;const has=s.selected.every(k=>r.need.includes(k));if(!has)return toast(t('wrong'));s.mixing=true;sfx('mix');render();setTimeout(()=>{s.mixing=false;s.mixed=true;if(tutActive()&&tutId()==='mix'){s.tutorial=4}save();render()},mixTime())}
@@ -372,278 +424,4 @@ if(!heatOk&&((wantHeat==='hot'&&dishHeat==='mild')||(wantHeat==='mild'&&dishHeat
 s.combo=(s.combo||0)+1;s.bestCombo=Math.max(s.bestCombo||0,s.combo);
 let comboBonus=s.combo>=3?Math.floor(price*0.03*Math.min(s.combo,10)):0;
 let earned=price+comboBonus;s.money+=earned;s.revenue+=earned;s.totalRevenue+=earned;s.served++;s.totalServed++;let xpGain=15+r.need.length*3+(s.combo>=5?10:0);gainXp(xpGain);s.rep=Math.min(5,Math.max(1,(s.rep||5)+(typeof heatOk!=='undefined'&&!heatOk?-0.15:(heatOk?0.05:0.02))+(s.upgrades.includes('neon')?0.02:0)));const texts=(!heatOk)?[t('heatMiss'),'Hơi lệch khẩu vị...','Lần sau chỉnh cay giúp nha']:s.combo>=5?['Combo đỉnh!','Xuất sắc quá!','Thần bếp!']:heatOk?[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!']:['Đúng công thức!','Ổn áp!','Tạm được'];s.reviews.unshift({id:Date.now()+Math.random(),author:s.active.name,role:s.active.person,avatar:s.active.avatar,stars:(()=>{let st=5;if(typeof heatOk!=='undefined'&&!heatOk)st=1+Math.floor(Math.random()*2);else if(s.combo>=5)st=5;else if(s.combo>=3)st=5;else st=4+((Math.random()<0.6)?1:0);if(s.active&&s.active.patience<25)st=Math.min(st,3);return st})(),text:texts[Math.floor(Math.random()*texts.length)],money:earned,reply:''});if(s.reviews.length>12)s.reviews.pop();sfx('coin');float('+'+earned+' 💰',false);if(comboBonus)float('🔥 +'+comboBonus,false);float('+'+xpGain+' XP',true);if(s.combo>=3)toast('🔥 '+t('combo')+' x'+s.combo+' · ✅ '+t('success'));else toast('✅ '+t('success'));if(tutActive()&&tutId()==='serve'){s.tutorial=5}s.active=null;s.selected=[];s.mixed=false;save();render();showComboBadge();setTimeout(()=>{if(!tutActive()||tutId()==='done')newOrder()},350);if(s.served>=s.goal){setTimeout(()=>endDay(true),700)}}
-function showComboBadge(){let el=document.getElementById('comboBadge');if(!el){el=document.createElement('div');el.id='comboBadge';el.className='combo-badge';document.body.appendChild(el)}if(s.combo>=2){el.textContent='🔥 '+t('combo')+' x'+s.combo;el.classList.add('show');clearTimeout(showComboBadge._t);showComboBadge._t=setTimeout(()=>el.classList.remove('show'),1800)}else el.classList.remove('show')}
-function skip(){if(tutActive()){tutBlock();return}s.combo=0;s.active=null;s.selected=[];s.mixed=false;sfx('bad');save();render();setTimeout(newOrder,300)}
-function resetBowl(){s.selected=[];s.mixed=false;render()}
-function endDay(){s.open=false;page='prepare';s.active=null;s.selected=[];s.mixed=false;s.bestDay=Math.max(s.bestDay,s.revenue);if(s.served>=s.goal){s.streak=(s.streak||0)+1;const bonus=20+s.streak*5+Math.floor(s.revenue*0.05);s.money+=bonus;s.revenue+=bonus;s.dayBonus=bonus}else{s.streak=0;s.dayBonus=0}s.combo=0;save();showSummary()}
-function showSummary(){const m=document.getElementById('modal');m.className='modal show';const bonus=s.dayBonus||0;const st=s.streak||0;m.innerHTML=`<div class="sheet"><h3>🌙 ${t('closeDay')}</h3><div class="grid2"><div class="notice">💰 +${s.revenue}</div><div class="notice">👥 ${s.served}/${s.goal}</div><div class="notice">⭐ ${s.rep.toFixed(1)}</div><div class="notice">🔥 ${t('streak')}: ${st}</div></div>${bonus?`<div class="notice" style="margin-top:8px">🎁 ${t('dayBonus')}: +${bonus} 💰</div>`:''}${s.bestCombo>=3?`<div class="notice" style="margin-top:6px">✨ ${t('combo')} max: x${s.bestCombo}</div>`:''}<button class="btn green" style="width:100%;margin-top:10px" onclick="nextDay()">☀️ ${t('nextDay')}</button></div>`}
-function nextDay(){document.getElementById('modal').className='modal';s.day++;s.minutes=DAY_START;s.open=false;s.dayStartedAt=null;s.active=null;s.selected=[];s.mixed=false;s.served=0;s.revenue=0;s.cost=0;s.goal=5+Math.floor(Math.random()*4);save();render()}
-function buy(k,qty){qty=qty||1;const v=ING[k];if(!v)return;if(level()<(v.lv||1))return toast('🔒 Lv.'+(v.lv||1));const total=Object.values(s.stock).reduce((a,b)=>a+b,0);if(total+qty>maxStock())return toast(t('full'));const unit=stockCost(k);const cost=unit*qty;if(s.money<cost)return toast(t('notEnough'));s.money-=cost;s.stock[k]=(s.stock[k]||0)+qty;s.cost+=cost;sfx('coin');save();render()}
-function setRecipePrice(id,v){const r=REC.find(x=>x.id===id);let n=Math.max(1,Math.floor(Number(v)||r.price));s.prices[id]=n;save();render()}
-function canUnlockRecipe(r){return level()>=r.unlock}
-function tryAutoUnlockRecipes(){let unlocked=[];REC.forEach(r=>{if(!s.recipes.includes(r.id)&&level()>=r.unlock){s.recipes.push(r.id);if(s.prices[r.id]==null)s.prices[r.id]=r.price;unlocked.push(r)}});return unlocked}
-function unlock(id){const r=REC.find(x=>x.id===id);if(!r||s.recipes.includes(id))return;if(level()<r.unlock)return toast('🔒 Lv.'+r.unlock);const cost=Math.max(0,(r.unlock-1)*40);if(s.money<cost)return toast(t('notEnough'));s.money-=cost;s.recipes.push(id);if(s.prices[r.id]==null)s.prices[r.id]=r.price;sfx('ok');save();render();toast('🔓 '+nm(r))}
-function showLevelUp(prevLv,newLv){const d=document.createElement('div');d.className='level-banner';const news=REC.filter(r=>r.unlock>prevLv&&r.unlock<=newLv);const tops=Object.entries(ING).filter(([k,v])=>(v.lv||1)>prevLv&&(v.lv||1)<=newLv);let msg='⭐ LEVEL UP '+newLv+'!';if(news.length)msg+='\n🔓 '+news.map(r=>nm(r)).join(', ');if(tops.length)msg+='\n🥗 '+tops.map(([k,v])=>v[s.language]||v.vi).join(', ');d.textContent=msg;document.body.appendChild(d);sfx('level');setTimeout(()=>d.remove(),2800)}
-function gainXp(n){const prev=level();s.xp+=n;if(level()>20){/*cap*/}const now=level();if(now>prev){tryAutoUnlockRecipes();showLevelUp(prev,now)}}
-function hire(id){const x=STAFF.find(a=>a.id===id);if(s.staff.includes(id))return;if(s.money<x.cost)return toast(t('notEnough'));s.money-=x.cost;s.staff.push(id);save();render();toast('👩‍🍳 '+t('hire')+' '+x.name[s.language])}
-function bytesToBase64(bytes){let bin='';const chunk=0x8000;for(let i=0;i<bytes.length;i+=chunk)bin+=String.fromCharCode(...bytes.subarray(i,i+chunk));return btoa(bin)}
-function base64ToBytes(text){const clean=text.replace(/\s+/g,'').replace(/-/g,'+').replace(/_/g,'/');const pad=clean.length%4;if(pad===2)text=clean+'==';else if(pad===3)text=clean+'=';else text=clean;const bin=atob(text);const out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out}
-function encodeSaveCode(){const payload={v:2,game:s};const bytes=new TextEncoder().encode(JSON.stringify(payload));return 'BTT2.'+bytesToBase64(bytes).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
-function decodeSaveCode(raw){const v=String(raw||'').trim().replace(/^```(?:text)?/i,'').replace(/```$/,'').trim();if(!v)throw new Error('empty');if(v.startsWith('BTT2.')){const bytes=base64ToBytes(v.slice(5));const json=new TextDecoder().decode(bytes);const p=JSON.parse(json);if(!p||p.v!==2||!p.game)throw new Error('invalid');return p.game;}const old=v.replace(/\s+/g,'');const json=decodeURIComponent(escape(atob(old)));const p=JSON.parse(json);if(!p||typeof p!=='object')throw new Error('invalid');return p}
-function showCode(){const m=document.getElementById('modal');const code=encodeSaveCode();m.className='modal show';m.innerHTML=`<div class="sheet"><button class="btn small pink close" onclick="closeSaveModal()">✕</button><h3>🔐 ${t('code')}</h3><p class="muted tiny">${t('codeHint')||'Copy mã này để lưu sang file/game khác. Bạn có thể dán mã dài nhiều dòng.'}</p><textarea class="codebox" id="code" spellcheck="false">${code}</textarea><div class="grid2"><button class="btn yellow" onclick="copyCode()">📋 ${t('copy')||'Copy'}</button><button class="btn blue" onclick="pasteCode()">📥 ${t('paste')||'Dán mã'}</button></div><button class="btn green" style="width:100%;margin-top:8px" onclick="importCode()">✅ ${t('import')}</button><div id="codeStatus" class="muted tiny" style="margin-top:7px"></div></div>`}
-function closeSaveModal(){document.getElementById('modal').className='modal'}
-function copyCode(){const e=document.getElementById('code');const done=()=>{const st=document.getElementById('codeStatus');if(st)st.textContent='✅ Đã sao chép mã save';toast('✅ Copied')};if(navigator.clipboard?.writeText){navigator.clipboard.writeText(e.value).then(done).catch(()=>{e.focus();e.select();document.execCommand('copy');done()})}else{e.focus();e.select();document.execCommand('copy');done()}}
-async function pasteCode(){try{const txt=await navigator.clipboard.readText();const e=document.getElementById('code');if(txt){e.value=txt;toast('✅ Đã dán mã save');}}catch{toast('📋 Hãy dán thủ công vào ô mã save')}}
-function importCode(){const e=document.getElementById('code');const v=e?e.value:'';try{const x=decodeSaveCode(v);if(!x||typeof x!=='object')throw new Error('invalid');s=migrate({...fresh(),...x});if(!s.language)s.language='vi';if(!s.stock)s.stock={};if(!s.recipes)s.recipes=['basic'];if(!s.prices)s.prices={basic:24,mango:36,beef:42,egg:38,full:66,spicy:72,fresh:48,shrimp:58,sausage:64,cheese:70,supreme:95,seafood:88,legend:120};save();closeSaveModal();render();toast('✅ Loaded')}catch(err){const st=document.getElementById('codeStatus');if(st)st.textContent='❌ Mã save không hợp lệ hoặc bị thiếu ký tự';toast('❌ Invalid save code')}}
-function editName(){const x=prompt(t('name'),s.name);if(x){s.name=x.trim();save();render()}}function editBoss(){const x=prompt(t('boss'),s.boss);if(x){s.boss=x.trim();save();render()}}
-function sendReviewReply(id){const r=s.reviews.find(x=>String(x.id)===String(id));if(!r)return;const el=document.getElementById('reply-'+id);const text=(el?.value||'').trim();if(!text)return toast('✍️ '+t('replyPlaceholder'));r.reply=text.slice(0,250);save();render();toast('✅ '+t('replySaved'))}
-function editReviewReply(id){const r=s.reviews.find(x=>String(x.id)===String(id));if(!r)return;const m=document.getElementById('modal');m.className='modal show';m.innerHTML=`<div class="sheet"><button class="btn small pink close" onclick="document.getElementById('modal').className='modal'">✕</button><h3>💬 ${t('reply')}</h3><p class="muted">${esc(r.author||t('customer'))}</p><textarea id="editReply" maxlength="250" style="width:100%;min-height:110px;border:2px solid var(--ink);border-radius:8px;padding:8px;font:600 .82rem/1.4 system-ui,sans-serif">${esc(r.reply||'')}</textarea><button class="btn green" style="width:100%;margin-top:10px" onclick="saveEditedReply('${id}')">✅ ${t('sendReply')}</button></div>`}
-function saveEditedReply(id){const r=s.reviews.find(x=>String(x.id)===String(id));if(!r)return;const el=document.getElementById('editReply');const text=(el?.value||'').trim();if(!text)return; r.reply=text.slice(0,250);save();document.getElementById('modal').className='modal';render();toast('✅ '+t('replySaved'))}
-function float(text,xp){const d=document.createElement('div');d.className=xp?'xp-fly':'money-fly';d.style.left=(40+Math.random()*20)+'%';d.style.top='48%';d.textContent=text;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}function toast(text){const d=document.createElement('div');d.className='toast';d.textContent=text;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
-
-function finishSellingEarly(){if(tutActive()){tutBlock();return}if(!s.open)return;if(!confirm(t('finishConfirm')))return;toast('🏠 '+t('backHome'));endDay()}
-
-const TUT_STEPS=['welcome','prep','add','mix','serve','done'];
-function tutActive(){return s&&!s.tutorialDone&&s.tutorial!=null&&s.tutorial>=0}
-function tutStep(){return tutActive()? (typeof s.tutorial==='number'?s.tutorial:0) : -1}
-function tutId(){const i=tutStep();return i>=0&&i<TUT_STEPS.length?TUT_STEPS[i]:null}
-function tutAdvance(){if(!tutActive())return;s.tutorial=(s.tutorial||0)+1;if(s.tutorial>=TUT_STEPS.length-1){/* stay on done until confirm */}save();render()}
-function tutFinish(){s.tutorialDone=true;s.tutorial=-1;document.body.classList.remove('tut-lock');save();render();toast('🎉 '+t('tutDone'))}
-function tutBlock(msg){toast('👉 '+(msg||t('tutSkipBlocked')))}
-function tutAllow(act){
-  if(!tutActive())return true;
-  const id=tutId();
-  if(id==='welcome'||id==='done')return act==='tutNext';
-  if(id==='prep')return act==='open';
-  if(id==='add')return act==='add';
-  if(id==='mix')return act==='mix';
-  if(id==='serve')return act==='serve';
-  return false;
-}
-function tutHighlightSelector(){
-  const id=tutId();
-  if(id==='prep')return '[data-act="open"]';
-  if(id==='add'&&s.active){const r=REC.find(x=>x.id===s.active.recipe);if(!r)return null;const next=r.need.find(k=>!s.selected.includes(k));return next?`[data-add="${next}"]`:null}
-  if(id==='mix')return '[data-act="mix"]';
-  if(id==='serve')return '[data-act="serve"]';
-  return null;
-}
-function renderTutorial(){
-  document.body.classList.remove('tut-lock');
-  const old = document.getElementById('tutRoot');
-  if (old) old.remove();
-  if (!tutActive()) return;
-
-  const id = tutId();
-  const titles = {
-    welcome: t('tutWelcome'), prep: t('tutPrep'), add: t('tutAdd'),
-    mix: t('tutMix'), serve: t('tutServe'), done: t('tutDone')
-  };
-  const descs = {
-    welcome: t('tutWelcomeDesc'), prep: t('tutPrepDesc'), add: t('tutAddDesc'),
-    mix: t('tutMixDesc'), serve: t('tutServeDesc'), done: t('tutDoneDesc')
-  };
-  const stepN = Math.min((s.tutorial || 0) + 1, TUT_STEPS.length);
-  const labels = {
-    welcome: '✨ ' + t('tutGo'),
-    prep: '🔥 ' + t('startSelling'),
-    add: '🥗 ' + t('tutAdd'),
-    mix: '🥢 ' + t('mix'),
-    serve: '✅ ' + t('serve'),
-    done: '🎉 ' + t('tutNext')
-  };
-
-  // Keep game page in sync
-  if (id === 'prep') page = 'prepare';
-  if (id === 'add' || id === 'mix' || id === 'serve') {
-    /* sell mode shows via s.open */
-  }
-
-  const root = document.createElement('div');
-  root.id = 'tutRoot';
-  root.className = 'tut-overlay';
-  root.innerHTML = '<div class="tut-card">' +
-    '<div class="tut-step">' + t('tutTitle') + ' · ' + stepN + '/' + TUT_STEPS.length + '</div>' +
-    '<h4>' + (titles[id] || '') + '</h4>' +
-    '<p>' + (descs[id] || '') + '</p>' +
-    '<button type="button" class="btn primary" id="tutActionBtn">' + (labels[id] || t('tutNext')) + '</button>' +
-    '<div class="tut-hint">👆 ' + (s.language === 'en' ? 'Tap the button above' : s.language === 'zh' ? '点击上方按钮' : 'Bấm nút phía trên') + '</div>' +
-    '</div>';
-  document.body.appendChild(root);
-
-  const btn = document.getElementById('tutActionBtn');
-  if (!btn) return;
-
-  let busy = false;
-  function run() {
-    if (busy) return;
-    busy = true;
-    try {
-      if (id === 'welcome') {
-        s.tutorial = 1;
-        page = 'prepare';
-        s.open = false;
-        save();
-        render();
-        return;
-      }
-      if (id === 'done') {
-        tutFinish();
-        return;
-      }
-      if (id === 'prep') {
-        // grant stock + open
-        ['paper','salt','satay','herb'].forEach(k => { s.stock[k] = Math.max(s.stock[k] || 0, 5); });
-        if (!s.recipes.includes('basic')) s.recipes.push('basic');
-        s.event = 'none';
-        s.goal = 99;
-        s.open = true;
-        s.tutorial = 2;
-        s.active = null;
-        s.selected = [];
-        s.mixed = false;
-        newOrder();
-        // newOrder may set recipe; force basic
-        if (s.active) {
-          s.active.recipe = 'basic';
-          s.active.rush = false;
-          s.active.patience = 100;
-        }
-        s.selected = [];
-        s.mixed = false;
-        save();
-        render();
-        return;
-      }
-      if (id === 'add') {
-        if (!s.open) { s.open = true; }
-        if (!s.active) {
-          s.active = {
-            recipe: 'basic', avatar: '👧🏻', person: 'Học sinh', name: 'An',
-            spice: 2, patience: 100, rush: false
-          };
-        }
-        s.active.recipe = 'basic';
-        const r = REC.find(x => x.id === 'basic');
-        const next = r.need.find(k => !s.selected.includes(k));
-        if (next) {
-          if ((s.stock[next] || 0) <= 0) s.stock[next] = 5;
-          s.selected.push(next);
-        }
-        if (s.selected.length >= r.need.length) {
-          s.tutorial = 3;
-        }
-        save();
-        render();
-        return;
-      }
-      if (id === 'mix') {
-        const r = REC.find(x => x.id === 'basic');
-        if (!s.active) {
-          s.active = { recipe: 'basic', avatar: '👧🏻', person: 'Học sinh', name: 'An', spice: 2, patience: 100, rush: false };
-        }
-        // auto-fill if missing
-        r.need.forEach(k => {
-          if (!s.selected.includes(k)) {
-            if ((s.stock[k] || 0) <= 0) s.stock[k] = 5;
-            s.selected.push(k);
-          }
-        });
-        s.mixing = false;
-        s.mixed = true;
-        s.tutorial = 4;
-        save();
-        render();
-        return;
-      }
-      if (id === 'serve') {
-        if (!s.active) {
-          s.active = { recipe: 'basic', avatar: '👧🏻', person: 'Học sinh', name: 'An', spice: 2, patience: 100, rush: false };
-        }
-        s.mixed = true;
-        // apply serve rewards without depending on guards
-        const r = REC.find(x => x.id === 'basic');
-        r.need.forEach(k => { s.stock[k] = Math.max(0, (s.stock[k] || 0) - 1); });
-        const price = s.prices.basic || 24;
-        const earned = price + 5;
-        s.money += earned;
-        s.revenue = (s.revenue || 0) + earned;
-        s.totalRevenue = (s.totalRevenue || 0) + earned;
-        s.served = (s.served || 0) + 1;
-        s.totalServed = (s.totalServed || 0) + 1;
-        if (typeof gainXp === 'function') gainXp(20); else s.xp = (s.xp || 0) + 20;
-        s.combo = (s.combo || 0) + 1;
-        s.bestCombo = Math.max(s.bestCombo || 0, s.combo);
-        s.reviews = s.reviews || [];
-        s.reviews.unshift({
-          id: Date.now(), author: s.active.name, role: s.active.person, avatar: s.active.avatar,
-          stars: 5, text: 'Ngon xỉu!', money: earned, reply: ''
-        });
-        s.active = null;
-        s.selected = [];
-        s.mixed = false;
-        s.tutorial = 5;
-        toast('✅ ' + t('success') + ' +' + earned + ' 💰');
-        save();
-        render();
-        return;
-      }
-    } catch (err) {
-      console.error('tut action', err);
-      busy = false;
-      toast('⚠️ Lỗi tutorial, thử lại');
-    }
-  }
-
-  btn.addEventListener('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    run();
-  });
-  // mobile: click is enough; avoid touchstart double-fire
-}
-
-
-function bindEvents(){document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{if(tutActive()&&tutId()!=='done'){tutBlock();return}page=b.dataset.page;render()});document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{s.language=b.dataset.lang;save();render()});document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addIng(b.dataset.add));document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buy(b.dataset.buy));document.querySelectorAll('[data-unlock]').forEach(b=>b.onclick=()=>unlock(b.dataset.unlock));document.querySelectorAll('[data-hire]').forEach(b=>b.onclick=()=>hire(b.dataset.hire));document.querySelectorAll('[data-send-reply]').forEach(b=>b.onclick=()=>sendReviewReply(b.dataset.sendReply));document.querySelectorAll('[data-edit-reply]').forEach(b=>b.onclick=()=>editReviewReply(b.dataset.editReply));document.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const a=b.dataset.act;if(a==='open')openShop();if(a==='close')closeShop();if(a==='mix')doMix();if(a==='serve')serve();if(a==='skip')skip();if(a==='resetBowl')resetBowl();if(a==='finishEarly')finishSellingEarly();if(a==='save'){save();toast('✅ '+t('save'))}if(a==='showCode')showCode();if(a==='reset'){if(confirm('Reset?')){s=fresh();save();render()}}if(a==='editName')editName();if(a==='editBoss')editBoss();if(a==='toggleSound'){s.sound=!s.sound;save();toast('🔊 '+(s.sound?t('soundOn'):t('soundOff')));render()}if(a==='replayTut'){s.tutorialDone=false;s.tutorial=0;s.open=false;page='prepare';save();render()}});document.querySelectorAll('[data-buy5]').forEach(b=>b.onclick=()=>buy(b.dataset.buy5,5));document.querySelectorAll('[data-buy10]').forEach(b=>b.onclick=()=>buy(b.dataset.buy10,10));document.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>buyUpgrade(b.dataset.upgrade));document.querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>claimAch(b.dataset.claim))}
-let last=Date.now();
-setInterval(()=>{
-  if(!s.language||s.first)return;
-  const now=Date.now();
-  const dt=Math.min(2,(now-last)/1000);
-  if(dt<0.25)return;
-  last=now;
-  if(s.open&&s.minutes<DAY_END&&!(typeof tutActive==='function'&&tutActive())){
-    if(!s.dayStartedAt)s.dayStartedAt=now;
-    const elapsed=now-s.dayStartedAt;
-    s.minutes=Math.min(DAY_END, DAY_START + Math.floor(DAY_SPAN * elapsed / DAY_MS));
-    if(s.active){
-      // ~55s full patience without upgrades (scaled)
-      const drain=patienceDrain()*dt*1.6;
-      s.active.patience=Math.max(0,s.active.patience-drain);
-      if(s.active.patience<=0)skip();
-    }
-    if(!s.active)newOrder();
-    if(s.minutes>=DAY_END)endDay();
-    save();
-    if(s.open||page==='home'||page==='cook'||page==='prepare')render();
-  }
-},250);
-
-const modal=document.createElement('div');modal.id='modal';modal.className='modal';document.body.appendChild(modal);
-(function boot(){
-  try{
-    if(!s||typeof s!=='object')s=fresh();
-    s=migrate(s);
-    if(s.language){try{tryAutoUnlockRecipes();save()}catch(e){}}if(s.language&&!s.tutorialDone){if(s.tutorial==null||s.tutorial<0)s.tutorial=0}
-    if(s.first&&s.language){try{showNameModal()}catch(e){console.warn(e);s.first=false}}
-    render();
-  }catch(err){
-    console.error('boot error',err);
-    try{localStorage.removeItem(KEY)}catch(_){}
-    s=fresh();
-    try{render()}catch(e2){
-      document.getElementById('app').innerHTML='<div class="app" style="padding:24px;text-align:center"><section class="card"><h2>🥣 Lỗi tải game</h2><p>Bấm nút để chơi lại từ đầu.</p><button class="btn green" style="width:100%" onclick="localStorage.removeItem(\''+KEY+'\');location.reload()">🔄 Chơi lại</button></section></div>';
-    }
-  }
-})();
-</script></body></html>
+function showComboBadge(){let el=document.getElementById('comboBadge');if(!el){el=document.createElement('div');el.id='comboBadge';el.className='combo-badge';document.body.appendChild(el)}if(s.combo>=2){el.textContent='🔥 '+t('combo')+' x'+s.combo;el.classList.add('show');clearTimeout(showComboBadge._t);showComboBadge._t=setTimeout(()=>el.cla
