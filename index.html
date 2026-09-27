@@ -1218,4 +1218,289 @@
         window.onload = initGame;
     </script>
 </body>
-</html>
+</html><!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tiệm Bánh Tráng - Chuẩn bị & Ra ngoài bán</title>
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bánh Tráng">
+    <meta name="theme-color" content="#FF6B35">
+
+    <link id="icon-apple-touch" rel="apple-touch-icon" sizes="180x180" href="">
+    <link id="icon-favicon" rel="icon" type="image/png" sizes="512x512" href="">
+    <link id="icon-manifest" rel="manifest" href="">
+    <script>
+        (function () {
+            function roundRectPath(ctx, x, y, w, h, r) {
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + h, r);
+                ctx.arcTo(x + w, y + h, x, y + h, r);
+                ctx.arcTo(x, y + h, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
+            }
+            function drawLogo(size) {
+                const canvas = document.createElement('canvas');
+                canvas.width = size; canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                const s = size / 200;
+                roundRectPath(ctx, 4*s, 4*s, 192*s, 192*s, 40*s);
+                ctx.fillStyle = '#FF6B35'; ctx.fill();
+                ctx.lineWidth = 8*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                ctx.beginPath(); ctx.arc(100*s, 95*s, 55*s, 0, Math.PI*2);
+                ctx.fillStyle = '#FFF8E7'; ctx.fill();
+                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                ctx.fillStyle = '#E63946'; ctx.beginPath(); ctx.arc(85*s, 85*s, 10*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#2A9D8F'; ctx.beginPath(); ctx.arc(115*s, 90*s, 8*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#F4A261'; ctx.beginPath(); ctx.arc(100*s, 110*s, 9*s, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(152*s, 148*s, 28*s, 0, Math.PI*2);
+                ctx.fillStyle = '#E2F170'; ctx.fill();
+                ctx.lineWidth = 6*s; ctx.strokeStyle = '#1E1E24'; ctx.stroke();
+                ctx.fillStyle = '#1E1E24';
+                ctx.font = `900 ${28*s}px Arial`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText('$', 152*s, 150*s);
+                return canvas.toDataURL('image/png');
+            }
+            try {
+                const icon180 = drawLogo(180);
+                const icon512 = drawLogo(512);
+                document.getElementById('icon-apple-touch').href = icon180;
+                document.getElementById('icon-favicon').href = icon512;
+                const manifest = {
+                    name: 'Tiệm Bánh Tráng',
+                    short_name: 'Bánh Tráng',
+                    start_url: '.',
+                    display: 'standalone',
+                    background_color: '#FFF8F0',
+                    theme_color: '#FF6B35',
+                    icons: [
+                        { src: icon180, sizes: '180x180', type: 'image/png' },
+                        { src: icon512, sizes: '512x512', type: 'image/png' }
+                    ]
+                };
+                const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+                document.getElementById('icon-manifest').href = URL.createObjectURL(blob);
+            } catch (e) {}
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pink: #FF6B9D; --orange: #FF6B35; --yellow: #FFD166; --green: #06D6A0;
+            --purple: #7B2CBF; --dark: #1E1E24; --light: #FFF8F0; --gray: #E5E7EB;
+            --shadow: 3px 3px 0px #1E1E24; --shadow-hover: 5px 5px 0px #1E1E24; --radius: 10px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Lexend', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #FFF8F0;
+            background-image: radial-gradient(#1E1E24 1px, transparent 1px);
+            background-size: 18px 18px;
+            color: var(--dark); min-height: 100vh; display: flex; flex-direction: column;
+            padding: 10px; font-size: 0.85rem; padding-bottom: 90px;
+        }
+        #app { max-width: 1180px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+        .nb-card { background: var(--light); border: 2px solid var(--dark); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
+        .nb-btn {
+            background: var(--orange); border: 2px solid var(--dark); border-radius: 8px;
+            box-shadow: 2px 2px 0px var(--dark); padding: 6px 12px; font-weight: 800; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            text-transform: uppercase;
+        }
+        .nb-btn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: var(--shadow-hover); }
+        .nb-btn:active:not(:disabled) { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--dark); }
+        .nb-btn:disabled { background: var(--gray); color: #888; cursor: not-allowed; }
+        .nb-btn-pink { background: var(--pink); }
+        .nb-btn-yellow { background: var(--yellow); }
+        .nb-btn-green { background: var(--green); }
+        .nb-btn-purple { background: var(--purple); color: white; }
+        .nb-btn-dark { background: var(--dark); color: white; }
+        .nb-input { border: 2px solid var(--dark); border-radius: 6px; padding: 8px 10px; font-weight: 600; font-size: 0.85rem; outline: none; box-shadow: 2px 2px 0 var(--dark); background: #fff; width: 100%; }
+        .nb-badge { background: var(--yellow); border: 1.5px solid var(--dark); padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 800; display: inline-block; }
+
+        header { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; background: var(--orange); padding: 10px; }
+        .header-stat { display: flex; align-items: center; gap: 8px; background: white; padding: 6px 10px; border: 2px solid var(--dark); border-radius: 8px; box-shadow: 2px 2px 0 var(--dark); }
+        .stat-label { font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase; }
+        .stat-value { font-size: 0.95rem; font-weight: 900; }
+        .editable-name { cursor: pointer; text-decoration: underline dotted var(--dark) 2px; }
+        .xp-bar-container { width: 100%; height: 10px; background: var(--gray); border: 1.5px solid var(--dark); border-radius: 5px; margin-top: 4px; overflow: hidden; }
+        .xp-bar-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.3s; }
+
+        nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        nav::-webkit-scrollbar { display: none; }
+        .tab-btn { flex: 1; min-width: 100px; padding: 8px 10px; font-size: 0.85rem; background: white; white-space: nowrap; }
+        .tab-btn.active { background: var(--yellow); transform: translate(-1px,-1px); box-shadow: var(--shadow-hover); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .market-layout { display: grid; grid-template-columns: 160px 1fr; gap: 12px; }
+        @media (max-width: 768px) { .market-layout { grid-template-columns: 1fr; } }
+        .category-menu { display: flex; flex-direction: column; gap: 6px; }
+        .cat-btn { text-align: left; background: white; border: 2px solid var(--dark); padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; box-shadow: 2px 2px 0 var(--dark); }
+        .cat-btn.active, .cat-btn:hover { background: var(--orange); color: white; }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .item-card { background: white; border: 2px solid var(--dark); border-radius: 8px; padding: 10px; box-shadow: 2px 2px 0 var(--dark); display: flex; flex-direction: column; gap: 8px; position: relative; }
+        .item-card.locked { background: #f3f4f6; color: #9ca3af; border-color: #9ca3af; }
+        .lock-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.75); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #ef4444; border-radius: 6px; }
+
+        .prep-layout { display: grid; grid-template-columns: 1fr 280px; gap: 12px; }
+        @media (max-width: 900px) { .prep-layout { grid-template-columns: 1fr; } }
+        .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .slot-card { background: white; border: 2px dashed var(--dark); border-radius: 8px; padding: 10px; min-height: 85px; display: flex; flex-direction: column; justify-content: space-between; }
+        .slot-card.filled { border-style: solid; background: #fff7ed; border-color: var(--orange); }
+        .slot-title { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #666; }
+        .inventory-list, .ready-list { max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .inventory-item, .ready-item { background: white; border: 2px solid var(--dark); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 2px 2px 0 var(--dark); }
+
+        .street-area { text-align: center; }
+        .customer-card { background: white; border: 2px solid var(--dark); border-radius: 12px; padding: 16px; box-shadow: 4px 4px 0 var(--dark); margin: 12px auto; max-width: 420px; }
+        .ready-stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+
+        /* Nút cố định dưới cùng */
+        .bottom-action {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--dark); padding: 12px 16px;
+            display: flex; justify-content: center; z-index: 500;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+        }
+        .bottom-action button {
+            width: 100%; max-width: 480px; padding: 14px; font-size: 1.05rem;
+            border-radius: 12px; font-weight: 900;
+        }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+        .modal-overlay.active { display: flex; }
+        .modal-body { background: var(--light); border: 3px solid var(--dark); border-radius: 12px; box-shadow: 5px 5px 0 var(--dark); max-width: 450px; width: 100%; padding: 20px; display: flex; flex-direction: column; gap: 12px; animation: popIn 0.25s cubic-bezier(0.175,0.885,0.32,1.275); }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        #toast-container { position: fixed; bottom: 90px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 2000; }
+        .toast { background: var(--dark); color: white; border: 2px solid white; padding: 10px 15px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+
+        .startup-language-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+        .startup-lang-btn { background: white; border: 2px solid var(--dark); border-radius: 10px; box-shadow: 3px 3px 0 var(--dark); padding: 14px; cursor: pointer; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 1.5rem; }
+        .startup-lang-btn.selected { background: var(--yellow); outline: 3px solid var(--purple); }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER -->
+        <header class="nb-card">
+            <div class="header-stat">
+                <span class="icon" style="font-size:1.3rem;cursor:pointer;" onclick="triggerLogoEgg()">🫓</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Tiệm</div>
+                    <div class="stat-value"><span id="display-shop-name" class="editable-name" onclick="editShopName()">Bánh Tráng Vỉa Hè</span></div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">👑</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Boss | <span id="display-level" style="color:var(--purple);font-weight:900;">Lv.1</span></div>
+                    <div class="stat-value"><span id="display-manager-name" class="editable-name" onclick="editManagerName()">Boss GenZ</span></div>
+                    <div class="xp-bar-container"><div id="xp-bar" class="xp-bar-fill"></div></div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">💰</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Tiền</div>
+                    <div class="stat-value" id="display-cash" style="color:#059669;">$2,500</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">📅</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Ngày</div>
+                    <div class="stat-value" id="display-day">Ngày 1</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">👥</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Đã bán hôm nay</div>
+                    <div class="stat-value" id="display-today-sold">0</div>
+                </div>
+            </div>
+            <div class="header-stat">
+                <span class="icon">⭐</span>
+                <div style="flex:1;">
+                    <div class="stat-label">Uy tín</div>
+                    <div class="stat-value" id="display-reputation">100%</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAV -->
+        <nav id="main-nav">
+            <button class="nb-btn tab-btn active" onclick="switchTab('market')">🛒 Chợ Nguyên Liệu</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('prep')">🫓 Chuẩn bị bánh</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('ready')">📦 Kho bánh đã làm</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('reviews')">💬 Đánh giá</button>
+            <button class="nb-btn tab-btn" onclick="switchTab('settings')">⚙️ Hệ thống</button>
+        </nav>
+
+        <!-- TAB MARKET -->
+        <div id="tab-market" class="tab-panel active">
+            <div class="market-layout">
+                <div class="category-menu nb-card">
+                    <h3 style="margin-bottom:8px;font-size:0.8rem;text-transform:uppercase;color:#555;">Danh mục</h3>
+                    <button class="cat-btn active" onclick="filterMarket('Base')">🫓 Bánh Tráng</button>
+                    <button class="cat-btn" onclick="filterMarket('Topping')">🍤 Topping</button>
+                    <button class="cat-btn" onclick="filterMarket('Sauce')">🌶️ Sốt</button>
+                    <button class="cat-btn" onclick="filterMarket('Extra')">✨ Đặc biệt</button>
+                </div>
+                <div class="nb-card" style="background:#fff7ed;">
+                    <h2 id="market-title" style="font-size:1.1rem;margin-bottom:10px;">🫓 Bánh Tráng</h2>
+                    <div id="market-items-grid" class="items-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB PREP (tự do thêm topping) -->
+        <div id="tab-prep" class="tab-panel">
+            <div class="prep-layout">
+                <div class="nb-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <h2 style="font-size:1.1rem;">🫓 Đang làm bánh (tự do)</h2>
+                        <button class="nb-btn nb-btn-pink" onclick="clearCurrentPrep()">🧹 Xóa</button>
+                    </div>
+                    <div id="prep-slots" class="slots-grid"></div>
+                    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+                        <div style="flex:1;background:white;border:2px solid var(--dark);padding:10px;border-radius:8px;">
+                            <div>⚡ Điểm ngon: <strong id="prep-score" style="color:var(--purple);">0</strong></div>
+                            <div>💵 Giá vốn: <strong id="prep-cost" style="color:#059669;">$0</strong></div>
+                        </div>
+                        <button class="nb-btn nb-btn-green" style="flex:1;padding:12px;font-size:0.95rem;" onclick="savePreparedBanh()">✅ Lưu vào kho bánh</button>
+                    </div>
+                </div>
+                <div class="nb-card">
+                    <h3 style="font-size:0.95rem;margin-bottom:8px;">🎒 Nguyên liệu còn lại (<span id="inv-count">0</span>)</h3>
+                    <div id="inventory-list" class="inventory-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB READY STOCK -->
+        <div id="tab-ready" class="tab-panel">
+            <div class="nb-card">
+                <h2 style="font-size:1.1rem;margin-bottom:10px;">📦 Kho bánh đã làm sẵn (<span id="ready-count">0</span>)</h2>
+                <p style="font-size:0.8rem;color:#555;margin-bottom:12px;">Những ổ bánh này sẽ mang ra ngoài bán cho khách.</p>
+                <div id="ready-list" class="ready-list"></div>
+            </div>
+        </div>
+
+        <!-- TAB STREET (chỉ hiện khi đang bán) -->
+        <div id="tab-street" class="tab-panel">
+            <div class="nb-card street-area">
+                <h2 style="font-size:1.2rem;margin-bottom:6px;">🛣️ Đang bán vỉa hè</h2>
+                <p style="font-size:0.85rem;color:#555;" id="street-status">Chờ khách đến...</p>
+                
