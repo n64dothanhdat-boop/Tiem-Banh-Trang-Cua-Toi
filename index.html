@@ -70,10 +70,11 @@
 .level-banner{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);z-index:130;background:linear-gradient(135deg,#ffd45a,#ff7a59);border:3px solid var(--line);border-radius:18px;padding:18px 24px;font-weight:950;font-size:18px;box-shadow:var(--shadow);text-align:center;animation:pop .4s;pointer-events:none}
 .lock-tag{opacity:.7;font-size:11px}
 
-.tut-overlay{position:fixed;inset:0;z-index:9998;pointer-events:auto}
-.tut-dim{position:absolute;inset:0;background:rgba(20,12,8,.72);pointer-events:none}
+.tut-overlay{position:fixed;inset:0;z-index:9998;pointer-events:none}
+.tut-dim{position:absolute;inset:0;background:rgba(20,12,8,.72);pointer-events:auto}
 .tut-spot{position:absolute;border:3px solid var(--yellow);border-radius:16px;box-shadow:0 0 0 9999px rgba(20,12,8,.72),0 0 20px #ffd45a;pointer-events:none;transition:all .25s;z-index:1}
-.tut-card{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(420px,calc(100% - 24px));background:var(--card);border:3px solid var(--line);border-radius:18px;padding:14px 14px 12px;box-shadow:var(--shadow);z-index:9999;font-weight:850}.tut-card.tut-center{bottom:auto;top:50%;transform:translate(-50%,-50%)}
+.tut-hit{position:absolute;z-index:10001;pointer-events:auto;cursor:pointer;background:transparent;border:0;padding:0;margin:0}
+.tut-card{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(420px,calc(100% - 24px));background:var(--card);border:3px solid var(--line);border-radius:18px;padding:14px 14px 12px;box-shadow:var(--shadow);z-index:10003;font-weight:850;pointer-events:auto}.tut-card.tut-center{bottom:auto;top:50%;transform:translate(-50%,-50%)}
 .tut-card h4{margin:0 0 6px;font-size:16px}
 .tut-card p{margin:0 0 10px;font-size:13px;color:var(--muted);font-weight:800;line-height:1.4}
 .tut-card .tut-step{font-size:11px;font-weight:950;color:var(--orange);margin-bottom:4px}
@@ -81,7 +82,7 @@
 .tut-hand{position:absolute;font-size:36px;z-index:211;pointer-events:none;animation:tutbob 1s ease-in-out infinite;filter:drop-shadow(2px 2px 0 #000)}
 @keyframes tutbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 body.tut-lock .nav,body.tut-lock .early-home{pointer-events:none;opacity:.35}
-.tut-target{position:relative;z-index:205!important;pointer-events:auto!important;animation:tutpulse 1.2s ease infinite}
+.tut-target{position:relative;z-index:10002!important;pointer-events:auto!important;animation:tutpulse 1.2s ease infinite}
 @keyframes tutpulse{0%,100%{box-shadow:var(--shadow2)}50%{box-shadow:0 0 0 4px #ffd45a,var(--shadow2)}}
 @media(min-width:700px){.app{padding-bottom:10px}.nav{position:sticky;transform:none;left:auto;bottom:auto;border:3px solid var(--line);border-radius:14px;margin:0 10px 10px;width:auto;box-shadow:var(--shadow);order:-1}.content{padding:10px}.top{position:sticky}.nav button{min-height:44px}.ingredient-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:380px){.stats{grid-template-columns:repeat(2,1fr)}.bowl-stage{grid-template-columns:1fr}.big-actions{grid-template-columns:1fr}.grid2{grid-template-columns:1fr 1fr}.ingredient-grid{grid-template-columns:repeat(2,1fr)}}
@@ -331,64 +332,93 @@ function tutHighlightSelector(){
 }
 function renderTutorial(){
   document.body.classList.toggle('tut-lock', tutActive()&&tutId()!=='done'&&tutId()!=='welcome');
-  // remove old
+  document.querySelectorAll('.tut-target').forEach(el=>el.classList.remove('tut-target'));
   const old=document.getElementById('tutRoot');if(old)old.remove();
   if(!tutActive())return;
   const id=tutId();
   const titles={welcome:t('tutWelcome'),prep:t('tutPrep'),add:t('tutAdd'),mix:t('tutMix'),serve:t('tutServe'),done:t('tutDone')};
   const descs={welcome:t('tutWelcomeDesc'),prep:t('tutPrepDesc'),add:t('tutAddDesc'),mix:t('tutMixDesc'),serve:t('tutServeDesc'),done:t('tutDoneDesc')};
   const stepN=Math.min((s.tutorial||0)+1,TUT_STEPS.length);
-  const root=document.createElement('div');root.id='tutRoot';root.className='tut-overlay';
-  let spotHtml='';
-  const sel=tutHighlightSelector();
-  let handHtml='';
-  if(sel&&id!=='welcome'&&id!=='done'){
-    const el=document.querySelector(sel);
-    if(el){
-      el.classList.add('tut-target');
-      const rect=el.getBoundingClientRect();
-      const pad=6;
-      spotHtml=`<div class="tut-spot" style="left:${rect.left-pad}px;top:${rect.top-pad}px;width:${rect.width+pad*2}px;height:${rect.height+pad*2}px"></div>`;
-      handHtml=`<div class="tut-hand" style="left:${rect.left+rect.width/2-10}px;top:${rect.bottom+4}px">👆</div>`;
-      // allow clicks on target only via overlay holes - use pointer-events on overlay except card
-    }
-  }
   const needBtn=(id==='welcome'||id==='done');
   const btnLabel=id==='welcome'?t('tutGo'):t('tutNext');
-  root.innerHTML=`${id==='welcome'||id==='done'?`<div class="tut-dim"></div>`:spotHtml}${handHtml}
-  <div class="tut-card ${id==='welcome'||id==='done'?'tut-center':''}">
+  const root=document.createElement('div');
+  root.id='tutRoot';
+  root.className='tut-overlay';
+  const sel=(!needBtn)?tutHighlightSelector():null;
+  let el=sel?document.querySelector(sel):null;
+  if(el) el.classList.add('tut-target');
+  // Build overlay content
+  let mid='';
+  if(needBtn){
+    mid='<div class="tut-dim"></div>';
+  } else if(el){
+    const rect=el.getBoundingClientRect();
+    const pad=8;
+    const L=Math.max(0,rect.left-pad), T=Math.max(0,rect.top-pad);
+    const W=rect.width+pad*2, H=rect.height+pad*2;
+    mid=`<div class="tut-spot" style="left:${L}px;top:${T}px;width:${W}px;height:${H}px"></div>
+    <button type="button" class="tut-hit" aria-label="tap" style="left:${L}px;top:${T}px;width:${W}px;height:${H}px"></button>
+    <div class="tut-hand" style="left:${L+W/2-12}px;top:${T+H+2}px">👆</div>`;
+  } else {
+    mid='<div class="tut-dim"></div>';
+  }
+  root.innerHTML=`${mid}
+  <div class="tut-card ${needBtn?'tut-center':''}">
     <div class="tut-step">${t('tutTitle')} · ${stepN}/${TUT_STEPS.length}</div>
     <h4>${titles[id]||''}</h4>
     <p>${descs[id]||''}</p>
-    ${needBtn?`<button class="btn primary" id="tutNextBtn">✨ ${btnLabel}</button>`:`<div class="muted tiny center">👆 ${t('tutSkipBlocked')}</div>`}
+    ${needBtn?`<button type="button" class="btn primary" id="tutNextBtn">✨ ${btnLabel}</button>`:`<div class="muted tiny center">👆 ${t('tutSkipBlocked')}</div>`}
   </div>`;
   document.body.appendChild(root);
-  // Block clicks outside target
-  root.addEventListener('click',(e)=>{
-    if(e.target.closest('.tut-card'))return;
-    if(e.target.closest('.tut-target'))return;
-    // allow clicks that hit the real target under overlay - but overlay captures
-    e.preventDefault();e.stopPropagation();
-    if(!needBtn)tutBlock();
-  },true);
-  // Make spotlight area click-through: when user clicks spot region, forward to element
-  if(sel){
-    const el=document.querySelector(sel);
-    const spot=root.querySelector('.tut-spot');
-    if(el&&spot){
-      spot.style.pointerEvents='auto';
-      spot.style.cursor='pointer';
-      spot.addEventListener('click',(e)=>{
-        e.preventDefault();e.stopPropagation();
-        el.click();
-      });
-    }
+  // Dim blocks outside hole: for non-needBtn with target, box-shadow already dims; prevent clicks on dim via transparent full-screen under hit except hole
+  if(!needBtn){
+    const blocker=document.createElement('div');
+    blocker.className='tut-dim';
+    blocker.style.pointerEvents='auto';
+    blocker.style.background='transparent';
+    blocker.style.zIndex='10000';
+    root.insertBefore(blocker, root.firstChild);
+    const blockEv=(e)=>{e.preventDefault();e.stopPropagation();tutBlock()};
+    blocker.addEventListener('click',blockEv);
+    blocker.addEventListener('touchend',(e)=>{e.preventDefault();tutBlock()},{passive:false});
+  }
+  // Hit area triggers real button
+  const hit=root.querySelector('.tut-hit');
+  if(hit&&el){
+    const fire=(e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      // Prefer direct handler
+      try{el.click()}catch(_){}
+    };
+    hit.addEventListener('click',fire);
+    hit.addEventListener('touchend',fire,{passive:false});
   }
   const nb=document.getElementById('tutNextBtn');
-  if(nb)nb.onclick=()=>{
-    if(id==='welcome'){s.tutorial=1;page='prepare';save();render();return}
-    if(id==='done'){tutFinish();return}
-  };
+  if(nb){
+    const go=()=>{
+      if(id==='welcome'){s.tutorial=1;page='prepare';save();render();return}
+      if(id==='done'){tutFinish();return}
+    };
+    nb.addEventListener('click',(e)=>{e.preventDefault();go()});
+    nb.addEventListener('touchend',(e)=>{e.preventDefault();go()},{passive:false});
+  }
+  // Reposition after layout (mobile keyboard / scroll)
+  if(el&&!needBtn){
+    requestAnimationFrame(()=>{
+      const el2=document.querySelector(sel);
+      const spot=root.querySelector('.tut-spot');
+      const hit2=root.querySelector('.tut-hit');
+      const hand=root.querySelector('.tut-hand');
+      if(!el2||!spot||!hit2)return;
+      const rect=el2.getBoundingClientRect();
+      const pad=8;
+      const L=Math.max(0,rect.left-pad), T=Math.max(0,rect.top-pad);
+      const W=rect.width+pad*2, H=rect.height+pad*2;
+      [spot,hit2].forEach(n=>{n.style.left=L+'px';n.style.top=T+'px';n.style.width=W+'px';n.style.height=H+'px'});
+      if(hand){hand.style.left=(L+W/2-12)+'px';hand.style.top=(T+H+2)+'px'}
+    });
+  }
 }
 
 function bindEvents(){document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{if(tutActive()&&tutId()!=='done'){tutBlock();return}page=b.dataset.page;render()});document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{s.language=b.dataset.lang;save();render()});document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addIng(b.dataset.add));document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buy(b.dataset.buy));document.querySelectorAll('[data-unlock]').forEach(b=>b.onclick=()=>unlock(b.dataset.unlock));document.querySelectorAll('[data-hire]').forEach(b=>b.onclick=()=>hire(b.dataset.hire));document.querySelectorAll('[data-send-reply]').forEach(b=>b.onclick=()=>sendReviewReply(b.dataset.sendReply));document.querySelectorAll('[data-edit-reply]').forEach(b=>b.onclick=()=>editReviewReply(b.dataset.editReply));document.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const a=b.dataset.act;if(a==='open')openShop();if(a==='close')closeShop();if(a==='mix')doMix();if(a==='serve')serve();if(a==='skip')skip();if(a==='resetBowl')resetBowl();if(a==='finishEarly')finishSellingEarly();if(a==='save'){save();toast('✅ '+t('save'))}if(a==='showCode')showCode();if(a==='reset'){if(confirm('Reset?')){s=fresh();save();render()}}if(a==='editName')editName();if(a==='editBoss')editBoss();if(a==='toggleSound'){s.sound=!s.sound;save();toast('🔊 '+(s.sound?t('soundOn'):t('soundOff')));render()}if(a==='replayTut'){s.tutorialDone=false;s.tutorial=0;s.open=false;page='prepare';save();render()}});document.querySelectorAll('[data-buy5]').forEach(b=>b.onclick=()=>buy(b.dataset.buy5,5));document.querySelectorAll('[data-buy10]').forEach(b=>b.onclick=()=>buy(b.dataset.buy10,10));document.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>buyUpgrade(b.dataset.upgrade));document.querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>claimAch(b.dataset.claim))}
