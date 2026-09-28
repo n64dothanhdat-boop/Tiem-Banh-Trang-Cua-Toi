@@ -175,6 +175,38 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 4px color-mix(in srgb,v
 .splash-deco.d4{bottom:28%;right:8%;animation-delay:1.5s}
 @keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
+
+/* === MOBILE COMPACT HEADER === */
+@media(max-width:560px){
+  .top{padding:8px 8px 6px;border-radius:0 0 16px 16px;box-shadow:0 3px 0 color-mix(in srgb,var(--line) 85%,transparent),0 8px 14px #0002}
+  .toprow{gap:6px}
+  .logo{width:34px;height:34px;font-size:18px;border-radius:10px;border-width:2px;transform:rotate(-4deg)}
+  .brand h1{font-size:14px;letter-spacing:0}
+  .brand small{font-size:10px;display:block;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .coins{padding:5px 8px;font-size:12px;border-width:2px}
+  .stats{gap:4px;margin-top:6px;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:4px 5px;border-radius:9px;border-width:1.5px;box-shadow:1px 1px 0 var(--line)}
+  .stat b{font-size:11px}
+  .stat small{font-size:9px}
+  .nav{padding:4px;gap:3px;margin-top:6px;border-radius:14px;border-width:2px}
+  .nav button{min-height:42px;font-size:8px;padding:4px 1px;border-radius:10px;line-height:1.15}
+  .nav button::first-line{font-size:16px}
+  .nav button.active{transform:translateY(-1px);box-shadow:1px 1px 0 var(--line)}
+}
+@media(max-width:380px){
+  .logo{width:30px;height:30px;font-size:16px}
+  .brand h1{font-size:13px}
+  .brand small{font-size:9px}
+  .coins{padding:4px 6px;font-size:11px}
+  .stat b{font-size:10px}
+  .stat small{font-size:8px}
+  .nav button{min-height:38px;font-size:7.5px}
+  .nav button::first-line{font-size:15px}
+}
+
+
+.order-card.vip-cust{border-color:#e5a700;background:linear-gradient(180deg,#fffef5,#fff8d6);box-shadow:3px 3px 0 #e5a700}
+
 </style>
 </head>
 <body>
@@ -361,7 +393,7 @@ function prepPage(){const unlocked=REC.filter(r=>s.recipes.includes(r.id));const
 function homePage(){return `<section class="card hero"><h2>${t('title')} 🌶️</h2><p>${s.open?`🟢 ${t('open')}`:`🔴 ${t('closed')}`} · ${t('daily')}: <b>${s.served}/${s.goal}</b></p><div class="big-actions">${s.open?`<button class="btn orange" data-act="close">🌙 ${t('close')}</button>`:`<button class="btn primary" data-act="open">🔥 ${t('open')}</button>`}</div></section>${scene()}${s.active?orderCard():`<section class="card center"><div style="font-size:50px">🪑🥤</div><b>${s.open?'Chờ khách...':'Mở quán để bắt đầu bán!'}</b><p class="muted tiny">${t('howto')}</p></section>`}${statsCard()}`}
 function scene(){return `<section class="card"><div class="shop-scene"><div class="sun"></div><div class="awning"></div><div class="stall"><div class="bowl-art">🥣</div><div class="stall-face">${esc(s.name)}${(s.upgrades||[]).includes('neon')?' 💡':''}<br><span style="font-size:11px">BÁNH TRÁNG TRỘN</span></div><div class="bowl-art">🌶️</div></div><div class="customer cust1 ${s.open?'in':''}">🧑🏻</div><div class="customer right cust2 ${s.open?'in':''}">👧🏻</div></div></section>`}
 function statsCard(){return `<section class="card"><div class="section-title"><h3>📈 ${t('daily')}</h3><span class="tag">${s.served}/${s.goal}</span></div><div class="barrow"><div class="meter"><i style="width:${Math.min(100,s.served/s.goal*100)}%"></i></div><b>${Math.round(s.served/s.goal*100)}%</b></div><div class="grid2" style="margin-top:9px"><div class="notice">💵 ${t('money')}: ${fmt(s.revenue)}</div><div class="notice">👥 ${t('customer')}: ${s.totalServed}</div></div></section>`}
-function orderCard(){const o=s.active,r=REC.find(x=>x.id===o.recipe);return `<section class="card order-card ${s.mixed?'ready-serve':''}"><div class="order-head"><div class="avatar">${o.avatar}</div><div style="flex:1"><b>${esc(o.name)}</b><div class="sub">${o.person}</div></div><span class="tag">${o.rush?'⚡ '+t('rushOrder')+' · ':''}${heatLabel(o.heat|| (o.spice>=5?'hot':o.spice<=2?'mild':'med'))}</span></div><div class="order-body"><b>🥣 ${nm(r)}</b><div class="sub">${t('price')}: ${fmt(s.prices[r.id])} · ${t('heatWant')}: ${heatLabel(o.heat||'med')}</div><div class="ingredients">${r.need.map(k=>`<span class="chip ${s.selected.includes(k)?'active':''}">${foodImg(k,'small')} ${ING[k][s.language]}</span>`).join('')}</div><div style="margin-top:8px" class="barrow"><div class="meter"><i style="width:${Math.min(100,Math.round(o.patience))}%"></i></div><span class="tiny">${Math.round(o.patience)}%</span></div></div><div class="big-actions" style="margin-top:8px">${s.mixed?`<button class="btn green" data-act="serve">✅ ${t('serve')}</button><button class="btn pink" data-act="skip">❌</button>`:`<button class="btn pink" style="grid-column:1/-1" data-act="skip">❌</button>`}</div></section>`}
+function orderCard(){const o=s.active,r=REC.find(x=>x.id===o.recipe);return `<section class="card order-card ${s.mixed?'ready-serve':''}${o.vip?' vip-cust':''}"><div class="order-head"><div class="avatar" style="${o.vip?'background:linear-gradient(145deg,#ffe566,#ffd45a);box-shadow:0 0 0 2px #e5a700':''}">${o.avatar}</div><div style="flex:1"><b>${esc(o.name)}${o.vip?' 👑':''}</b><div class="sub">${o.vip?'⭐ Khách VIP · x2 tiền':o.person}</div></div><span class="tag">${o.vip?'👑 VIP · ':''}${o.rush?'⚡ '+t('rushOrder')+' · ':''}${heatLabel(o.heat|| (o.spice>=5?'hot':o.spice<=2?'mild':'med'))}</span></div><div class="order-body"><b>🥣 ${nm(r)}</b><div class="sub">${t('price')}: ${fmt(s.prices[r.id])} · ${t('heatWant')}: ${heatLabel(o.heat||'med')}</div><div class="ingredients">${r.need.map(k=>`<span class="chip ${s.selected.includes(k)?'active':''}">${foodImg(k,'small')} ${ING[k][s.language]}</span>`).join('')}</div><div style="margin-top:8px" class="barrow"><div class="meter"><i style="width:${Math.min(100,Math.round(o.patience))}%"></i></div><span class="tiny">${Math.round(o.patience)}%</span></div></div><div class="big-actions" style="margin-top:8px">${s.mixed?`<button class="btn green" data-act="serve">✅ ${t('serve')}</button><button class="btn pink" data-act="skip">❌</button>`:`<button class="btn pink" style="grid-column:1/-1" data-act="skip">❌</button>`}</div></section>`}
   function cookPage(){if(!s.open&&!s.active)return `<section class="card center"><div style="font-size:55px">🥣</div><h3>${t('closed')}</h3><button class="btn primary" data-act="open">🔥 ${t('open')}</button></section>`;if(!s.active)return `<section class="card center"><div style="font-size:55px">⌛</div><h3>${t('order')}</h3><p class="muted">Chờ khách gọi món...</p></section>`;const r=REC.find(x=>x.id===s.active.recipe);return `<section class="card"><div class="section-title"><h3>🥣 ${nm(r)}</h3><span class="tag">${s.selected.length}/${r.need.length}</span></div><div class="bowl-stage"><div class="bowl-col"><div class="bowl ${s.mixing?'mixing':''}"><div class="inside">${s.selected.length?s.selected.map(k=>foodImg(k,'bowl-food')).join(' '):foodImg('paper','bowl-food')}${s.mixed?'<div style="font-size:14px;font-weight:1000">✨ READY</div>':''}</div><div class="ready">${s.mixed?t('ready'):t('mix')}</div></div><button class="btn dark trash-btn" data-act="resetBowl">🗑️</button>${s.mixed?`<button class="btn green" style="width:100%;margin-top:8px" data-act="serve">💰 ${t('serve')}</button>`:`<button class="btn orange" style="width:100%;margin-top:8px" data-act="mix" ${s.selected.length===r.need.length?'':'disabled'}>🥢 ${t('mix')}</button>`}</div><div><div class="notice">${t('howto')}</div>${spiceSliderHtml()}<div class="ingredient-grid" style="margin-top:7px">${Object.keys(ING).map(k=>{
 // ✅ FIX 2: Tách riêng locked và out, không chặn sai
 const needLv=ING[k].lv||1;
@@ -474,15 +506,24 @@ function pickCustomer(){
   const people=[
     ['👧🏻','Học sinh'],['👦🏻','Học sinh'],['👩🏻','Nhân viên'],['👨🏻','Nhân viên'],
     ['👩🏻‍💼','Văn phòng'],['👨🏻‍💻','Lập trình viên'],['👵🏻','Cô khó tính'],['👴🏻','Chú khó tính'],
-    ['🧑🏻','Food reviewer'],['👩‍🎤','TikToker'],['🧔','Shipper'],['👩‍🍳','Đầu bếp'],
+    ['🧑🏻','Food reviewer'],['👩‍🎤','TikToker'],['👩‍🍳','Đầu bếp'],
     ['🧒','Trẻ con'],['👩','Khách quen'],['👨','Khách vãng lai'],['🧕','Du khách']
   ];
   const names=['Linh','Minh','An','Mai','Nam','Vy','Hùng','Trang','Quân','Hà','Đức','Ngọc','Phúc','Thy','Khoa','Lan','Tuấn','My','Bảo','Chi','Dũng','Hương','Long','Yến'];
-  const p=people[Math.floor(Math.random()*people.length)];
-  let name=names[Math.floor(Math.random()*names.length)];
-  if(s.lastCustomerName&&names.length>1){for(let i=0;i<5&&name===s.lastCustomerName;i++)name=names[Math.floor(Math.random()*names.length)];}
+  const vip=(!tutActive()&&Math.random()<1/50);
+  let p,name;
+  if(vip){
+    const vipPeople=[['👑','VIP'],['💎','VIP'],['🤵','VIP'],['👸','VIP']];
+    p=vipPeople[Math.floor(Math.random()*vipPeople.length)];
+    const vipNames=['Mr.Phát','Bà Hạnh','Anh Khoa','Chị Lan','Boss Minh','Ms.Hương'];
+    name=vipNames[Math.floor(Math.random()*vipNames.length)];
+  }else{
+    p=people[Math.floor(Math.random()*people.length)];
+    name=names[Math.floor(Math.random()*names.length)];
+    if(s.lastCustomerName&&names.length>1){for(let i=0;i<5&&name===s.lastCustomerName;i++)name=names[Math.floor(Math.random()*names.length)];}
+  }
   s.lastCustomerName=name;
-  return {avatar:p[0],person:p[1],name};
+  return {avatar:p[0],person:p[1],name,vip};
 }
 function recipeHeat(r){
   if(!r) return 'med';
@@ -555,12 +596,13 @@ function newOrder(){
   const c=pickCustomer();
   const rush=tutActive()?false:((s.event==='rush'&&Math.random()<.45)||Math.random()<.12);
   const spice=heat==='hot'?(5+Math.floor(Math.random()*3)):heat==='mild'?Math.floor(Math.random()*3):(2+Math.floor(Math.random()*3));
-  s.active={recipe:r.id,avatar:c.avatar,person:c.person,name:c.name,spice,heat,patience:rush?70:100,rush};
+  s.active={recipe:r.id,avatar:c.avatar,person:c.person,name:c.name,spice,heat,patience:rush?70:100,rush,vip:!!c.vip};
   s.selected=[];s.mixed=false;s.bowlSpice=5;
   s.recentOrders=s.recentOrders||[];
   s.recentOrders.push(r.id);
   if(s.recentOrders.length>3)s.recentOrders.shift();
   save();render();
+  if(c.vip)toast('👑 Khách VIP xuất hiện! · x2 tiền');
 }
 function openShop(){
   try{
@@ -605,7 +647,7 @@ if(tutActive())heatOk=true;
 if(!heatOk&&((wantHeat==='hot'&&dishHeat==='mild')||(wantHeat==='mild'&&dishHeat==='hot'))){s.rep=Math.max(1,(s.rep||5)-0.05);}
 s.combo=(s.combo||0)+1;s.bestCombo=Math.max(s.bestCombo||0,s.combo);
 let comboBonus=s.combo>=3?Math.floor(price*0.03*Math.min(s.combo,10)):0;
-let earned=price+comboBonus;s.money+=earned;s.revenue+=earned;s.totalRevenue+=earned;s.served++;s.totalServed++;let xpGain=15+r.need.length*3+(s.combo>=5?10:0);gainXp(xpGain);s.rep=Math.min(5,Math.max(1,(s.rep||5)+(typeof heatOk!=='undefined'&&!heatOk?-0.15:(heatOk?0.05:0.02))+(s.upgrades.includes('neon')?0.02:0)));const texts=(!heatOk)?[t('heatMiss'),'Hơi lệch khẩu vị...','Lần sau chỉnh cay giúp nha']:s.combo>=5?['Combo đỉnh!','Xuất sắc quá!','Thần bếp!']:heatOk?[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!']:['Đúng công thức!','Ổn áp!','Tạm được'];s.reviews.unshift({id:Date.now()+Math.random(),author:s.active.name,role:s.active.person,avatar:s.active.avatar,stars:(()=>{let st=5;if(typeof heatOk!=='undefined'&&!heatOk)st=1+Math.floor(Math.random()*2);else if(s.combo>=5)st=5;else if(s.combo>=3)st=5;else st=4+((Math.random()<0.6)?1:0);if(s.active&&s.active.patience<25)st=Math.min(st,3);return st})(),text:texts[Math.floor(Math.random()*texts.length)],money:earned,reply:''});if(s.reviews.length>12)s.reviews.pop();sfx('coin');float('+'+fmt(earned),false);if(comboBonus)float('🔥 +'+fmt(comboBonus),false);float('+'+xpGain+' XP',true);if(s.combo>=3)toast('🔥 '+t('combo')+' x'+s.combo+' · ✅ '+t('success'));else toast('✅ '+t('success'));if(tutActive()&&tutId()==='serve'){s.tutorial=5}s.active=null;s.selected=[];s.mixed=false;s.bowlSpice=5;save();render();showComboBadge();setTimeout(()=>{if(!tutActive()||tutId()==='done')newOrder()},350);if(s.served>=s.goal){setTimeout(()=>endDay(true),700)}}
+let earned=price+comboBonus;if(s.active&&s.active.vip){earned=earned*2;}s.money+=earned;s.revenue+=earned;s.totalRevenue+=earned;s.served++;s.totalServed++;let xpGain=15+r.need.length*3+(s.combo>=5?10:0);gainXp(xpGain);s.rep=Math.min(5,Math.max(1,(s.rep||5)+(typeof heatOk!=='undefined'&&!heatOk?-0.15:(heatOk?0.05:0.02))+(s.upgrades.includes('neon')?0.02:0)));const texts=(!heatOk)?[t('heatMiss'),'Hơi lệch khẩu vị...','Lần sau chỉnh cay giúp nha']:s.combo>=5?['Combo đỉnh!','Xuất sắc quá!','Thần bếp!']:heatOk?[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!']:['Đúng công thức!','Ổn áp!','Tạm được'];s.reviews.unshift({id:Date.now()+Math.random(),author:s.active.name,role:s.active.person,avatar:s.active.avatar,stars:(()=>{let st=5;if(typeof heatOk!=='undefined'&&!heatOk)st=1+Math.floor(Math.random()*2);else if(s.combo>=5)st=5;else if(s.combo>=3)st=5;else st=4+((Math.random()<0.6)?1:0);if(s.active&&s.active.patience<25)st=Math.min(st,3);return st})(),text:texts[Math.floor(Math.random()*texts.length)],money:earned,reply:''});if(s.reviews.length>12)s.reviews.pop();sfx('coin');float('+'+fmt(earned),false);if(comboBonus)float('🔥 +'+fmt(comboBonus),false);float('+'+xpGain+' XP',true);const vipTag=(s.active&&s.active.vip)?' · 👑 VIP x2':'';if(s.combo>=3)toast('🔥 '+t('combo')+' x'+s.combo+' · ✅ '+t('success')+vipTag);else toast('✅ '+t('success')+vipTag);if(tutActive()&&tutId()==='serve'){s.tutorial=5}s.active=null;s.selected=[];s.mixed=false;s.bowlSpice=5;save();render();showComboBadge();setTimeout(()=>{if(!tutActive()||tutId()==='done')newOrder()},350);if(s.served>=s.goal){setTimeout(()=>endDay(true),700)}}
 function showComboBadge(){let el=document.getElementById('comboBadge');if(!el){el=document.createElement('div');el.id='comboBadge';el.className='combo-badge';document.body.appendChild(el)}if(s.combo>=2){el.textContent='🔥 '+t('combo')+' x'+s.combo;el.classList.add('show');clearTimeout(showComboBadge._t);showComboBadge._t=setTimeout(()=>el.classList.remove('show'),1800)}else el.classList.remove('show')}
 function skip(){if(tutActive()){tutBlock();return}s.combo=0;s.active=null;s.selected=[];s.mixed=false;sfx('bad');save();render();setTimeout(newOrder,300)}
 function resetBowl(){if(tutActive()){tutBlock();return}s.selected=[];s.mixed=false;s.bowlSpice=5;render()}
