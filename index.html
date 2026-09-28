@@ -157,7 +157,6 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 4px color-mix(in srgb,v
 .spice-match{margin-top:6px;font-size:12px;font-weight:900;text-align:center}
 .spice-match.ok{color:#207a52}.spice-match.bad{color:#c0392b}
 
-
 /* === SPLASH SCREEN === */
 .splash{position:fixed;inset:0;z-index:200000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);overflow:hidden;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
 .splash::before{content:"";position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--line) 8%,transparent) 1.4px,transparent 1.6px);background-size:18px 18px;opacity:.7;pointer-events:none}
@@ -169,30 +168,29 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 4px color-mix(in srgb,v
 .splash-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}
 @keyframes splashPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 .splash-deco{position:absolute;font-size:28px;opacity:.35;pointer-events:none;animation:splashFloat 3s ease-in-out infinite}
-.splash-deco.d1{top:12%;left:8%;animation-delay:0s}
+.splash-deco.d1{top:12%;left:8%}
 .splash-deco.d2{top:18%;right:10%;animation-delay:.5s}
 .splash-deco.d3{bottom:22%;left:12%;animation-delay:1s}
 .splash-deco.d4{bottom:28%;right:8%;animation-delay:1.5s}
 @keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-
 /* === MOBILE COMPACT HEADER === */
 @media(max-width:900px){
-  .top{padding:6px 8px 5px!important;border-radius:0 0 14px 14px!important;box-shadow:0 3px 0 color-mix(in srgb,var(--line) 75%,transparent)!important;border-bottom-width:2px!important}
-  .toprow{gap:5px!important}
-  .logo{width:35px!important;height:35px!important;font-size:18px!important;border-radius:9px!important;border-width:2px!important;transform:rotate(-4deg)!important;box-shadow:1px 1px 0 var(--line)!important}
-  .brand h1{font-size:14px!important;letter-spacing:0!important;line-height:1.15!important;margin:0!important}
+  .top{padding:8px 10px 7px!important;border-radius:0 0 16px 16px!important;box-shadow:0 3px 0 color-mix(in srgb,var(--line) 80%,transparent)!important;border-bottom-width:2px!important}
+  .toprow{gap:6px!important}
+  .logo{width:42px!important;height:42px!important;font-size:22px!important;border-radius:11px!important;border-width:2px!important;transform:rotate(-5deg)!important;box-shadow:2px 2px 0 var(--line)!important}
+  .brand h1{font-size:16px!important;letter-spacing:0!important;line-height:1.2!important;margin:0!important}
   .brand small{display:none!important}
-  .coins{padding:4px 9px!important;font-size:12px!important;border-width:2px!important;box-shadow:1px 1px 0 var(--line)!important;border-radius:999px!important}
-  .stats{gap:4px!important;margin-top:5px!important;grid-template-columns:repeat(4,1fr)!important}
-  .stat{padding:4px 5px!important;border-radius:8px!important;border-width:1.5px!important;box-shadow:1px 1px 0 var(--line)!important}
-  .stat b{font-size:11px!important;line-height:1.2!important}
-  .stat small{font-size:8px!important;line-height:1.1!important}
-  .nav{padding:3px!important;gap:3px!important;margin-top:5px!important;border-radius:12px!important;border-width:2px!important}
-  .nav button{min-height:41px!important;font-size:8px!important;padding:3px 0!important;border-radius:9px!important;line-height:1.1!important}
-  .nav button::first-line{font-size:16px!important}
-  .nav button.active{transform:none!important;box-shadow:1px 1px 0 var(--line)!important}
-  .early-home{min-width:auto!important;padding:4px 7px!important;font-size:10px!important;min-height:30px!important}
+  .coins{padding:6px 11px!important;font-size:13px!important;border-width:2px!important;box-shadow:2px 2px 0 var(--line)!important;border-radius:999px!important}
+  .stats{gap:5px!important;margin-top:6px!important;grid-template-columns:repeat(4,1fr)!important}
+  .stat{padding:5px 6px!important;border-radius:10px!important;border-width:2px!important;box-shadow:1px 1px 0 var(--line)!important}
+  .stat b{font-size:12px!important;line-height:1.2!important}
+  .stat small{font-size:9px!important;line-height:1.15!important}
+  .nav{padding:4px!important;gap:4px!important;margin-top:6px!important;border-radius:14px!important;border-width:2px!important}
+  .nav button{min-height:48px!important;font-size:9px!important;padding:4px 0!important;border-radius:11px!important;line-height:1.15!important}
+  .nav button::first-line{font-size:18px!important}
+  .nav button.active{transform:translateY(-1px)!important;box-shadow:2px 2px 0 var(--line)!important}
+  .early-home{min-width:auto!important;padding:5px 8px!important;font-size:11px!important;min-height:34px!important}
 }
 .order-card.vip-cust{border-color:#e5a700;background:linear-gradient(180deg,#fffef5,#fff8d6);box-shadow:3px 3px 0 #e5a700}
 
@@ -337,7 +335,7 @@ function migrate(st){
 s=migrate(s);
 
 // ✅ FIX 1: Đổi tiền tệ sang VND
-function fmt(n){n=Math.round(Number(n)||0);if(n!==0&&n%1000===0)return (n/1000).toLocaleString('vi-VN')+'K 🪙';return n.toLocaleString('vi-VN')+' 🪙'}
+function fmt(n){n=Math.round(Number(n)||0);if(!Number.isFinite(n))n=0;try{return n.toLocaleString('en-US')+' 🪙'}catch(e){return String(n)+' 🪙'}}
 function t(k){return (I18N[s.language||'vi'][k]||k)}function nm(o){return o.name?.[s.language||'vi']||o.name?.vi||o[s.language||'vi']||o.vi||''}function save(){localStorage.setItem(KEY,JSON.stringify(s))}
 function fmtTime(){let h=Math.floor(s.minutes/60),m=s.minutes%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')}
 function level(){const xp=Number(s.xp)||0;return Math.min(20,Math.max(1,1+Math.floor(xp/100)))}
@@ -365,11 +363,11 @@ function render(){
  const earlyBtn=s.open?`<button class="btn small pink early-home" data-act="finishEarly">← ${t('finishEarly')}</button>`:'';
  const navHtml=s.open?'':`<nav class="nav">${nav('prepare','🧺','prepare')} ${nav('home','🏪','sell')} ${nav('stock','📦','stock')} ${nav('reviews','💬','review')} ${nav('settings','⚙️','settings')}</nav>`;
  const pageHtml=s.open?sellPage():pages();
- document.getElementById('app').innerHTML=`<div class="app"><div class="top"><div class="toprow">${earlyBtn}<div class="logo">🥣</div><div class="brand"><h1>${esc(s.name)}</h1><small>${esc(t('sub'))}</small></div><div class="coins">${fmt(s.money)}</div></div><div class="stats"><div class="stat"><small>${t('day')}</small><b>📅 ${s.day}</b></div><div class="stat"><small>${t('clock')}</small><b>⏰ ${fmtTime()}</b></div><div class="stat"><small>Lv.${level()}</small><b>✨ ${level()>=20?"MAX":(s.xp%100)+"/100"} XP</b></div><div class="stat"><small>${t('rep')}</small><b>⭐ ${s.rep.toFixed(1)}</b></div></div>${navHtml}</div><main class="content">${pageHtml}</main></div>`;
+ document.getElementById('app').innerHTML=`<div class="app"><div class="top"><div class="toprow">${earlyBtn}<div class="logo">🥣</div><div class="brand"><h1>${esc(s.name)}</h1><small>${esc(t('sub'))}</small></div><div class="coins">${fmt(s.money)}</div></div><div class="stats"><div class="stat"><small>${t('day')}</small><b>📅 ${s.day}</b></div><div class="stat"><small>${t('clock')}</small><b>⏰ ${fmtTime()}</b></div><div class="stat"><small>Lv.${level()}</small><b>✨ ${level()>=20?"MAX":(s.xp%100)+"/100"} XP</b></div><div class="stat"><small>${t('rep')}</small><b>⭐ ${(Number(s.rep)||0).toFixed(1)}</b></div></div>${navHtml}</div><main class="content">${pageHtml}</main></div>`;
  bindEvents();
  try{const tp=document.querySelector('.top');if(tp)document.documentElement.style.setProperty('--topH',(tp.offsetHeight-1)+'px')}catch(e){}
  try{renderTutorial()}catch(te){console.warn(te)}
- }catch(err){console.error('render',err);try{document.getElementById('app').innerHTML='<div style="padding:20px;text-align:center"><h2>🥣 Lỗi hiển thị</h2><button class="btn green" onclick="localStorage.removeItem(\''+KEY+'\');location.reload()">🔄 Reset</button></div>'}catch(_){}}
+ }catch(err){console.error('render',err);try{const msg=String((err&&err.message)||err||'?').replace(/[<>&]/g,'');document.getElementById('app').innerHTML='<div style="padding:20px;text-align:center;max-width:420px;margin:40px auto"><h2>🥣 Lỗi hiển thị</h2><p style="font-size:12px;color:#75675f;word-break:break-word">'+msg+'</p><button class="btn green" style="width:100%;margin-top:10px" onclick="try{window.__splashDone=true;s=migrate(fresh());s.language=s.language||\'vi\';s.first=false;s.tutorialDone=true;localStorage.setItem(\''+KEY+'\',JSON.stringify(s));render()}catch(e){localStorage.removeItem(\''+KEY+'\');location.reload()}">🔧 Sửa nhanh</button><button class="btn pink" style="width:100%;margin-top:8px" onclick="localStorage.removeItem(\''+KEY+'\');location.reload()">🔄 Reset toàn bộ</button></div>'}catch(_){}}
 }
 let page='prepare';function nav(id,icon,key){return `<button class="${page===id?'active':''}" data-page="${id}">${icon}<br>${t(key)}</button>`}
 function pages(){const ids=['prepare','home','cook','stock','reviews','settings'];const fns=[prepPage,homePage,cookPage,stockPage,reviewsPage,settingsPage];let i=ids.indexOf(page);if(i<0){i=0;page='prepare'}return fns[i]()}
@@ -377,12 +375,12 @@ function sellPage(){
  const evBanner=(s.event&&s.event!=='none')?`<div class="event-banner">${eventIcon()} <b>${t('event')}</b>: ${eventLabel()}</div>`:'';
  return `${evBanner}<section class="card hero"><h2>🏪 ${t('sellModeTitle')}</h2><p>${t('sellingNow')} · ${t('daily')}: <b>${s.served}/${s.goal}</b></p><div class="grid2"><div class="notice">⏰ ${fmtTime()} · 5 phút/ngày</div><div class="notice">👥 ${t('customer')}: <b>${s.served}</b></div></div></section>${scene()}${s.active?orderCard():`<section class='card center'><div style='font-size:50px'>🪑🥤</div><b>${t('waitingCustomer')}</b></section>`}${s.active?cookPage():''}`
 }
-function prepPage(){const unlocked=REC.filter(r=>s.recipes.includes(r.id));const total=Object.values(s.stock).reduce((a,b)=>a+b,0);const max=maxStock();const ready=Math.round(total/max*100);return `<section class="card hero"><h2>🧺 ${t('prepTitle')}</h2><p>${t('prepDesc')}</p><div class="notice">📅 ${t('day')} ${s.day} · ⏰ ${fmtTime()} · ${t('prepareMode')}</div><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><span class="streak-pill">🔥 ${t('streak')}: ${s.streak||0}</span><span class="streak-pill">✨ ${t('combo')} max: x${s.bestCombo||0}</span></div>${!s.tutorialDone?`<button class="btn primary" style="width:100%;margin-top:10px" data-act="replayTut">📖 ${t('tutTitle')} — ${t('tutGo')}</button>`:`<button class="btn small yellow" style="width:100%;margin-top:8px" data-act="replayTut">📖 ${t('tutTitle')}</button>`}<div class="grid2" style="margin-top:9px"><div class="notice">📦 ${t('readyParts')}: <b>${ready}%</b></div><div class="notice">📖 ${t('recipes')}: <b>${unlocked.length}/${REC.length}</b></div></div></section><section class="card"><div class="section-title"><h3>📖 ${t('recipes')}</h3><span class="tag">${t('setPrice')}</span></div>${unlocked.map(r=>`<div class="recipe-row"><div><strong>🥣 ${nm(r)}</strong><span class="sub">${r.need.map(k=>`<img class='food-img small' src="data:image/svg+xml;charset=UTF-8,${encodeURIComponent(foodSvg(ING[k].art))}" alt='${esc(ING[k][s.language])}'>`).join('')} · cost ≈ ${fmt(r.need.reduce((a,k)=>a+ING[k].cost,0))}</span></div><input inputmode="numeric" value="${Number(s.prices[r.id])||r.price}" style="width:88px" onchange="setRecipePrice('${r.id}',this.value)"></div>`).join('')}<button class="btn green" style="width:100%;margin-top:6px" data-act="open">🔥 ${t('startSelling')}</button><p class="muted tiny" style="margin-top:6px">${t('openTip')}</p></section><section class="card"><div class="section-title"><h3>🛒 ${t('market')}</h3><button class="btn small yellow" data-page="stock">${t('stock')}</button></div>${Object.entries(ING).slice(0,6).map(([k,v])=>`<div class="stock-row"><div><strong>${foodImg(k,'small')} ${v[s.language]}</strong><span class="sub">${t('stock')}: ${s.stock[k]}</span></div><button class="btn small yellow" data-buy="${k}">+1</button></div>`).join('')}</section>`}
+function prepPage(){const unlocked=REC.filter(r=>s.recipes.includes(r.id));const total=Object.values(s.stock).reduce((a,b)=>a+b,0);const max=maxStock();const ready=Math.round(total/max*100);return `<section class="card hero"><h2>🧺 ${t('prepTitle')}</h2><p>${t('prepDesc')}</p><div class="notice">📅 ${t('day')} ${s.day} · ⏰ ${fmtTime()} · ${t('prepareMode')}</div><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><span class="streak-pill">🔥 ${t('streak')}: ${s.streak||0}</span><span class="streak-pill">✨ ${t('combo')} max: x${s.bestCombo||0}</span></div>${!s.tutorialDone?`<button class="btn primary" style="width:100%;margin-top:10px" data-act="replayTut">📖 ${t('tutTitle')} — ${t('tutGo')}</button>`:`<button class="btn small yellow" style="width:100%;margin-top:8px" data-act="replayTut">📖 ${t('tutTitle')}</button>`}<div class="grid2" style="margin-top:9px"><div class="notice">📦 ${t('readyParts')}: <b>${ready}%</b></div><div class="notice">📖 ${t('recipes')}: <b>${unlocked.length}/${REC.length}</b></div></div></section><section class="card"><div class="section-title"><h3>📖 ${t('recipes')}</h3><span class="tag">${t('setPrice')}</span></div>${unlocked.map(r=>`<div class="recipe-row"><div><strong>🥣 ${nm(r)}</strong><span class="sub">${r.need.map(k=>`<img class='food-img small' src="data:image/svg+xml;charset=UTF-8,${encodeURIComponent(foodSvg(ING[k].art))}" alt='${esc(ING[k][s.language])}'>`).join('')} · cost ≈ ${fmt(r.need.reduce((a,k)=>a+ING[k].cost,0))}</span></div><input data-price="${r.id}" inputmode="numeric" value="${(s.prices&&s.prices[r.id]!=null)?s.prices[r.id]:r.price}" style="width:100px;text-align:right;font-weight:950" onchange="setRecipePrice('${r.id}',this.value)" onblur="setRecipePrice('${r.id}',this.value);render()"></div>`).join('')}<button class="btn green" style="width:100%;margin-top:6px" data-act="open">🔥 ${t('startSelling')}</button><p class="muted tiny" style="margin-top:6px">${t('openTip')}</p></section><section class="card"><div class="section-title"><h3>🛒 ${t('market')}</h3><button class="btn small yellow" data-page="stock">${t('stock')}</button></div>${Object.entries(ING).slice(0,6).map(([k,v])=>`<div class="stock-row"><div><strong>${foodImg(k,'small')} ${v[s.language]}</strong><span class="sub">${t('stock')}: ${s.stock[k]}</span></div><button class="btn small yellow" data-buy="${k}">+1</button></div>`).join('')}</section>`}
 
 function homePage(){return `<section class="card hero"><h2>${t('title')} 🌶️</h2><p>${s.open?`🟢 ${t('open')}`:`🔴 ${t('closed')}`} · ${t('daily')}: <b>${s.served}/${s.goal}</b></p><div class="big-actions">${s.open?`<button class="btn orange" data-act="close">🌙 ${t('close')}</button>`:`<button class="btn primary" data-act="open">🔥 ${t('open')}</button>`}</div></section>${scene()}${s.active?orderCard():`<section class="card center"><div style="font-size:50px">🪑🥤</div><b>${s.open?'Chờ khách...':'Mở quán để bắt đầu bán!'}</b><p class="muted tiny">${t('howto')}</p></section>`}${statsCard()}`}
 function scene(){return `<section class="card"><div class="shop-scene"><div class="sun"></div><div class="awning"></div><div class="stall"><div class="bowl-art">🥣</div><div class="stall-face">${esc(s.name)}${(s.upgrades||[]).includes('neon')?' 💡':''}<br><span style="font-size:11px">BÁNH TRÁNG TRỘN</span></div><div class="bowl-art">🌶️</div></div><div class="customer cust1 ${s.open?'in':''}">🧑🏻</div><div class="customer right cust2 ${s.open?'in':''}">👧🏻</div></div></section>`}
 function statsCard(){return `<section class="card"><div class="section-title"><h3>📈 ${t('daily')}</h3><span class="tag">${s.served}/${s.goal}</span></div><div class="barrow"><div class="meter"><i style="width:${Math.min(100,s.served/s.goal*100)}%"></i></div><b>${Math.round(s.served/s.goal*100)}%</b></div><div class="grid2" style="margin-top:9px"><div class="notice">💵 ${t('money')}: ${fmt(s.revenue)}</div><div class="notice">👥 ${t('customer')}: ${s.totalServed}</div></div></section>`}
-function orderCard(){const o=s.active,r=REC.find(x=>x.id===o.recipe);return `<section class="card order-card ${s.mixed?'ready-serve':''}${o.vip?' vip-cust':''}"><div class="order-head"><div class="avatar" style="${o.vip?'background:linear-gradient(145deg,#ffe566,#ffd45a);box-shadow:0 0 0 2px #e5a700':''}">${o.avatar}</div><div style="flex:1"><b>${esc(o.name)}${o.vip?' 👑':''}</b><div class="sub">${o.vip?'⭐ Khách VIP · x2 tiền':o.person}</div></div><span class="tag">${o.vip?'👑 VIP · ':''}${o.rush?'⚡ '+t('rushOrder')+' · ':''}${heatLabel(o.heat|| (o.spice>=5?'hot':o.spice<=2?'mild':'med'))}</span></div><div class="order-body"><b>🥣 ${nm(r)}</b><div class="sub">${t('price')}: ${fmt(s.prices[r.id])} · ${t('heatWant')}: ${heatLabel(o.heat||'med')}</div><div class="ingredients">${r.need.map(k=>`<span class="chip ${s.selected.includes(k)?'active':''}">${foodImg(k,'small')} ${ING[k][s.language]}</span>`).join('')}</div><div style="margin-top:8px" class="barrow"><div class="meter"><i style="width:${Math.min(100,Math.round(o.patience))}%"></i></div><span class="tiny">${Math.round(o.patience)}%</span></div></div><div class="big-actions" style="margin-top:8px">${s.mixed?`<button class="btn green" data-act="serve">✅ ${t('serve')}</button><button class="btn pink" data-act="skip">❌</button>`:`<button class="btn pink" style="grid-column:1/-1" data-act="skip">❌</button>`}</div></section>`}
+function orderCard(){const o=s.active,r=REC.find(x=>x.id===o.recipe);return `<section class="card order-card ${s.mixed?'ready-serve':''}${o.vip?' vip-cust':''}"><div class="order-head"><div class="avatar" style="${o.vip?'background:linear-gradient(145deg,#ffe566,#ffd45a)':''}">${o.avatar}</div><div style="flex:1"><b>${esc(o.name)}${o.vip?' 👑':''}</b><div class="sub">${o.vip?'⭐ Khách VIP · x2 tiền':o.person}</div></div><span class="tag">${o.vip?'👑 VIP · ':''}${o.rush?'⚡ '+t('rushOrder')+' · ':''}${heatLabel(o.heat|| (o.spice>=5?'hot':o.spice<=2?'mild':'med'))}</span></div><div class="order-body"><b>🥣 ${nm(r)}</b><div class="sub">${t('price')}: ${fmt(s.prices[r.id])} · ${t('heatWant')}: ${heatLabel(o.heat||'med')}</div><div class="ingredients">${r.need.map(k=>`<span class="chip ${s.selected.includes(k)?'active':''}">${foodImg(k,'small')} ${ING[k][s.language]}</span>`).join('')}</div><div style="margin-top:8px" class="barrow"><div class="meter"><i style="width:${Math.min(100,Math.round(o.patience))}%"></i></div><span class="tiny">${Math.round(o.patience)}%</span></div></div><div class="big-actions" style="margin-top:8px">${s.mixed?`<button class="btn green" data-act="serve">✅ ${t('serve')}</button><button class="btn pink" data-act="skip">❌</button>`:`<button class="btn pink" style="grid-column:1/-1" data-act="skip">❌</button>`}</div></section>`}
   function cookPage(){if(!s.open&&!s.active)return `<section class="card center"><div style="font-size:55px">🥣</div><h3>${t('closed')}</h3><button class="btn primary" data-act="open">🔥 ${t('open')}</button></section>`;if(!s.active)return `<section class="card center"><div style="font-size:55px">⌛</div><h3>${t('order')}</h3><p class="muted">Chờ khách gọi món...</p></section>`;const r=REC.find(x=>x.id===s.active.recipe);return `<section class="card"><div class="section-title"><h3>🥣 ${nm(r)}</h3><span class="tag">${s.selected.length}/${r.need.length}</span></div><div class="bowl-stage"><div class="bowl-col"><div class="bowl ${s.mixing?'mixing':''}"><div class="inside">${s.selected.length?s.selected.map(k=>foodImg(k,'bowl-food')).join(' '):foodImg('paper','bowl-food')}${s.mixed?'<div style="font-size:14px;font-weight:1000">✨ READY</div>':''}</div><div class="ready">${s.mixed?t('ready'):t('mix')}</div></div><button class="btn dark trash-btn" data-act="resetBowl">🗑️</button>${s.mixed?`<button class="btn green" style="width:100%;margin-top:8px" data-act="serve">💰 ${t('serve')}</button>`:`<button class="btn orange" style="width:100%;margin-top:8px" data-act="mix" ${s.selected.length===r.need.length?'':'disabled'}>🥢 ${t('mix')}</button>`}</div><div><div class="notice">${t('howto')}</div>${spiceSliderHtml()}<div class="ingredient-grid" style="margin-top:7px">${Object.keys(ING).map(k=>{
 // ✅ FIX 2: Tách riêng locked và out, không chặn sai
 const needLv=ING[k].lv||1;
@@ -393,8 +391,8 @@ const flag=locked?('Lv.'+needLv):(out?t('outOfStock'):'');
 return `<button class="ingredient ${dis?'disabled':''}" ${dis?'disabled':''} data-add="${k}">${flag?`<span class="ing-flag">${flag}</span>`:''}<span class="food-photo-wrap">${foodImg(k)}</span><span>${ING[k][s.language]}</span><small>x${s.stock[k]||0}</small></button>`}).join('')}</div></div></div></section>`}
   function stockPage(){return `<section class="card"><div class="section-title"><h3>📦 ${t('stock')}</h3><span class="tag">${Object.values(s.stock).reduce((a,b)=>a+b,0)}</span></div>${Object.entries(ING).map(([k,v])=>{const needLv=v.lv||1;const locked=level()<needLv;const qty=s.stock[k]||0;return `<div class="stock-row" style="${locked?'opacity:.55':''}"><div><strong>${foodImg(k,'small')} ${v[s.language]}${locked?' 🔒':''}</strong><span class="sub">${locked?('Lv.'+needLv+' · '+t('need')):(fmt(stockCost(k))+' / cái · '+t('stock')+': '+qty+' · max '+maxStock())}</span></div>${locked?`<span class="tag lock-tag">Lv.${needLv}</span>`:`<div class="buy-group"><button class="btn small yellow" data-buy="${k}">+1</button><button class="btn small yellow" data-buy5="${k}">+5</button><button class="btn small orange" data-buy10="${k}">+10</button></div>`}</div>`}).join('')}</section><section class="card"><div class="section-title"><h3>📖 ${t('recipes')}</h3><span class="tag">${s.recipes.length}/${REC.length}</span></div>${REC.map(r=>{const ok=s.recipes.includes(r.id);return `<div class="recipe-row"><div><strong>🥣 ${nm(r)}</strong><span class="sub">${r.need.map(k=>`<img class='food-img small' src=\"data:image/svg+xml;charset=UTF-8,${encodeURIComponent(foodSvg(ING[k].art))}\" alt='${esc(ING[k][s.language])}'>`).join('')} · ${fmt(s.prices[r.id])}</span></div>${ok?`<span class="tag">✓</span>`:level()<r.unlock?`<span class="tag lock-tag">🔒 Lv.${r.unlock}</span>`:`<button class="btn small blue" data-unlock="${r.id}">🔓 ${fmt(Math.max(0,(r.unlock-1)*40000))}</button>`}</div>`}).join('')}</section><section class="card"><div class="section-title"><h3>👩‍🍳 ${t('staff')}</h3><span class="tag">${s.staff.length}/${STAFF.length}</span></div>${STAFF.map(st=>{const hired=s.staff.includes(st.id);return `<div class="staff-row"><div><strong>${st.emoji} ${st.name[s.language]}</strong><span class="sub">${st.role[s.language]} · ${fmt(st.cost)}</span></div>${hired?`<span class="tag">✓</span>`:`<button class="btn small green" data-hire="${st.id}">${t('hire')}</button>`}</div>`}).join('')}</section><section class="card"><div class="section-title"><h3>🛠️ ${t('upgrades')}</h3><span class="tag">${s.upgrades.length}/${UPGRADES.length}</span></div>${UPGRADES.map(u=>{const ok=s.upgrades.includes(u.id);const locked=u.need&&!s.upgrades.includes(u.need);return `<div class="upgrade-row"><div><strong>${u.icon} ${nm(u)}</strong><span class="sub">${u.desc[s.language]||u.desc.vi} · ${fmt(u.cost)}</span></div>${ok?`<span class="tag">✓</span>`:locked?`<span class="tag">🔒</span>`:`<button class="btn small blue" data-upgrade="${u.id}">${t('upgrade')}</button>`}</div>`}).join('')}</section><section class="card"><div class="section-title"><h3>🏅 ${t('achievements')}</h3><span class="tag">${s.achClaimed.length}/${ACH.length}</span></div>${ACH.map(a=>{const done=a.need(s);const claimed=s.achClaimed.includes(a.id);return `<div class="ach-row ${claimed?'done':''}"><div class="ach-ico">${a.icon}</div><div style="flex:1"><strong>${nm(a)}</strong><span class="sub">+${fmt(a.reward)}</span></div>${claimed?`<span class="tag">${t('claimed')}</span>`:done?`<button class="btn small green" data-claim="${a.id}">${t('claim')}</button>`:`<span class="tag">...</span>`}</div>`}).join('')}</section>`}
 function reviewsPage(){
- return `<section class="card hero"><h2>💬 ${t('reviewsTitle')}</h2><p>${t('rep')}: <b>${s.rep.toFixed(1)} ⭐</b> · ${s.reviews.length} ${t('review')}</p></section><section class="card"><div class="review-list">${s.reviews.length?s.reviews.map((r,i)=>{
- const stars='★'.repeat(Math.max(0,Math.min(5,r.stars||0)))+'☆'.repeat(5-Math.max(0,Math.min(5,r.stars||0)));
+ return `<section class="card hero"><h2>💬 ${t('reviewsTitle')}</h2><p>${t('rep')}: <b>${(Number(s.rep)||0).toFixed(1)} ⭐</b> · ${s.reviews.length} ${t('review')}</p></section><section class="card"><div class="review-list">${s.reviews.length?s.reviews.map((r,i)=>{
+ const sc=Math.max(0,Math.min(5,Math.round(Number(r.stars)||0)));const stars='★'.repeat(sc)+'☆'.repeat(5-sc);
  const reply=typeof r.reply==='string'?r.reply:'';
  return `<article class="review-card"><div class="review-head"><div class="review-avatar">${r.avatar||'🙂'}</div><div style="flex:1"><div class="review-name">${esc(r.author||'Khách hàng')}</div><div class="review-role">${esc(r.role||t('customer'))}</div></div><div class="review-stars">${stars}</div></div><div class="review-text">"${esc(r.text||'')}"</div><div class="review-meta"><span>+${fmt(r.money||0)}</span><span>${t('review')}</span></div>${reply?`<div class="shop-reply"><b>🏪 ${esc(s.name)}</b>${esc(reply)}</div><div class="reply-row"><button class="btn small yellow" data-edit-reply="${r.id}">✏️ ${t('reply')}</button></div>`:`<div class="reply-box"><div class="muted tiny">${t('reply')}</div><textarea id="reply-${r.id}" maxlength="250" placeholder="${esc(t('replyPlaceholder'))}"></textarea><div class="reply-row"><button class="btn green small" data-send-reply="${r.id}">💬 ${t('sendReply')}</button></div></div>`}</article>`;
  }).join(''):`<div class="center muted">${t('noReviews')}</div>`}</div></section>`;
@@ -403,86 +401,50 @@ function rankPage(){const rows=[['Bạn',s.totalRevenue],['🍜 Tiệm Mì Cay',
 function settingsPage(){return `<section class="card"><h3>⚙️ ${t('settings')}</h3><div class="section-title"><b>🌐 ${t('lang')}</b></div><div class="lang-options">${[['vi','🇻🇳','Tiếng Việt'],['en','🇺🇸','English'],['zh','🇨🇳','中文']].map(x=>`<button class="lang ${s.language===x[0]?'sel':''}" data-lang="${x[0]}">${x[1]}<br><span style="font-size:11px">${x[2]}</span></button>`).join('')}</div><div class="grid2" style="margin-top:10px"><button class="btn green" data-act="save">💾 ${t('save')}</button><button class="btn blue" data-act="showCode">🔐 ${t('code')}</button></div><div class="section-title" style="margin-top:14px"><b>🎨 ${t('themeTitle')}</b></div><div class="theme-grid">${themeList().map(x=>`<button class="theme-btn ${(s.theme||'orange')===x[0]?'sel':''}" data-theme="${x[0]}"><span class="theme-swatch" style="background:${x[2]}"></span>${t(x[1])}</button>`).join('')}</div><div class="section-title" style="margin-top:14px"><b><button class="btn ${s.sound?'orange':'dark'}" style="width:100%;margin-top:8px" data-act="toggleSound">🔊 ${t('sound')}: ${s.sound?t('soundOn'):t('soundOff')}</button><button class="btn ${s.music!==false?'orange':'dark'}" style="width:100%;margin-top:8px" data-act="toggleMusic">🎵 ${t('music')}: ${s.music!==false?t('soundOn'):t('soundOff')}</button><button class="btn blue" style="width:100%;margin-top:8px" data-act="replayTut">📖 ${t('tutTitle')}</button><button class="btn pink" style="width:100%;margin-top:8px" data-act="reset">🗑️ ${t('reset')}</button></section><section class="card"><div class="section-title"><h3>🏪 ${t('name')}</h3><button class="btn small yellow" data-act="editName">✏️</button></div><p><b>${esc(s.name)}</b></p><div class="section-title"><h3>👑 ${t('boss')}</h3><button class="btn small yellow" data-act="editBoss">✏️</button></div><p><b>${esc(s.boss)}</b></p></section><section class="card"><b>💾 ${t('auto')}</b><p class="muted tiny">Save nằm trong trình duyệt và mã save dùng để chuyển tiến trình sang file HTML khác.</p><p class="muted tiny">🎵 Carefree — Kevin MacLeod (incompetech.com), CC BY 4.0</p></section>`}
 
 function splashBowlSVG(){
-  // Tô bánh tráng theo màu theme (CSS vars)
   return `<svg class="splash-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
       <radialGradient id="spBowl" cx="50%" cy="35%" r="60%">
-        <stop offset="0%" stop-color="#fff"/>
-        <stop offset="45%" stop-color="#f0c090"/>
-        <stop offset="100%" stop-color="#c87848"/>
+        <stop offset="0%" stop-color="#fff"/><stop offset="45%" stop-color="#f0c090"/><stop offset="100%" stop-color="#c87848"/>
       </radialGradient>
       <linearGradient id="spRim" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#fff8f0"/>
-        <stop offset="100%" stop-color="#e8c9aa"/>
+        <stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#e8c9aa"/>
       </linearGradient>
     </defs>
-    <!-- bóng -->
     <ellipse cx="100" cy="178" rx="58" ry="10" fill="var(--line)" opacity=".15"/>
-    <!-- tô -->
     <path d="M28 88 Q30 168 100 172 Q170 168 172 88 Z" fill="url(#spBowl)" stroke="var(--line)" stroke-width="3.5"/>
     <ellipse cx="100" cy="88" rx="72" ry="28" fill="url(#spRim)" stroke="var(--line)" stroke-width="3.5"/>
-    <!-- mặt nước / trộn -->
     <ellipse cx="100" cy="90" rx="58" ry="20" fill="#fff8f0" stroke="var(--line)" stroke-width="2" opacity=".9"/>
-    <!-- bánh tráng sợi -->
-    <path d="M55 95 Q70 110 90 100 Q110 90 130 105 Q145 115 150 95" fill="none" stroke="var(--yellow)" stroke-width="5" stroke-linecap="round" opacity=".95"/>
+    <path d="M55 95 Q70 110 90 100 Q110 90 130 105 Q145 115 150 95" fill="none" stroke="var(--yellow)" stroke-width="5" stroke-linecap="round"/>
     <path d="M48 100 Q65 120 95 112 Q120 105 145 118" fill="none" stroke="#f6d7a7" stroke-width="4" stroke-linecap="round"/>
     <path d="M60 108 Q80 125 110 115 Q135 108 148 120" fill="none" stroke="var(--orange)" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>
-    <!-- topping: xoài -->
     <circle cx="70" cy="88" r="9" fill="var(--yellow)" stroke="var(--line)" stroke-width="2"/>
-    <circle cx="70" cy="88" r="4" fill="#fff6" opacity=".5"/>
-    <!-- ớt -->
     <circle cx="95" cy="82" r="8" fill="var(--orange)" stroke="var(--line)" stroke-width="2"/>
-    <!-- đậu phộng -->
     <circle cx="118" cy="90" r="7" fill="#7F4F31" stroke="var(--line)" stroke-width="2"/>
-    <!-- rau -->
     <ellipse cx="140" cy="98" rx="12" ry="6" fill="var(--green,#53c98b)" stroke="var(--line)" stroke-width="2" transform="rotate(-20 140 98)"/>
-    <!-- trứng cút -->
     <circle cx="85" cy="102" r="7" fill="#FFF8F0" stroke="var(--line)" stroke-width="2"/>
     <circle cx="85" cy="102" r="3.5" fill="#EFC84A"/>
-    <!-- khô bò -->
     <rect x="108" y="100" width="14" height="7" rx="3" fill="#E8483F" stroke="var(--line)" stroke-width="1.8" transform="rotate(15 115 103)"/>
-    <!-- muỗng -->
     <line x1="155" y1="55" x2="140" y2="95" stroke="#8C6A52" stroke-width="4" stroke-linecap="round"/>
     <ellipse cx="158" cy="48" rx="10" ry="8" fill="#E8C9AA" stroke="var(--line)" stroke-width="2.5"/>
-    <!-- logo badge -->
     <rect x="68" y="18" width="64" height="28" rx="10" fill="var(--yellow)" stroke="var(--line)" stroke-width="3"/>
     <text x="100" y="37" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="16" fill="var(--ink)">BTT</text>
   </svg>`;
 }
-function splashEnterLabel(){
-  const lang=s&&s.language;
-  if(lang==='en')return '🎮 Enter shop';
-  if(lang==='zh')return '🎮 进入店铺';
-  return '🎮 Vào tiệm';
-}
-function splashSubLabel(){
-  const lang=s&&s.language;
-  if(lang==='en')return 'Rice paper salad shop';
-  if(lang==='zh')return '拌米纸小吃店';
-  return 'Tiệm bánh tráng trộn';
-}
+function splashEnterLabel(){const lang=s&&s.language;if(lang==='en')return '🎮 Enter shop';if(lang==='zh')return '🎮 进入店铺';return '🎮 Vào tiệm'}
+function splashSubLabel(){const lang=s&&s.language;if(lang==='en')return 'Rice paper salad shop';if(lang==='zh')return '拌米纸小吃店';return 'Tiệm bánh tráng trộn'}
 function renderSplash(){
   applyTheme();
   const title=(s&&s.name)?esc(s.name):'Tiệm Bánh Tráng Của Tôi';
-  document.getElementById('app').innerHTML=`
-  <div class="splash" id="splashScreen">
-    <span class="splash-deco d1">🥭</span>
-    <span class="splash-deco d2">🌶️</span>
-    <span class="splash-deco d3">🥜</span>
-    <span class="splash-deco d4">🥚</span>
-    <div class="splash-inner">
-      ${splashBowlSVG()}
+  document.getElementById('app').innerHTML=`<div class="splash" id="splashScreen">
+    <span class="splash-deco d1">🥭</span><span class="splash-deco d2">🌶️</span>
+    <span class="splash-deco d3">🥜</span><span class="splash-deco d4">🥚</span>
+    <div class="splash-inner">${splashBowlSVG()}
       <h1 class="splash-title">${title}</h1>
       <p class="splash-sub">${splashSubLabel()}</p>
       <button type="button" class="splash-btn" id="splashEnterBtn">${splashEnterLabel()}</button>
-    </div>
-  </div>`;
+    </div></div>`;
   const btn=document.getElementById('splashEnterBtn');
-  if(btn)btn.onclick=()=>{
-    window.__splashDone=true;
-    try{audioUnlock();musicStart()}catch(e){}
-    render();
-  };
+  if(btn)btn.onclick=()=>{window.__splashDone=true;try{audioUnlock();musicStart()}catch(e){}render()};
 }
 
 function renderLanguage(){document.getElementById('app').innerHTML=`<div class="app" style="display:grid;place-items:center;padding:18px"><section class="card" style="width:100%;max-width:520px;text-align:center;margin-top:12vh"><div style="font-size:64px">🥣🌶️</div><h1>Tiệm Bánh Tráng Trộn</h1><p class="muted">Chọn ngôn ngữ / Choose Language / 选择语言</p><div class="lang-options" style="margin-top:14px">${[['vi','🇻🇳','Tiếng Việt'],['en','🇺🇸','English'],['zh','🇨🇳','中文']].map(x=>`<button class="lang" data-startlang="${x[0]}">${x[1]}<br><span style="font-size:11px">${x[2]}</span></button>`).join('')}</div></section></div>`;document.querySelectorAll('[data-startlang]').forEach(b=>b.onclick=()=>{s.language=b.dataset.startlang;s.first=true;save();try{audioUnlock();musicStart()}catch(e){}showNameModal()})}
@@ -532,7 +494,6 @@ function spiceLabel(n){return spiceEmoji(n)+' '+heatLabel(spiceToHeat(n))+' ('+M
 function setBowlSpice(v){
   let n=Math.max(0,Math.min(10,Math.round(Number(v)||0)));
   s.bowlSpice=n;
-  // live update label without full re-render if possible
   const el=document.getElementById('spiceVal');
   if(el)el.textContent=spiceLabel(n);
   const m=document.getElementById('spiceMatch');
@@ -549,11 +510,10 @@ function spiceSliderHtml(){
   const n=(typeof s.bowlSpice==='number'?s.bowlSpice:5);
   const want=s.active.heat||spiceToHeat(s.active.spice);
   const ok=spiceToHeat(n)===want;
-  return `<div class="spice-panel"><div class="spice-head"><span>🌶️ ${t('spice')}</span><span class="spice-val" id="spiceVal">${spiceLabel(n)}</span></div>
-<input type="range" class="spice-slider" id="spiceRange" min="0" max="10" step="1" value="${n}" ${s.mixed?'disabled':''}>
-<div class="spice-marks"><span>🧊 ${t('heatMild')}</span><span>🌶️ ${t('heatMed')}</span><span>🔥 ${t('heatHot')}</span></div>
-<div class="spice-match ${ok?'ok':'bad'}" id="spiceMatch">${ok?('✅ '+t('heatMatch')):('⚠️ '+t('heatMiss')+' · '+t('heatWant')+': '+heatLabel(want))}</div>
-</div>`;
+  return '<div class="spice-panel"><div class="spice-head"><span>🌶️ '+t('spice')+'</span><span class="spice-val" id="spiceVal">'+spiceLabel(n)+'</span></div>'+
+    '<input type="range" class="spice-slider" id="spiceRange" min="0" max="10" step="1" value="'+n+'" '+(s.mixed?'disabled':'')+'>'+
+    '<div class="spice-marks"><span>🧊 '+t('heatMild')+'</span><span>🌶️ '+t('heatMed')+'</span><span>🔥 '+t('heatHot')+'</span></div>'+
+    '<div class="spice-match '+(ok?'ok':'bad')+'" id="spiceMatch">'+(ok?('✅ '+t('heatMatch')):('⚠️ '+t('heatMiss')+' · '+t('heatWant')+': '+heatLabel(want)))+'</div></div>';
 }
 
 function pickCustomerHeat(){const roll=Math.random();if(roll<0.34)return 'mild';if(roll<0.68)return 'med';return 'hot'}
@@ -636,15 +596,38 @@ if(tutActive())heatOk=true;
 if(!heatOk&&((wantHeat==='hot'&&dishHeat==='mild')||(wantHeat==='mild'&&dishHeat==='hot'))){s.rep=Math.max(1,(s.rep||5)-0.05);}
 s.combo=(s.combo||0)+1;s.bestCombo=Math.max(s.bestCombo||0,s.combo);
 let comboBonus=s.combo>=3?Math.floor(price*0.03*Math.min(s.combo,10)):0;
-let earned=price+comboBonus;if(s.active&&s.active.vip){earned=earned*2;}s.money+=earned;s.revenue+=earned;s.totalRevenue+=earned;s.served++;s.totalServed++;let xpGain=15+r.need.length*3+(s.combo>=5?10:0);gainXp(xpGain);s.rep=Math.min(5,Math.max(1,(s.rep||5)+(typeof heatOk!=='undefined'&&!heatOk?-0.15:(heatOk?0.05:0.02))+(s.upgrades.includes('neon')?0.02:0)));const texts=(!heatOk)?[t('heatMiss'),'Hơi lệch khẩu vị...','Lần sau chỉnh cay giúp nha']:s.combo>=5?['Combo đỉnh!','Xuất sắc quá!','Thần bếp!']:heatOk?[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!']:['Đúng công thức!','Ổn áp!','Tạm được'];s.reviews.unshift({id:Date.now()+Math.random(),author:s.active.name,role:s.active.person,avatar:s.active.avatar,stars:(()=>{let st=5;if(typeof heatOk!=='undefined'&&!heatOk)st=1+Math.floor(Math.random()*2);else if(s.combo>=5)st=5;else if(s.combo>=3)st=5;else st=4+((Math.random()<0.6)?1:0);if(s.active&&s.active.patience<25)st=Math.min(st,3);return st})(),text:texts[Math.floor(Math.random()*texts.length)],money:earned,reply:''});if(s.reviews.length>12)s.reviews.pop();sfx('coin');float('+'+fmt(earned),false);if(comboBonus)float('🔥 +'+fmt(comboBonus),false);float('+'+xpGain+' XP',true);const vipTag=(s.active&&s.active.vip)?' · 👑 VIP x2':'';if(s.combo>=3)toast('🔥 '+t('combo')+' x'+s.combo+' · ✅ '+t('success')+vipTag);else toast('✅ '+t('success')+vipTag);if(tutActive()&&tutId()==='serve'){s.tutorial=5}s.active=null;s.selected=[];s.mixed=false;s.bowlSpice=5;save();render();showComboBadge();setTimeout(()=>{if(!tutActive()||tutId()==='done')newOrder()},350);if(s.served>=s.goal){setTimeout(()=>endDay(true),700)}}
+let earned=price+comboBonus;if(s.active&&s.active.vip)earned=earned*2;s.money+=earned;s.revenue+=earned;s.totalRevenue+=earned;s.served++;s.totalServed++;let xpGain=15+r.need.length*3+(s.combo>=5?10:0);gainXp(xpGain);s.rep=Math.min(5,Math.max(1,(s.rep||5)+(typeof heatOk!=='undefined'&&!heatOk?-0.15:(heatOk?0.05:0.02))+(s.upgrades.includes('neon')?0.02:0)));// Sao & lời đánh giá khớp chất lượng phục vụ
+let starScore=5;
+let reviewTexts;
+if(!heatOk){
+  starScore=1+Math.floor(Math.random()*2); // 1–2 sao khi sai độ cay
+  reviewTexts=[t('heatMiss'),'Hơi lệch khẩu vị...','Lần sau chỉnh cay giúp nha','Cay quá/nhạt quá rồi!'];
+  s.combo=0; // hỏng combo khi làm sai
+}else if(s.active&&s.active.patience<25){
+  starScore=2+Math.floor(Math.random()*2); // 2–3 sao khi khách chờ lâu
+  reviewTexts=['Chờ hơi lâu...','Ngon nhưng hơi chậm','Lần sau nhanh hơn nha'];
+}else if(s.combo>=5){
+  starScore=5;
+  reviewTexts=['Combo đỉnh!','Xuất sắc quá!','Thần bếp!','5 sao không bàn cãi!'];
+}else if(s.combo>=3){
+  starScore=5;
+  reviewTexts=[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!','Sẽ ủng hộ dài dài!'];
+}else{
+  // Phục vụ ổn: chủ yếu 4 sao, thỉnh thoảng 5 hoặc 3
+  const roll=Math.random();
+  if(roll<0.15){starScore=3;reviewTexts=['Ổn áp!','Tạm được','Cũng được thôi'];}
+  else if(roll<0.55){starScore=4;reviewTexts=['Ngon đấy!','Đúng công thức!','Ổn, sẽ quay lại'];}
+  else{starScore=5;reviewTexts=[t('heatMatch'),'Ngon xỉu!','Đúng vị luôn!','Tuyệt vời!'];}
+}
+s.reviews.unshift({id:Date.now()+Math.random(),author:s.active.name,role:s.active.person+(s.active.vip?' · VIP':''),avatar:s.active.avatar,stars:starScore,text:reviewTexts[Math.floor(Math.random()*reviewTexts.length)],money:earned,reply:''});if(s.reviews.length>12)s.reviews.pop();sfx('coin');float('+'+fmt(earned),false);if(comboBonus)float('🔥 +'+fmt(comboBonus),false);float('+'+xpGain+' XP',true);const vipTag=(s.active&&s.active.vip)?' · 👑 VIP x2':'';if(s.combo>=3)toast('🔥 '+t('combo')+' x'+s.combo+' · ✅ '+t('success')+vipTag);else toast('✅ '+t('success')+vipTag);if(tutActive()&&tutId()==='serve'){s.tutorial=5}s.active=null;s.selected=[];s.mixed=false;s.bowlSpice=5;save();render();showComboBadge();setTimeout(()=>{if(!tutActive()||tutId()==='done')newOrder()},350);if(s.served>=s.goal){setTimeout(()=>endDay(true),700)}}
 function showComboBadge(){let el=document.getElementById('comboBadge');if(!el){el=document.createElement('div');el.id='comboBadge';el.className='combo-badge';document.body.appendChild(el)}if(s.combo>=2){el.textContent='🔥 '+t('combo')+' x'+s.combo;el.classList.add('show');clearTimeout(showComboBadge._t);showComboBadge._t=setTimeout(()=>el.classList.remove('show'),1800)}else el.classList.remove('show')}
 function skip(){if(tutActive()){tutBlock();return}s.combo=0;s.active=null;s.selected=[];s.mixed=false;sfx('bad');save();render();setTimeout(newOrder,300)}
 function resetBowl(){if(tutActive()){tutBlock();return}s.selected=[];s.mixed=false;s.bowlSpice=5;render()}
 function endDay(){s.open=false;page='prepare';s.active=null;s.selected=[];s.mixed=false;s.bestDay=Math.max(s.bestDay,s.revenue);if(s.served>=s.goal){s.streak=(s.streak||0)+1;const bonus=Math.floor(200000+s.streak*50000+s.revenue*0.05);s.money+=bonus;s.revenue+=bonus;s.dayBonus=bonus}else{s.streak=0;s.dayBonus=0}s.combo=0;save();showSummary()}
-function showSummary(){const m=document.getElementById('modal');m.className='modal show';const bonus=s.dayBonus||0;const st=s.streak||0;m.innerHTML=`<div class="sheet"><h3>🌙 ${t('closeDay')}</h3><div class="grid2"><div class="notice">+${fmt(s.revenue)}</div><div class="notice">👥 ${s.served}/${s.goal}</div><div class="notice">⭐ ${s.rep.toFixed(1)}</div><div class="notice">🔥 ${t('streak')}: ${st}</div></div>${bonus?`<div class="notice" style="margin-top:8px">🎁 ${t('dayBonus')}: +${fmt(bonus)}</div>`:''}${s.bestCombo>=3?`<div class="notice" style="margin-top:6px">✨ ${t('combo')} max: x${s.bestCombo}</div>`:''}<button class="btn green" style="width:100%;margin-top:10px" onclick="nextDay()">☀️ ${t('nextDay')}</button></div>`}
+function showSummary(){const m=document.getElementById('modal');m.className='modal show';const bonus=s.dayBonus||0;const st=s.streak||0;m.innerHTML=`<div class="sheet"><h3>🌙 ${t('closeDay')}</h3><div class="grid2"><div class="notice">+${fmt(s.revenue)}</div><div class="notice">👥 ${s.served}/${s.goal}</div><div class="notice">⭐ ${(Number(s.rep)||0).toFixed(1)}</div><div class="notice">🔥 ${t('streak')}: ${st}</div></div>${bonus?`<div class="notice" style="margin-top:8px">🎁 ${t('dayBonus')}: +${fmt(bonus)}</div>`:''}${s.bestCombo>=3?`<div class="notice" style="margin-top:6px">✨ ${t('combo')} max: x${s.bestCombo}</div>`:''}<button class="btn green" style="width:100%;margin-top:10px" onclick="nextDay()">☀️ ${t('nextDay')}</button></div>`}
 function nextDay(){document.getElementById('modal').className='modal';s.day++;s.minutes=(typeof DAY_START==='number'?DAY_START:360);s.open=false;s.dayStartedAt=null;s.active=null;s.selected=[];s.mixed=false;s.served=0;s.revenue=0;s.cost=0;s.goal=5+Math.floor(Math.random()*4);save();render()}
 function buy(k,qty){qty=qty||1;const v=ING[k];if(!v)return;if(level()<(v.lv||1))return toast('🔒 Lv.'+(v.lv||1));const total=Object.values(s.stock).reduce((a,b)=>a+b,0);if(total+qty>maxStock())return toast(t('full'));const unit=stockCost(k);const cost=unit*qty;if(s.money<cost)return toast(t('notEnough'));s.money-=cost;s.stock[k]=(s.stock[k]||0)+qty;s.cost+=cost;sfx('coin');save();render()}
-function setRecipePrice(id,v){const r=REC.find(x=>x.id===id);let n=Math.max(1000,Math.floor(Number(v)||r.price));s.prices[id]=n;save();render()}
+function setRecipePrice(id,v){const r=REC.find(x=>x.id===id);if(!r)return;let n=parseInt(String(v).replace(/[^0-9]/g,''),10);if(!Number.isFinite(n)||n<1)n=1;if(n>999999999)n=999999999;if(!s.prices)s.prices={};s.prices[id]=n;try{save()}catch(e){}}
 function canUnlockRecipe(r){return level()>=r.unlock}
 function tryAutoUnlockRecipes(){let unlocked=[];REC.forEach(r=>{if(!s.recipes.includes(r.id)&&level()>=r.unlock){s.recipes.push(r.id);if(s.prices[r.id]==null)s.prices[r.id]=r.price;unlocked.push(r)}});return unlocked}
 function unlock(id){const r=REC.find(x=>x.id===id);if(!r||s.recipes.includes(id))return;if(level()<r.unlock)return toast('🔒 Lv.'+r.unlock);const cost=Math.max(0,(r.unlock-1)*40000);if(s.money<cost)return toast(t('notEnough'));s.money-=cost;s.recipes.push(id);if(s.prices[r.id]==null)s.prices[r.id]=r.price;sfx('ok');save();render();toast('🔓 '+nm(r))}
@@ -760,7 +743,7 @@ function renderTutorial(){
         s.event = 'none'; s.goal = 99; s.open = true; s.tutorial = 2;
         s.active = null; s.selected = []; s.mixed = false;
         newOrder();
-        if (s.active) { s.active.recipe = 'basic'; s.active.rush = false; s.active.patience = 100; s.active.heat = s.active.heat||'mild'; s.bowlSpice = (s.active.heat==='hot'?8:s.active.heat==='med'?5:1); }
+        if (s.active) { s.active.recipe = 'basic'; s.active.rush = false; s.active.patience = 100; }
         s.selected = []; s.mixed = false;
         save(); render(); return;
       }
@@ -830,24 +813,9 @@ const MUS={on:false};
 function musicStart(){
   if(!s||s.music===false)return;
   const a=document.getElementById('bgm');if(!a)return;
-  try{
-    a.loop=true;
-    a.volume=.35;
-    a.muted=false;
-    const pr=a.play();
-    if(pr&&pr.then){
-      pr.then(()=>{MUS.on=true}).catch(()=>{
-        MUS.on=false;
-        // retry shortly (browser may allow after load)
-        clearTimeout(musicStart._t);
-        musicStart._t=setTimeout(()=>{
-          if(s&&s.music!==false&&!MUS.on){
-            a.play().then(()=>{MUS.on=true}).catch(()=>{});
-          }
-        },400);
-      });
-    }else MUS.on=true;
-  }catch(e){MUS.on=false}
+  try{a.loop=true;a.volume=.35;a.muted=false;const pr=a.play();
+  if(pr&&pr.then){pr.then(()=>{MUS.on=true}).catch(()=>{MUS.on=false;clearTimeout(musicStart._t);musicStart._t=setTimeout(()=>{if(s&&s.music!==false&&!MUS.on){a.play().then(()=>{MUS.on=true}).catch(()=>{})}},400);});}
+  else MUS.on=true}catch(e){MUS.on=false}
 }
 function musicStop(){MUS.on=false;const a=document.getElementById('bgm');if(a)a.pause()}
 document.addEventListener('pointerdown',e=>{
@@ -858,21 +826,8 @@ document.addEventListener('pointerdown',e=>{
   if(d.add!=null)sfx('add');else if(d.page)sfx('nav');else if(d.act==='resetBowl')sfx('trash');else if(d.act==='mix'||d.act==='serve'||d.act==='finishEarly'||d.startlang!=null)return;else sfx('click');
 },true);
 function audioUnlock(){
-  try{
-    const ctx=getCtx();
-    if(ctx&&ctx.state!=='running'){
-      ctx.resume();
-      try{const b=ctx.createBuffer(1,1,22050),sr=ctx.createBufferSource();sr.buffer=b;sr.connect(ctx.destination);sr.start(0)}catch(e){}
-    }
-    if(s&&s.music!==false){
-      const a=document.getElementById('bgm');
-      if(a){
-        a.muted=false;a.volume=.35;a.loop=true;
-        if(a.paused||!MUS.on){
-          a.play().then(()=>{MUS.on=true}).catch(()=>{});
-        }else MUS.on=true;
-      }
-    }
+  try{const ctx=getCtx();if(ctx&&ctx.state!=='running'){ctx.resume();try{const b=ctx.createBuffer(1,1,22050),sr=ctx.createBufferSource();sr.buffer=b;sr.connect(ctx.destination);sr.start(0)}catch(e){}}
+    if(s&&s.music!==false){const a=document.getElementById('bgm');if(a){a.muted=false;a.volume=.35;a.loop=true;if(a.paused||!MUS.on){a.play().then(()=>{MUS.on=true}).catch(()=>{})}else MUS.on=true}}
   }catch(e){}
 }
 ['touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{const c=sfx._ac;if(!c||c.state!=='running'||(s&&s.music!==false&&!MUS.on))audioUnlock()},true));
@@ -911,14 +866,7 @@ const modal=document.createElement('div');modal.id='modal';modal.className='moda
     if(s.language&&!s.tutorialDone){if((s.totalServed||0)>0){s.tutorialDone=true;s.tutorial=-1}else if(s.tutorial==null||s.tutorial<0)s.tutorial=0}
     if(s.first&&s.language){try{showNameModal()}catch(e){console.warn(e);s.first=false}}
     render();
-    // Tự mở nhạc nền khi vào game
-    try{
-      if(s.music!==false){
-        musicStart();
-        // thử lại vài lần nếu trình duyệt chặn autoplay
-        [300,800,1500].forEach(ms=>setTimeout(()=>{if(s&&s.music!==false&&!MUS.on)musicStart()},ms));
-      }
-    }catch(e){}
+    try{if(s.music!==false){musicStart();[300,800,1500].forEach(ms=>setTimeout(()=>{if(s&&s.music!==false&&!MUS.on)musicStart()},ms))}}catch(e){}
   }catch(err){
     console.error('boot error',err);
     try{localStorage.removeItem(KEY)}catch(_){}
